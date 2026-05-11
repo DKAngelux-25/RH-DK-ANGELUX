@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RH Portail — Administration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0a1628;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.12);
+    --green:#1D9E75;--blue:#378ADD;--orange:#D85A30;--purple:#7F77DD;--red:#E24B4A;
+    --muted:rgba(255,255,255,0.55);
+  }
+  body{font-family:'DM Sans',sans-serif;min-height:100vh;
+    background:linear-gradient(135deg,#0a1628 0%,#110a28 100%);color:#fff;}
+  nav{
+    background:rgba(127,119,221,0.08);border-bottom:1px solid rgba(127,119,221,0.2);
+    padding:0 32px;display:flex;align-items:center;justify-content:space-between;
+    height:64px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
+  }
+  .nav-brand{display:flex;align-items:center;gap:10px;}
+  .nav-logo{width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg,var(--purple),#534AB7);
+    display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .nav-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:18px;}
+  .admin-badge{background:rgba(127,119,221,0.2);border:1px solid rgba(127,119,221,0.4);
+    border-radius:99px;padding:4px 12px;font-size:12px;color:var(--purple);font-weight:600;}
+  .logout{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
+    border-radius:8px;padding:6px 14px;color:var(--muted);font-size:13px;cursor:pointer;}
+  .logout:hover{background:rgba(216,90,48,0.2);color:var(--orange);}
+  .tabs{display:flex;gap:4px;padding:16px 32px 0;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .tab{padding:10px 20px;border-radius:10px 10px 0 0;background:transparent;border:none;
+    color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .tab.active{background:rgba(127,119,221,0.15);color:var(--purple);font-weight:500;}
+  .tab:hover:not(.active){color:#fff;background:rgba(255,255,255,0.05);}
+  .content{max-width:1000px;margin:0 auto;padding:28px 24px;}
+  .section{display:none;}
+  .section.active{display:block;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:24px;margin-bottom:16px;backdrop-filter:blur(8px);}
+  .card h3{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;margin-bottom:16px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+  .stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;padding:16px;text-align:center;}
+  .stat-val{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;}
+  .stat-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{color:var(--muted);font-weight:500;text-align:left;padding:8px 12px;
+    border-bottom:1px solid rgba(255,255,255,0.08);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;}
+  td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:middle;}
+  tr:hover td{background:rgba(255,255,255,0.02);}
+  .badge{display:inline-block;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;}
+  .badge-pending{background:rgba(250,199,117,0.2);color:#FAC775;}
+  .badge-approved{background:rgba(29,158,117,0.2);color:#1D9E75;}
+  .badge-refused{background:rgba(226,75,74,0.2);color:var(--red);}
+  .btn-sm{padding:6px 14px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+  .btn-approve{background:rgba(29,158,117,0.2);color:#1D9E75;border:1px solid rgba(29,158,117,0.4);}
+  .btn-approve:hover{background:rgba(29,158,117,0.35);}
+  .btn-refuse{background:rgba(226,75,74,0.15);color:var(--red);border:1px solid rgba(226,75,74,0.35);}
+  .btn-refuse:hover{background:rgba(226,75,74,0.3);}
+  .form-group{margin-bottom:14px;}
+  .form-group label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+  .form-group input,.form-group select,.form-group textarea{
+    width:100%;background:rgba(255,255,255,0.07);border:1px solid var(--border);
+    border-radius:10px;padding:12px 14px;color:#fff;font-family:'DM Sans',sans-serif;
+    font-size:14px;outline:none;transition:all 0.2s;}
+  .form-group input:focus,.form-group select:focus{border-color:rgba(127,119,221,0.6);background:rgba(127,119,221,0.07);}
+  .form-group select option{background:#0d2240;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .btn-primary{background:linear-gradient(135deg,var(--purple),#534AB7);border:none;
+    border-radius:10px;padding:12px 24px;color:#fff;font-family:'Sora',sans-serif;
+    font-weight:600;font-size:14px;cursor:pointer;transition:all 0.3s;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(127,119,221,0.5);}
+  .alert{background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.3);
+    border-radius:10px;padding:12px 16px;font-size:13px;color:#1D9E75;margin-bottom:12px;display:none;}
+  .emp-card{
+    display:flex;align-items:center;gap:14px;
+    background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+    border-radius:12px;padding:14px 16px;margin-bottom:10px;
+  }
+  .emp-avatar{width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,var(--purple),#534AB7);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;flex-shrink:0;}
+  .emp-info{flex:1;}
+  .emp-name{font-weight:500;font-size:15px;}
+  .emp-sub{font-size:12px;color:var(--muted);}
+  .emp-conge{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--green);}
+  .emp-conge-label{font-size:11px;color:var(--muted);}
+  .perf-form{background:rgba(255,255,255,0.03);border-radius:12px;padding:16px;margin-bottom:12px;}
+  .range-group{display:flex;align-items:center;gap:12px;}
+  .range-group input[type=range]{flex:1;}
+  .range-val{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;min-width:48px;text-align:right;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">🛡️</div>
+    <span>RH Portail</span>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-size:13px;color:var(--muted);">Espace Administrateur</span>
+    <button class="logout" onclick="logout()">Déconnexion</button>
+  </div>
+</nav>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('dashboard')">📊 Tableau de bord</button>
+  <button class="tab" onclick="showTab('employes')">👥 Employés</button>
+  <button class="tab" onclick="showTab('conges')">🌴 Congés</button>
+  <button class="tab" onclick="showTab('pointages')">⏱ Pointages</button>
+  <button class="tab" onclick="showTab('performances')">🏆 Performances</button>
+  <button class="tab" onclick="showTab('ajouter')">➕ Ajouter employé</button>
+</div>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+<div class="section active" id="sec-dashboard">
+  <div class="stats-grid" id="dash-stats"></div>
+  <div class="card">
+    <h3>Demandes de congé en attente</h3>
+    <table>
+      <thead><tr><th>Employé</th><th>Type</th><th>Dates</th><th>Jours</th><th>Actions</th></tr></thead>
+      <tbody id="dash-conges"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Performances non signées</h3>
+    <table>
+      <thead><tr><th>Employé</th><th>Mois</th><th>Score</th><th>Statut</th></tr></thead>
+      <tbody id="dash-perfs"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EMPLOYES -->
+<div class="section" id="sec-employes">
+  <div class="card">
+    <h3>Tous les employés</h3>
+    <div id="emp-list"></div>
+  </div>
+</div>
+
+<!-- CONGES -->
+<div class="section" id="sec-conges">
+  <div class="card">
+    <h3>Toutes les demandes de congé</h3>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button class="btn-sm" onclick="filterConges('all')" style="border:1px solid var(--border);color:#fff;background:rgba(255,255,255,0.05)">Tous</button>
+      <button class="btn-sm badge-pending" onclick="filterConges('pending')" style="border:none">En attente</button>
+      <button class="btn-sm badge-approved" onclick="filterConges('approved')" style="border:none">Approuvés</button>
+      <button class="btn-sm badge-refused" onclick="filterConges('refused')" style="border:none">Refusés</button>
+    </div>
+    <table>
+      <thead><tr><th>Employé</th><th>Type</th><th>Début</th><th>Fin</th><th>Jours</th><th>Motif</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody id="cg-admin-table"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- POINTAGES -->
+<div class="section" id="sec-pointages">
+  <div class="card">
+    <h3>Pointages du jour</h3>
+    <div class="form-group" style="max-width:200px;margin-bottom:16px;">
+      <label>Filtrer par date</label>
+      <input type="date" id="ptg-date-filter" onchange="loadPtgAdmin()">
+    </div>
+    <table>
+      <thead><tr><th>Employé</th><th>Type</th><th>Heure</th></tr></thead>
+      <tbody id="ptg-admin-table"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PERFORMANCES -->
+<div class="section" id="sec-performances">
+  <div class="card">
+    <h3>Enregistrer une évaluation de performance</h3>
+    <div class="alert" id="perf-alert"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Employé</label>
+        <select id="perf-emp"></select>
+      </div>
+      <div class="form-group">
+        <label>Mois d'évaluation</label>
+        <input type="month" id="perf-mois">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Titre de l'évaluation</label>
+      <input type="text" id="perf-titre" placeholder="Ex: Bilan mensuel Janvier 2025">
+    </div>
+    <div class="form-group">
+      <label>Score de productivité</label>
+      <div class="range-group">
+        <input type="range" min="0" max="100" value="80" id="perf-score"
+          oninput="updateScore(this.value)">
+        <span class="range-val" id="score-display">80%</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Commentaire / observations</label>
+      <textarea id="perf-comment" rows="3" placeholder="Rédigez votre évaluation..."></textarea>
+    </div>
+    <button class="btn-primary" onclick="enregistrerPerf()">Enregistrer l'évaluation →</button>
+  </div>
+
+  <div class="card">
+    <h3>Historique des évaluations</h3>
+    <table>
+      <thead><tr><th>Employé</th><th>Mois</th><th>Score</th><th>Commentaire</th><th>Signé par employé</th></tr></thead>
+      <tbody id="perf-admin-table"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- AJOUTER EMPLOYE -->
+<div class="section" id="sec-ajouter">
+  <div class="card">
+    <h3>Ajouter un nouvel employé</h3>
+    <div class="alert" id="add-alert"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom et Nom</label>
+        <input type="text" id="add-name" placeholder="Marie Dupont">
+      </div>
+      <div class="form-group">
+        <label>Poste / Fonction</label>
+        <input type="text" id="add-poste" placeholder="Comptable, Commercial...">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Adresse email</label>
+        <input type="email" id="add-email" placeholder="marie@entreprise.com">
+      </div>
+      <div class="form-group">
+        <label>Mot de passe initial</label>
+        <input type="text" id="add-pwd" placeholder="Minimum 6 caractères">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Mois travaillés (ancienneté)</label>
+        <input type="number" id="add-anciennete" value="12" min="1">
+      </div>
+      <div class="form-group">
+        <label>Congés acquis (calculé auto)</label>
+        <input type="text" id="add-conges-preview" readonly style="opacity:0.6">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="ajouterEmploye()">Créer le compte employé →</button>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// Auth
+const uid=sessionStorage.getItem('rh_current');
+if(uid!=='ADMIN'){window.location.href='index.html';}
+
+function showTab(tab){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+tab).classList.add('active');
+  event.target.classList.add('active');
+  if(tab==='dashboard')loadDash();
+  if(tab==='employes')loadEmps();
+  if(tab==='conges')loadCongesAdmin('all');
+  if(tab==='pointages'){
+    const today=new Date().toISOString().slice(0,10);
+    document.getElementById('ptg-date-filter').value=today;
+    loadPtgAdmin();
+  }
+  if(tab==='performances')loadPerfsAdmin();
+  if(tab==='ajouter')calcAddConges();
+}
+
+function logout(){sessionStorage.clear();window.location.href='index.html';}
+
+const punchLabels={arrivee:'Arrivée',pause1:'Pause 15min #1',pause2:'Pause 15min #2',
+  dejeuner:'Déjeuner',reunion:'Réunion',depart:'Départ'};
+
+// DASHBOARD
+function loadDash(){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
+  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
+  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
+  const today=new Date().toISOString().slice(0,10);
+  const pending=conges.filter(c=>c.status==='pending');
+  const todayPtgs=ptgs.filter(p=>p.date===today);
+  const unsigned=perfs.filter(p=>!p.signed);
+
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat"><div class="stat-val" style="color:var(--blue)">${users.length}</div><div class="stat-label">Employés</div></div>
+    <div class="stat"><div class="stat-val" style="color:#FAC775">${pending.length}</div><div class="stat-label">Congés en attente</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--green)">${todayPtgs.length}</div><div class="stat-label">Pointages aujourd'hui</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--purple)">${unsigned.length}</div><div class="stat-label">Perfs non signées</div></div>`;
+
+  // Congés pending
+  const tbody1=document.getElementById('dash-conges');
+  tbody1.innerHTML='';
+  if(!pending.length){tbody1.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Aucune demande en attente</td></tr>';}
+  else pending.forEach(c=>{
+    tbody1.innerHTML+=`<tr>
+      <td><strong>${c.userName}</strong></td>
+      <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
+      <td>${c.debut} → ${c.fin}</td><td>${c.jours}j</td>
+      <td><button class="btn-sm btn-approve" onclick="decisionConge('${c.id}','approved')">✅ Approuver</button>
+          <button class="btn-sm btn-refuse" style="margin-left:6px" onclick="decisionConge('${c.id}','refused')">❌ Refuser</button></td>
+    </tr>`;
+  });
+
+  // Perfs non signées
+  const tbody2=document.getElementById('dash-perfs');
+  tbody2.innerHTML='';
+  if(!unsigned.length){tbody2.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:16px">Toutes les performances sont signées</td></tr>';}
+  else unsigned.forEach(p=>{
+    const user=users.find(u=>u.id===p.userId);
+    const c=p.score>=85?'#1D9E75':p.score>=70?'#FAC775':'#E24B4A';
+    tbody2.innerHTML+=`<tr>
+      <td>${user?user.name:p.userId}</td>
+      <td>${p.mois||'—'}</td>
+      <td><strong style="color:${c}">${p.score}%</strong></td>
+      <td><span class="badge badge-pending">En attente signature</span></td>
+    </tr>`;
+  });
+}
+
+// EMPLOYES
+function loadEmps(){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
+  const el=document.getElementById('emp-list');
+  el.innerHTML='';
+  users.forEach(u=>{
+    const prisCG=conges.filter(c=>c.userId===u.id&&c.status==='approved').reduce((s,c)=>s+c.jours,0);
+    el.innerHTML+=`<div class="emp-card">
+      <div class="emp-avatar">${u.avatar}</div>
+      <div class="emp-info">
+        <div class="emp-name">${u.name}</div>
+        <div class="emp-sub">${u.poste} — ${u.email}</div>
+      </div>
+      <div style="text-align:center;margin-right:16px">
+        <div class="emp-conge">${u.congesRestants}</div>
+        <div class="emp-conge-label">jours restants</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:#378ADD">${prisCG}</div>
+        <div class="emp-conge-label">jours pris (approuvés)</div>
+      </div>
+    </div>`;
+  });
+}
+
+// CONGES ADMIN
+let cgFilter='all';
+function filterConges(f){cgFilter=f;loadCongesAdmin(f);}
+function loadCongesAdmin(filter){
+  cgFilter=filter||cgFilter;
+  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const tbody=document.getElementById('cg-admin-table');
+  tbody.innerHTML='';
+  let list=conges;
+  if(cgFilter!=='all')list=conges.filter(c=>c.status===cgFilter);
+  if(!list.length){tbody.innerHTML='<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:16px">Aucune demande</td></tr>';return;}
+  list.forEach(c=>{
+    const statusBadge={pending:'badge-pending',approved:'badge-approved',refused:'badge-refused'}[c.status]||'badge-pending';
+    const statusLabel={pending:'En attente',approved:'Approuvé',refused:'Refusé'}[c.status]||'—';
+    tbody.innerHTML+=`<tr>
+      <td><strong>${c.userName}</strong></td>
+      <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
+      <td>${c.debut}</td><td>${c.fin}</td><td>${c.jours}j</td>
+      <td style="color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis">${c.motif||'—'}</td>
+      <td><span class="badge ${statusBadge}">${statusLabel}</span></td>
+      <td>
+        ${c.status==='pending'?`
+          <button class="btn-sm btn-approve" onclick="decisionConge('${c.id}','approved')">✅</button>
+          <button class="btn-sm btn-refuse" style="margin-left:4px" onclick="decisionConge('${c.id}','refused')">❌</button>`
+          :'—'}
+      </td>
+    </tr>`;
+  });
+}
+
+function decisionConge(id,decision){
+  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const idx=conges.findIndex(c=>c.id===id);
+  if(idx===-1)return;
+  const c=conges[idx];
+  c.status=decision;c.decidedAt=new Date().toISOString();
+  // Mise à jour solde si approuvé et congé payé
+  if(decision==='approved'&&c.type==='paye'){
+    const ui=users.findIndex(u=>u.id===c.userId);
+    if(ui>-1){
+      users[ui].congesRestants=Math.max(0,(users[ui].congesRestants||0)-c.jours);
+      users[ui].congesPris=(users[ui].congesPris||0)+c.jours;
+      localStorage.setItem('rh_users',JSON.stringify(users));
+    }
+  }
+  localStorage.setItem('rh_conges',JSON.stringify(conges));
+  loadDash();loadCongesAdmin(cgFilter);
+}
+
+// POINTAGES ADMIN
+function loadPtgAdmin(){
+  const date=document.getElementById('ptg-date-filter').value||new Date().toISOString().slice(0,10);
+  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const tbody=document.getElementById('ptg-admin-table');
+  const filtered=ptgs.filter(p=>p.date===date).sort((a,b)=>a.ts-b.ts);
+  tbody.innerHTML='';
+  if(!filtered.length){tbody.innerHTML='<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:16px">Aucun pointage ce jour</td></tr>';return;}
+  filtered.forEach(p=>{
+    const user=users.find(u=>u.id===p.userId);
+    tbody.innerHTML+=`<tr>
+      <td><strong>${user?user.name:p.userId}</strong></td>
+      <td>${punchLabels[p.type]||p.type}</td>
+      <td style="font-family:'Sora',sans-serif">${p.time}</td>
+    </tr>`;
+  });
+}
+
+// PERFORMANCES ADMIN
+function loadPerfsAdmin(){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
+  // Select employé
+  const sel=document.getElementById('perf-emp');
+  sel.innerHTML='';
+  users.forEach(u=>sel.innerHTML+=`<option value="${u.id}">${u.name} — ${u.poste}</option>`);
+
+  // Mois par défaut
+  const now=new Date();
+  document.getElementById('perf-mois').value=
+    now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
+
+  // Historique
+  const tbody=document.getElementById('perf-admin-table');
+  tbody.innerHTML='';
+  if(!perfs.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Aucune évaluation</td></tr>';return;}
+  [...perfs].reverse().forEach(p=>{
+    const user=users.find(u=>u.id===p.userId);
+    const c=p.score>=85?'#1D9E75':p.score>=70?'#FAC775':'#E24B4A';
+    tbody.innerHTML+=`<tr>
+      <td>${user?user.name:p.userId}</td>
+      <td>${p.mois||'—'}</td>
+      <td><strong style="color:${c}">${p.score}%</strong></td>
+      <td style="color:var(--muted)">${p.commentaire||'—'}</td>
+      <td>${p.signed?'<span style="color:#1D9E75">✅ Signé</span>':'<span style="color:#FAC775">En attente</span>'}</td>
+    </tr>`;
+  });
+}
+
+function updateScore(v){
+  const c=v>=85?'#1D9E75':v>=70?'#FAC775':'#E24B4A';
+  document.getElementById('score-display').textContent=v+'%';
+  document.getElementById('score-display').style.color=c;
+}
+
+function enregistrerPerf(){
+  const userId=document.getElementById('perf-emp').value;
+  const mois=document.getElementById('perf-mois').value;
+  const titre=document.getElementById('perf-titre').value||'Évaluation de performance';
+  const score=parseInt(document.getElementById('perf-score').value);
+  const commentaire=document.getElementById('perf-comment').value;
+  if(!userId||!mois){showAdminAlert('perf-alert','⚠️ Veuillez remplir tous les champs.');return;}
+  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
+  perfs.push({
+    id:'PERF'+Date.now(),userId,mois,titre,score,commentaire,
+    signed:false,createdAt:new Date().toISOString()
+  });
+  localStorage.setItem('rh_performances',JSON.stringify(perfs));
+  showAdminAlert('perf-alert','✅ Évaluation enregistrée ! L\'employé peut maintenant la signer.','green');
+  loadPerfsAdmin();
+}
+
+// AJOUTER EMPLOYE
+function calcAddConges(){
+  const m=parseInt(document.getElementById('add-anciennete').value)||12;
+  document.getElementById('add-conges-preview').value=Math.floor(m*2.5)+' jours acquis';
+}
+document.addEventListener('input',e=>{if(e.target.id==='add-anciennete')calcAddConges();});
+
+function ajouterEmploye(){
+  const name=document.getElementById('add-name').value.trim();
+  const poste=document.getElementById('add-poste').value.trim();
+  const email=document.getElementById('add-email').value.trim();
+  const pwd=document.getElementById('add-pwd').value;
+  const anc=parseInt(document.getElementById('add-anciennete').value)||12;
+  if(!name||!poste||!email||!pwd){showAdminAlert('add-alert','⚠️ Veuillez remplir tous les champs.');return;}
+  if(pwd.length<6){showAdminAlert('add-alert','⚠️ Le mot de passe doit faire au moins 6 caractères.');return;}
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  if(users.find(u=>u.email===email)){showAdminAlert('add-alert','❌ Cet email existe déjà.');return;}
+  const initials=name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+  const id='USR'+Date.now();
+  const congesAcquis=Math.floor(anc*2.5);
+  users.push({id,name,email,password:pwd,role:'employee',poste,avatar:initials,
+    moisTravailles:anc,congesRestants:congesAcquis,congesPris:0});
+  localStorage.setItem('rh_users',JSON.stringify(users));
+  showAdminAlert('add-alert','✅ Compte créé pour '+name+'. Il peut maintenant se connecter.','green');
+  document.getElementById('add-name').value='';
+  document.getElementById('add-email').value='';
+  document.getElementById('add-pwd').value='';
+  document.getElementById('add-poste').value='';
+}
+
+function showAdminAlert(id,msg,color){
+  const el=document.getElementById(id);
+  const cols={green:'rgba(29,158,117,0.12)',orange:'rgba(250,199,117,0.12)',red:'rgba(226,75,74,0.12)'};
+  const txtCols={green:'#1D9E75',orange:'#FAC775',red:'#E24B4A'};
+  el.style.background=cols[color]||cols.orange;
+  el.style.color=txtCols[color]||txtCols.orange;
+  el.textContent=msg;el.style.display='block';
+  setTimeout(()=>el.style.display='none',5000);
+}
+
+loadDash();
+</script>
+</body>
+</html>
