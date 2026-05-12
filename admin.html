@@ -3,291 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RH Portail — Administration</title>
+<title>DK Angelux — Administration RH</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
-  *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --bg:#0a1628;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.12);
-    --green:#1D9E75;--blue:#378ADD;--orange:#D85A30;--purple:#7F77DD;--red:#E24B4A;
-    --muted:rgba(255,255,255,0.55);
-  }
-  body{font-family:'DM Sans',sans-serif;min-height:100vh;
-    background:linear-gradient(135deg,#0a1628 0%,#110a28 100%);color:#fff;}
-  nav{
-    background:rgba(127,119,221,0.08);border-bottom:1px solid rgba(127,119,221,0.2);
-    padding:0 32px;display:flex;align-items:center;justify-content:space-between;
-    height:64px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
-  }
-  .nav-brand{display:flex;align-items:center;gap:10px;}
-  .nav-logo{width:36px;height:36px;border-radius:10px;
-    background:linear-gradient(135deg,var(--purple),#534AB7);
-    display:flex;align-items:center;justify-content:center;font-size:18px;}
-  .nav-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:18px;}
-  .admin-badge{background:rgba(127,119,221,0.2);border:1px solid rgba(127,119,221,0.4);
-    border-radius:99px;padding:4px 12px;font-size:12px;color:var(--purple);font-weight:600;}
-  .logout{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
-    border-radius:8px;padding:6px 14px;color:var(--muted);font-size:13px;cursor:pointer;}
-  .logout:hover{background:rgba(216,90,48,0.2);color:var(--orange);}
-  .tabs{display:flex;gap:4px;padding:16px 32px 0;border-bottom:1px solid var(--border);overflow-x:auto;}
-  .tab{padding:10px 20px;border-radius:10px 10px 0 0;background:transparent;border:none;
-    color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-  .tab.active{background:rgba(127,119,221,0.15);color:var(--purple);font-weight:500;}
-  .tab:hover:not(.active){color:#fff;background:rgba(255,255,255,0.05);}
-  .content{max-width:1000px;margin:0 auto;padding:28px 24px;}
-  .section{display:none;}
-  .section.active{display:block;}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
-    padding:24px;margin-bottom:16px;backdrop-filter:blur(8px);}
-  .card h3{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;margin-bottom:16px;}
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
-  .stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-    border-radius:12px;padding:16px;text-align:center;}
-  .stat-val{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;}
-  .stat-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{color:var(--muted);font-weight:500;text-align:left;padding:8px 12px;
-    border-bottom:1px solid rgba(255,255,255,0.08);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;}
-  td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:middle;}
-  tr:hover td{background:rgba(255,255,255,0.02);}
-  .badge{display:inline-block;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;}
-  .badge-pending{background:rgba(250,199,117,0.2);color:#FAC775;}
-  .badge-approved{background:rgba(29,158,117,0.2);color:#1D9E75;}
-  .badge-refused{background:rgba(226,75,74,0.2);color:var(--red);}
-  .btn-sm{padding:6px 14px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
-  .btn-approve{background:rgba(29,158,117,0.2);color:#1D9E75;border:1px solid rgba(29,158,117,0.4);}
-  .btn-approve:hover{background:rgba(29,158,117,0.35);}
-  .btn-refuse{background:rgba(226,75,74,0.15);color:var(--red);border:1px solid rgba(226,75,74,0.35);}
-  .btn-refuse:hover{background:rgba(226,75,74,0.3);}
-  .form-group{margin-bottom:14px;}
-  .form-group label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-  .form-group input,.form-group select,.form-group textarea{
-    width:100%;background:rgba(255,255,255,0.07);border:1px solid var(--border);
-    border-radius:10px;padding:12px 14px;color:#fff;font-family:'DM Sans',sans-serif;
-    font-size:14px;outline:none;transition:all 0.2s;}
-  .form-group input:focus,.form-group select:focus{border-color:rgba(127,119,221,0.6);background:rgba(127,119,221,0.07);}
-  .form-group select option{background:#0d2240;}
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-  .btn-primary{background:linear-gradient(135deg,var(--purple),#534AB7);border:none;
-    border-radius:10px;padding:12px 24px;color:#fff;font-family:'Sora',sans-serif;
-    font-weight:600;font-size:14px;cursor:pointer;transition:all 0.3s;}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(127,119,221,0.5);}
-  .alert{background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.3);
-    border-radius:10px;padding:12px 16px;font-size:13px;color:#1D9E75;margin-bottom:12px;display:none;}
-  .emp-card{
-    display:flex;align-items:center;gap:14px;
-    background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-    border-radius:12px;padding:14px 16px;margin-bottom:10px;
-  }
-  .emp-avatar{width:42px;height:42px;border-radius:50%;
-    background:linear-gradient(135deg,var(--purple),#534AB7);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700;font-size:13px;flex-shrink:0;}
-  .emp-info{flex:1;}
-  .emp-name{font-weight:500;font-size:15px;}
-  .emp-sub{font-size:12px;color:var(--muted);}
-  .emp-conge{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--green);}
-  .emp-conge-label{font-size:11px;color:var(--muted);}
-  .perf-form{background:rgba(255,255,255,0.03);border-radius:12px;padding:16px;margin-bottom:12px;}
-  .range-group{display:flex;align-items:center;gap:12px;}
-  .range-group input[type=range]{flex:1;}
-  .range-val{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;min-width:48px;text-align:right;}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.12);
+  --dark:#0B0E14;--dark2:#13171F;--dark3:#1A1F2B;--dark4:#1E2430;
+  --text:#F0EDE6;--muted:#8A8880;--border:rgba(255,255,255,0.08);
+  --green:#4CAF7E;--blue:#4A8FD4;--red:#C94C4C;--amber:#D4934A;--purple:#8B7FD4;
+  --green-dim:rgba(76,175,126,0.12);--blue-dim:rgba(74,143,212,0.12);
+  --red-dim:rgba(201,76,76,0.12);--amber-dim:rgba(212,147,74,0.12);
+}
+body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color:var(--text);}
+nav{background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.2);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-logo{width:34px;height:34px;border:1.5px solid var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:10px;font-weight:800;color:var(--gold);}
+.nav-brand-text{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;}
+.nav-brand-text span{color:var(--gold);}
+.admin-badge{background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--gold);font-weight:700;letter-spacing:0.5px;}
+.btn-logout{background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:6px 14px;color:var(--muted);font-size:12px;cursor:pointer;transition:all 0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.tabs{display:flex;gap:2px;padding:0 28px;background:var(--dark2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab{padding:13px 16px;background:transparent;border:none;color:var(--muted);font-family:'Lato',sans-serif;font-size:12px;cursor:pointer;transition:all 0.2s;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:700;}
+.tab:hover:not(.active){color:var(--text);}
+.content{max-width:1060px;margin:0 auto;padding:22px 18px;}
+.section{display:none;}
+.section.active{display:block;}
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;}
+.card-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;margin-bottom:16px;}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px;}
+.stat{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat-val{font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;}
+.stat-lbl{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:0.8px;}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.3px;}
+.badge-pending{background:rgba(212,147,74,0.2);color:#E0A96A;}
+.badge-approved{background:var(--green-dim);color:var(--green);}
+.badge-refused{background:var(--red-dim);color:#E08080;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{color:var(--muted);font-weight:700;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:0.8px;}
+td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,0.015);}
+.btn-sm{padding:5px 12px;border-radius:7px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Lato',sans-serif;}
+.btn-approve{background:var(--green-dim);color:var(--green);border:1px solid rgba(76,175,126,0.3);}
+.btn-approve:hover{background:rgba(76,175,126,0.25);}
+.btn-refuse{background:var(--red-dim);color:#E08080;border:1px solid rgba(201,76,76,0.3);}
+.btn-refuse:hover{background:rgba(201,76,76,0.25);}
+.btn-delete{background:rgba(201,76,76,0.08);color:#E08080;border:1px solid rgba(201,76,76,0.2);}
+.btn-delete:hover{background:var(--red-dim);}
+.form-group{margin-bottom:12px;}
+.form-group label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:10px 13px;color:var(--text);font-family:'Lato',sans-serif;font-size:13px;outline:none;transition:all 0.2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.form-group select option{background:var(--dark3);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.btn-primary{background:linear-gradient(135deg,var(--gold),#A8872E);border:none;border-radius:9px;padding:11px 22px;color:#0B0E14;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.25s;letter-spacing:0.5px;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(201,168,76,0.3);}
+.alert{border-radius:8px;padding:11px 14px;font-size:12px;margin-bottom:12px;display:none;}
+.alert-green{background:var(--green-dim);border:1px solid rgba(76,175,126,0.3);color:var(--green);}
+.alert-orange{background:var(--amber-dim);border:1px solid rgba(212,147,74,0.3);color:#E0A96A;}
+.alert-red{background:var(--red-dim);border:1px solid rgba(201,76,76,0.3);color:#E08080;}
+.range-wrap{display:flex;align-items:center;gap:12px;}
+.range-wrap input[type=range]{flex:1;accent-color:var(--gold);}
+.range-val{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;min-width:48px;text-align:right;}
+.emp-card{display:flex;align-items:center;gap:14px;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.emp-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3A3060,#1A2A40);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.emp-name{font-weight:700;font-size:14px;}
+.emp-sub{font-size:11px;color:var(--muted);}
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.filter-bar input,.filter-bar select{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'Lato',sans-serif;font-size:12px;outline:none;}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--gold);}
+.tab-inner{display:flex;gap:6px;margin-bottom:14px;}
+.tab-inner button{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.tab-inner button.active{background:var(--gold-dim);border-color:rgba(201,168,76,0.4);color:var(--gold);}
+/* Détails employé */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;}
+.detail-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.detail-label{color:var(--muted);}
+.detail-val{font-weight:600;}
+/* Modal overlay fakné */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;}
+.modal-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;}
+.modal-close{float:right;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;margin-top:-4px;}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-brand">
-    <div class="nav-logo">🛡️</div>
-    <span>RH Portail</span>
+    <div class="nav-logo">DK</div>
+    <div><div class="nav-brand-text">DK <span>Angelux</span></div></div>
     <span class="admin-badge">ADMIN</span>
   </div>
   <div style="display:flex;align-items:center;gap:12px;">
-    <span style="font-size:13px;color:var(--muted);">Espace Administrateur</span>
-    <button class="logout" onclick="logout()">Déconnexion</button>
+    <span style="font-size:12px;color:var(--muted)">Espace Administrateur</span>
+    <button class="btn-logout" onclick="logout()">Déconnexion</button>
   </div>
 </nav>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('dashboard')">📊 Tableau de bord</button>
-  <button class="tab" onclick="showTab('employes')">👥 Employés</button>
-  <button class="tab" onclick="showTab('conges')">🌴 Congés</button>
-  <button class="tab" onclick="showTab('pointages')">⏱ Pointages</button>
-  <button class="tab" onclick="showTab('performances')">🏆 Performances</button>
-  <button class="tab" onclick="showTab('ajouter')">➕ Ajouter employé</button>
+  <button class="tab active" onclick="showTab('dashboard',this)">📊 Tableau de bord</button>
+  <button class="tab" onclick="showTab('employes',this)">👥 Employés</button>
+  <button class="tab" onclick="showTab('conges',this)">🌴 Congés</button>
+  <button class="tab" onclick="showTab('pointages',this)">⏱ Pointages</button>
+  <button class="tab" onclick="showTab('performances',this)">🏆 Performances</button>
+  <button class="tab" onclick="showTab('salaires',this)">💰 Salaires</button>
+  <button class="tab" onclick="showTab('ajouter',this)">➕ Ajouter employé</button>
 </div>
 
 <div class="content">
 
 <!-- DASHBOARD -->
 <div class="section active" id="sec-dashboard">
-  <div class="stats-grid" id="dash-stats"></div>
+  <div class="grid4" id="dash-stats"></div>
   <div class="card">
-    <h3>Demandes de congé en attente</h3>
-    <table>
-      <thead><tr><th>Employé</th><th>Type</th><th>Dates</th><th>Jours</th><th>Actions</th></tr></thead>
-      <tbody id="dash-conges"></tbody>
-    </table>
+    <div class="card-title">Congés en attente</div>
+    <table><thead><tr><th>Employé</th><th>Type</th><th>Dates</th><th>Jours</th><th>Actions</th></tr></thead>
+    <tbody id="dash-conges"></tbody></table>
   </div>
   <div class="card">
-    <h3>Performances non signées</h3>
-    <table>
-      <thead><tr><th>Employé</th><th>Mois</th><th>Score</th><th>Statut</th></tr></thead>
-      <tbody id="dash-perfs"></tbody>
-    </table>
+    <div class="card-title">Performances non signées</div>
+    <table><thead><tr><th>Employé</th><th>Mois</th><th>Score</th><th>Statut</th></tr></thead>
+    <tbody id="dash-perfs"></tbody></table>
+  </div>
+  <div class="card">
+    <div class="card-title">Retards du jour</div>
+    <table><thead><tr><th>Employé</th><th>Heure prévue</th><th>Heure réelle</th><th>Retard</th></tr></thead>
+    <tbody id="dash-retards"></tbody></table>
   </div>
 </div>
 
 <!-- EMPLOYES -->
 <div class="section" id="sec-employes">
   <div class="card">
-    <h3>Tous les employés</h3>
+    <div class="card-title">Tous les employés</div>
+    <div class="filter-bar">
+      <input type="text" id="emp-search" placeholder="🔍 Rechercher..." oninput="loadEmps()">
+    </div>
     <div id="emp-list"></div>
+  </div>
+</div>
+
+<!-- MODAL détail employé -->
+<div class="overlay" id="modal-emp">
+  <div class="modal">
+    <div class="modal-title"><span id="modal-emp-name">Employé</span> <button class="modal-close" onclick="closeModal('modal-emp')">×</button></div>
+    <div id="modal-emp-body"></div>
   </div>
 </div>
 
 <!-- CONGES -->
 <div class="section" id="sec-conges">
   <div class="card">
-    <h3>Toutes les demandes de congé</h3>
-    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-      <button class="btn-sm" onclick="filterConges('all')" style="border:1px solid var(--border);color:#fff;background:rgba(255,255,255,0.05)">Tous</button>
-      <button class="btn-sm badge-pending" onclick="filterConges('pending')" style="border:none">En attente</button>
-      <button class="btn-sm badge-approved" onclick="filterConges('approved')" style="border:none">Approuvés</button>
-      <button class="btn-sm badge-refused" onclick="filterConges('refused')" style="border:none">Refusés</button>
+    <div class="card-title">Toutes les demandes de congé</div>
+    <div class="tab-inner">
+      <button class="active" onclick="filterConges('all',this)">Tous</button>
+      <button onclick="filterConges('pending',this)">En attente</button>
+      <button onclick="filterConges('approved',this)">Approuvés</button>
+      <button onclick="filterConges('refused',this)">Refusés</button>
     </div>
-    <table>
-      <thead><tr><th>Employé</th><th>Type</th><th>Début</th><th>Fin</th><th>Jours</th><th>Motif</th><th>Statut</th><th>Actions</th></tr></thead>
-      <tbody id="cg-admin-table"></tbody>
-    </table>
+    <table><thead><tr><th>Employé</th><th>Type</th><th>Début</th><th>Fin</th><th>Jours</th><th>Motif</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody id="cg-admin-table"></tbody></table>
   </div>
 </div>
 
 <!-- POINTAGES -->
 <div class="section" id="sec-pointages">
   <div class="card">
-    <h3>Pointages du jour</h3>
-    <div class="form-group" style="max-width:200px;margin-bottom:16px;">
-      <label>Filtrer par date</label>
-      <input type="date" id="ptg-date-filter" onchange="loadPtgAdmin()">
+    <div class="card-title">Pointages</div>
+    <div class="filter-bar">
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Date</label>
+        <input type="date" id="ptg-date-filter" onchange="loadPtgAdmin()">
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Agent</label>
+        <select id="ptg-agent-filter" onchange="loadPtgAdmin()">
+          <option value="">Tous les agents</option>
+        </select>
+      </div>
     </div>
-    <table>
-      <thead><tr><th>Employé</th><th>Type</th><th>Heure</th></tr></thead>
-      <tbody id="ptg-admin-table"></tbody>
-    </table>
+    <table><thead><tr><th>Employé</th><th>Statut</th><th>Heure</th><th>Durée</th><th>Dépassement</th></tr></thead>
+    <tbody id="ptg-admin-table"></tbody></table>
+  </div>
+  <div class="card">
+    <div class="card-title">Retards par agent</div>
+    <div class="filter-bar">
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Agent</label>
+        <select id="retard-agent-filter" onchange="loadRetardsAdmin()">
+          <option value="">Tous les agents</option>
+        </select>
+      </div>
+    </div>
+    <table><thead><tr><th>Agent</th><th>Date</th><th>Retard arrivée</th><th>Retard déjeuner</th><th>Retard pause 1</th><th>Retard pause 2</th></tr></thead>
+    <tbody id="retards-admin-table"></tbody></table>
   </div>
 </div>
 
 <!-- PERFORMANCES -->
 <div class="section" id="sec-performances">
   <div class="card">
-    <h3>Enregistrer une évaluation de performance</h3>
+    <div class="card-title">Enregistrer une évaluation</div>
     <div class="alert" id="perf-alert"></div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Employé</label>
-        <select id="perf-emp"></select>
-      </div>
-      <div class="form-group">
-        <label>Mois d'évaluation</label>
-        <input type="month" id="perf-mois">
-      </div>
+      <div class="form-group"><label>Employé</label><select id="perf-emp"></select></div>
+      <div class="form-group"><label>Mois</label><input type="month" id="perf-mois"></div>
     </div>
-    <div class="form-group">
-      <label>Titre de l'évaluation</label>
-      <input type="text" id="perf-titre" placeholder="Ex: Bilan mensuel Janvier 2025">
-    </div>
+    <div class="form-group"><label>Titre</label><input type="text" id="perf-titre" placeholder="Ex: Bilan mensuel Janvier 2025"></div>
     <div class="form-group">
       <label>Score de productivité</label>
-      <div class="range-group">
-        <input type="range" min="0" max="100" value="80" id="perf-score"
-          oninput="updateScore(this.value)">
+      <div class="range-wrap">
+        <input type="range" min="0" max="100" value="80" id="perf-score" oninput="updateScore(this.value)">
         <span class="range-val" id="score-display">80%</span>
       </div>
     </div>
-    <div class="form-group">
-      <label>Commentaire / observations</label>
-      <textarea id="perf-comment" rows="3" placeholder="Rédigez votre évaluation..."></textarea>
-    </div>
+    <div class="form-group"><label>Commentaire</label><textarea id="perf-comment" rows="3" placeholder="Rédigez votre évaluation..."></textarea></div>
     <button class="btn-primary" onclick="enregistrerPerf()">Enregistrer l'évaluation →</button>
   </div>
-
   <div class="card">
-    <h3>Historique des évaluations</h3>
-    <table>
-      <thead><tr><th>Employé</th><th>Mois</th><th>Score</th><th>Commentaire</th><th>Signé par employé</th></tr></thead>
-      <tbody id="perf-admin-table"></tbody>
-    </table>
+    <div class="card-title">Historique des évaluations</div>
+    <table><thead><tr><th>Employé</th><th>Mois</th><th>Titre</th><th>Score</th><th>Commentaire</th><th>Signé</th><th>Supprimer</th></tr></thead>
+    <tbody id="perf-admin-table"></tbody></table>
+  </div>
+</div>
+
+<!-- SALAIRES -->
+<div class="section" id="sec-salaires">
+  <div class="card">
+    <div class="card-title">Notifier un paiement de salaire</div>
+    <div class="alert" id="sal-alert"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Employé</label><select id="sal-emp"></select></div>
+      <div class="form-group"><label>Mois concerné</label><input type="month" id="sal-mois"></div>
+    </div>
+    <div class="form-row3">
+      <div class="form-group"><label>Salaire brut (FCFA)</label><input type="number" id="sal-brut" placeholder="0"></div>
+      <div class="form-group"><label>Cotisations (FCFA)</label><input type="number" id="sal-cotisations" placeholder="0"></div>
+      <div class="form-group"><label>Primes (FCFA)</label><input type="number" id="sal-primes" placeholder="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Salaire net (FCFA)</label><input type="number" id="sal-montant" placeholder="Calculé auto ou saisi"></div>
+      <div class="form-group"><label>Date de paiement</label><input type="date" id="sal-date"></div>
+    </div>
+    <div class="form-group"><label>Message pour l'employé</label><textarea id="sal-message" rows="2" placeholder="Ex: Salaire du mois de janvier 2025 — Bonne continuation"></textarea></div>
+    <button class="btn-primary" onclick="envoyerSalaire()">📤 Envoyer la notification →</button>
+  </div>
+  <div class="card">
+    <div class="card-title">Historique des salaires envoyés</div>
+    <div class="filter-bar">
+      <select id="sal-filter-emp" onchange="loadSalairesAdmin()">
+        <option value="">Tous les agents</option>
+      </select>
+    </div>
+    <table><thead><tr><th>Employé</th><th>Mois</th><th>Net</th><th>Brut</th><th>Primes</th><th>Lu</th><th>Supprimer</th></tr></thead>
+    <tbody id="sal-admin-table"></tbody></table>
   </div>
 </div>
 
 <!-- AJOUTER EMPLOYE -->
 <div class="section" id="sec-ajouter">
   <div class="card">
-    <h3>Ajouter un nouvel employé</h3>
+    <div class="card-title">Ajouter un nouvel employé</div>
     <div class="alert" id="add-alert"></div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Prénom et Nom</label>
-        <input type="text" id="add-name" placeholder="Marie Dupont">
-      </div>
-      <div class="form-group">
-        <label>Poste / Fonction</label>
-        <input type="text" id="add-poste" placeholder="Comptable, Commercial...">
-      </div>
+      <div class="form-group"><label>Prénom et Nom</label><input type="text" id="add-name" placeholder="Marie Dupont"></div>
+      <div class="form-group"><label>Poste / Fonction</label><input type="text" id="add-poste" placeholder="Comptable, Commercial..."></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Adresse email</label>
-        <input type="email" id="add-email" placeholder="marie@entreprise.com">
-      </div>
-      <div class="form-group">
-        <label>Mot de passe initial</label>
-        <input type="text" id="add-pwd" placeholder="Minimum 6 caractères">
-      </div>
+      <div class="form-group"><label>Adresse email</label><input type="email" id="add-email" placeholder="marie@dkangelux.com"></div>
+      <div class="form-group"><label>Mot de passe initial</label><input type="text" id="add-pwd" placeholder="Minimum 6 caractères"></div>
+    </div>
+    <div class="form-row3">
+      <div class="form-group"><label>Téléphone</label><input type="text" id="add-tel" placeholder="+228 xx xx xx xx"></div>
+      <div class="form-group"><label>Quartier de résidence</label><input type="text" id="add-quartier" placeholder="Bè, Tokoin..."></div>
+      <div class="form-group"><label>Nombre d'enfants</label><input type="number" id="add-enfants" value="0" min="0"></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Mois travaillés (ancienneté)</label>
-        <input type="number" id="add-anciennete" value="12" min="1">
+      <div class="form-group"><label>Mois travaillés (ancienneté)</label><input type="number" id="add-anciennete" value="12" min="1" oninput="calcAddConges()"></div>
+      <div class="form-group"><label>Congés acquis (auto)</label><input type="text" id="add-conges-preview" readonly style="opacity:0.6"></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px;margin-bottom:16px">
+      <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;margin-bottom:12px;color:var(--gold)">⏱ Horaires de travail</div>
+      <div class="form-row3">
+        <div class="form-group"><label>Heure d'arrivée</label><input type="time" id="add-arrivee" value="08:00"></div>
+        <div class="form-group"><label>Début pause déjeuner</label><input type="time" id="add-pause" value="12:00"></div>
+        <div class="form-group"><label>Fin pause déjeuner</label><input type="time" id="add-pause-fin" value="13:00"></div>
       </div>
-      <div class="form-group">
-        <label>Congés acquis (calculé auto)</label>
-        <input type="text" id="add-conges-preview" readonly style="opacity:0.6">
+      <div class="form-row">
+        <div class="form-group"><label>Heure de départ</label><input type="time" id="add-depart" value="17:30"></div>
+        <div class="form-group"><label>Salaire de base (FCFA)</label><input type="number" id="add-salaire" placeholder="0" value="0"></div>
       </div>
     </div>
     <button class="btn-primary" onclick="ajouterEmploye()">Créer le compte employé →</button>
   </div>
 </div>
 
-</div><!-- /content -->
+</div>
 
+<!-- MODAL détail employé complet -->
 <script>
-// Auth
 const uid=sessionStorage.getItem('rh_current');
 if(uid!=='ADMIN'){window.location.href='index.html';}
 
-function showTab(tab){
+function showTab(tab,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+tab).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
   if(tab==='dashboard')loadDash();
   if(tab==='employes')loadEmps();
   if(tab==='conges')loadCongesAdmin('all');
-  if(tab==='pointages'){
-    const today=new Date().toISOString().slice(0,10);
-    document.getElementById('ptg-date-filter').value=today;
-    loadPtgAdmin();
-  }
+  if(tab==='pointages'){initPtgFilters();const t=new Date().toISOString().slice(0,10);document.getElementById('ptg-date-filter').value=t;loadPtgAdmin();loadRetardsAdmin();}
   if(tab==='performances')loadPerfsAdmin();
   if(tab==='ajouter')calcAddConges();
+  if(tab==='salaires')loadSalairesTab();
 }
 
 function logout(){sessionStorage.clear();window.location.href='index.html';}
 
-const punchLabels={arrivee:'Arrivée',pause1:'Pause 15min #1',pause2:'Pause 15min #2',
-  dejeuner:'Déjeuner',reunion:'Réunion',depart:'Départ'};
+const punchCfg={arrivee:{label:'Arrivée',color:'#4CAF7E'},production:{label:'Production',color:'#4CAF7E'},pause1:{label:'Pause 15min (1)',color:'#4A8FD4'},pause2:{label:'Pause 15min (2)',color:'#8B7FD4'},dejeuner:{label:'Déjeuner',color:'#D4934A'},reunion:{label:'Réunion',color:'#C9A84C'},depart:{label:'Départ',color:'#C94C4C'}};
 
 // DASHBOARD
 function loadDash(){
@@ -299,39 +337,54 @@ function loadDash(){
   const pending=conges.filter(c=>c.status==='pending');
   const todayPtgs=ptgs.filter(p=>p.date===today);
   const unsigned=perfs.filter(p=>!p.signed);
+  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
+  const unreadSal=salaires.filter(s=>!s.read).length;
 
   document.getElementById('dash-stats').innerHTML=`
-    <div class="stat"><div class="stat-val" style="color:var(--blue)">${users.length}</div><div class="stat-label">Employés</div></div>
-    <div class="stat"><div class="stat-val" style="color:#FAC775">${pending.length}</div><div class="stat-label">Congés en attente</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--green)">${todayPtgs.length}</div><div class="stat-label">Pointages aujourd'hui</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--purple)">${unsigned.length}</div><div class="stat-label">Perfs non signées</div></div>`;
+    <div class="stat"><div class="stat-val" style="color:var(--blue)">${users.length}</div><div class="stat-lbl">Employés</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--amber)">${pending.length}</div><div class="stat-lbl">Congés en attente</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--green)">${todayPtgs.length}</div><div class="stat-lbl">Pointages aujourd'hui</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--purple)">${unsigned.length}</div><div class="stat-lbl">Perfs non signées</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--gold)">${unreadSal}</div><div class="stat-lbl">Bulletins non lus</div></div>`;
 
   // Congés pending
-  const tbody1=document.getElementById('dash-conges');
-  tbody1.innerHTML='';
-  if(!pending.length){tbody1.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Aucune demande en attente</td></tr>';}
+  const tb1=document.getElementById('dash-conges');
+  tb1.innerHTML='';
+  if(!pending.length)tb1.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucune demande en attente</td></tr>';
   else pending.forEach(c=>{
-    tbody1.innerHTML+=`<tr>
+    tb1.innerHTML+=`<tr>
       <td><strong>${c.userName}</strong></td>
       <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
       <td>${c.debut} → ${c.fin}</td><td>${c.jours}j</td>
       <td><button class="btn-sm btn-approve" onclick="decisionConge('${c.id}','approved')">✅ Approuver</button>
-          <button class="btn-sm btn-refuse" style="margin-left:6px" onclick="decisionConge('${c.id}','refused')">❌ Refuser</button></td>
+          <button class="btn-sm btn-refuse" style="margin-left:4px" onclick="decisionConge('${c.id}','refused')">❌ Refuser</button></td>
     </tr>`;
   });
 
   // Perfs non signées
-  const tbody2=document.getElementById('dash-perfs');
-  tbody2.innerHTML='';
-  if(!unsigned.length){tbody2.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:16px">Toutes les performances sont signées</td></tr>';}
+  const tb2=document.getElementById('dash-perfs');
+  tb2.innerHTML='';
+  if(!unsigned.length)tb2.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Toutes signées ✓</td></tr>';
   else unsigned.forEach(p=>{
     const user=users.find(u=>u.id===p.userId);
-    const c=p.score>=85?'#1D9E75':p.score>=70?'#FAC775':'#E24B4A';
-    tbody2.innerHTML+=`<tr>
+    const c=p.score>=85?'var(--green)':p.score>=70?'var(--amber)':'var(--red)';
+    tb2.innerHTML+=`<tr><td>${user?user.name:p.userId}</td><td>${p.mois||'—'}</td><td><strong style="color:${c}">${p.score}%</strong></td><td><span class="badge badge-pending">En attente</span></td></tr>`;
+  });
+
+  // Retards du jour
+  const tb3=document.getElementById('dash-retards');
+  tb3.innerHTML='';
+  const todayArrivees=ptgs.filter(p=>p.date===today&&p.type==='arrivee');
+  if(!todayArrivees.length)tb3.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage aujourd\'hui</td></tr>';
+  else todayArrivees.forEach(p=>{
+    const user=users.find(u=>u.id===p.userId);
+    const ret=p.retardArrivee||0;
+    const c=ret>0?'#E08080':'var(--green)';
+    tb3.innerHTML+=`<tr>
       <td>${user?user.name:p.userId}</td>
-      <td>${p.mois||'—'}</td>
-      <td><strong style="color:${c}">${p.score}%</strong></td>
-      <td><span class="badge badge-pending">En attente signature</span></td>
+      <td style="color:var(--muted)">${user?user.heureArrivee:'08:00'}</td>
+      <td>${p.time}</td>
+      <td><span style="color:${c};font-weight:700">${ret>0?'+'+ret+' min':'À l\'heure ✓'}</span></td>
     </tr>`;
   });
 }
@@ -340,55 +393,129 @@ function loadDash(){
 function loadEmps(){
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
   const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
+  const search=(document.getElementById('emp-search')||{}).value?.toLowerCase()||'';
   const el=document.getElementById('emp-list');
   el.innerHTML='';
-  users.forEach(u=>{
-    const prisCG=conges.filter(c=>c.userId===u.id&&c.status==='approved').reduce((s,c)=>s+c.jours,0);
+  const filtered=users.filter(u=>u.name.toLowerCase().includes(search)||u.poste?.toLowerCase().includes(search)||u.email?.toLowerCase().includes(search));
+  filtered.forEach(u=>{
+    const pris=conges.filter(c=>c.userId===u.id&&c.status==='approved').reduce((s,c)=>s+c.jours,0);
     el.innerHTML+=`<div class="emp-card">
       <div class="emp-avatar">${u.avatar}</div>
-      <div class="emp-info">
+      <div class="emp-info" style="flex:1">
         <div class="emp-name">${u.name}</div>
-        <div class="emp-sub">${u.poste} — ${u.email}</div>
+        <div class="emp-sub">${u.poste} · ${u.email}</div>
+        <div class="emp-sub" style="margin-top:2px">${u.telephone?'📞 '+u.telephone+' · ':''} ${u.quartier?'📍 '+u.quartier:''}</div>
       </div>
-      <div style="text-align:center;margin-right:16px">
-        <div class="emp-conge">${u.congesRestants}</div>
-        <div class="emp-conge-label">jours restants</div>
+      <div style="text-align:center;margin-right:14px">
+        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--green)">${u.congesRestants||0}</div>
+        <div style="font-size:10px;color:var(--muted)">j. restants</div>
       </div>
-      <div style="text-align:center">
-        <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:#378ADD">${prisCG}</div>
-        <div class="emp-conge-label">jours pris (approuvés)</div>
+      <div style="text-align:center;margin-right:14px">
+        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--blue)">${pris}</div>
+        <div style="font-size:10px;color:var(--muted)">j. pris</div>
       </div>
+      <button class="btn-sm" style="border:1px solid var(--border);color:var(--text);background:var(--dark4)" onclick="viewEmp('${u.id}')">Détails</button>
     </div>`;
   });
 }
 
-// CONGES ADMIN
+function viewEmp(id){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const u=users.find(x=>x.id===id);
+  if(!u)return;
+  document.getElementById('modal-emp-name').textContent=u.name;
+  document.getElementById('modal-emp-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Informations personnelles</div>
+        ${row('Email',u.email)}${row('Téléphone',u.telephone||'—')}${row('Quartier',u.quartier||'—')}${row('Enfants',u.enfants||0)}
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Contrat & ancienneté</div>
+        ${row('Poste',u.poste)}${row('Ancienneté',`${u.moisTravailles||12} mois`)}${row('Salaire base',`${Number(u.salaire||0).toLocaleString('fr-FR')} FCFA`)}${row('Congés restants',`${u.congesRestants||0} j`)}
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Horaires de travail</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        ${timeCard('Arrivée',u.heureArrivee||'08:00','var(--green)')}
+        ${timeCard('Pause déj.',`${u.heurePause||'12:00'} – ${u.heurePauseFin||'13:00'}`,'var(--amber)')}
+        ${timeCard('Départ',u.heureDepart||'17:30','var(--red)')}
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px">
+      <button class="btn-sm btn-primary" style="padding:8px 16px;font-size:12px" onclick="editEmp('${id}')">✏️ Modifier</button>
+    </div>`;
+  document.getElementById('modal-emp').classList.add('open');
+}
+
+function row(label,val){return `<div class="detail-row"><span class="detail-label">${label}</span><span class="detail-val">${val}</span></div>`;}
+function timeCard(label,val,color){return `<div style="background:var(--dark3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:10px;color:var(--muted);margin-bottom:4px">${label}</div><div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:${color}">${val}</div></div>`;}
+
+function editEmp(id){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const u=users.find(x=>x.id===id);
+  if(!u)return;
+  document.getElementById('modal-emp-body').innerHTML=`
+    <div class="form-row"><div class="form-group"><label>Nom complet</label><input id="edit-name" value="${u.name}"></div><div class="form-group"><label>Poste</label><input id="edit-poste" value="${u.poste||''}"></div></div>
+    <div class="form-row"><div class="form-group"><label>Email</label><input id="edit-email" value="${u.email||''}"></div><div class="form-group"><label>Téléphone</label><input id="edit-tel" value="${u.telephone||''}"></div></div>
+    <div class="form-row"><div class="form-group"><label>Quartier</label><input id="edit-quartier" value="${u.quartier||''}"></div><div class="form-group"><label>Enfants</label><input type="number" id="edit-enfants" value="${u.enfants||0}"></div></div>
+    <div class="form-row"><div class="form-group"><label>Heure arrivée</label><input type="time" id="edit-arrivee" value="${u.heureArrivee||'08:00'}"></div><div class="form-group"><label>Heure départ</label><input type="time" id="edit-depart" value="${u.heureDepart||'17:30'}"></div></div>
+    <div class="form-row"><div class="form-group"><label>Début pause déj.</label><input type="time" id="edit-pause" value="${u.heurePause||'12:00'}"></div><div class="form-group"><label>Fin pause déj.</label><input type="time" id="edit-pause-fin" value="${u.heurePauseFin||'13:00'}"></div></div>
+    <div class="form-row"><div class="form-group"><label>Salaire de base</label><input type="number" id="edit-salaire" value="${u.salaire||0}"></div><div class="form-group"><label>Congés restants</label><input type="number" id="edit-conges" value="${u.congesRestants||0}"></div></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn-primary" style="padding:10px 18px;font-size:12px" onclick="saveEmp('${id}')">Enregistrer</button>
+      <button class="btn-sm" style="border:1px solid var(--border);color:var(--muted);background:transparent;padding:10px 14px" onclick="viewEmp('${id}')">Annuler</button>
+    </div>`;
+}
+
+function saveEmp(id){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const idx=users.findIndex(x=>x.id===id);
+  if(idx<0)return;
+  users[idx].name=document.getElementById('edit-name').value||users[idx].name;
+  users[idx].poste=document.getElementById('edit-poste').value||users[idx].poste;
+  users[idx].email=document.getElementById('edit-email').value||users[idx].email;
+  users[idx].telephone=document.getElementById('edit-tel').value;
+  users[idx].quartier=document.getElementById('edit-quartier').value;
+  users[idx].enfants=parseInt(document.getElementById('edit-enfants').value)||0;
+  users[idx].heureArrivee=document.getElementById('edit-arrivee').value||'08:00';
+  users[idx].heureDepart=document.getElementById('edit-depart').value||'17:30';
+  users[idx].heurePause=document.getElementById('edit-pause').value||'12:00';
+  users[idx].heurePauseFin=document.getElementById('edit-pause-fin').value||'13:00';
+  users[idx].salaire=parseInt(document.getElementById('edit-salaire').value)||0;
+  users[idx].congesRestants=parseInt(document.getElementById('edit-conges').value)||0;
+  localStorage.setItem('rh_users',JSON.stringify(users));
+  viewEmp(id);
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// CONGES
 let cgFilter='all';
-function filterConges(f){cgFilter=f;loadCongesAdmin(f);}
+function filterConges(f,el){
+  cgFilter=f;
+  document.querySelectorAll('.tab-inner button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  loadCongesAdmin(f);
+}
 function loadCongesAdmin(filter){
   cgFilter=filter||cgFilter;
   const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
   const tbody=document.getElementById('cg-admin-table');
   tbody.innerHTML='';
-  let list=conges;
-  if(cgFilter!=='all')list=conges.filter(c=>c.status===cgFilter);
-  if(!list.length){tbody.innerHTML='<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:16px">Aucune demande</td></tr>';return;}
+  let list=cgFilter==='all'?conges:conges.filter(c=>c.status===cgFilter);
+  if(!list.length){tbody.innerHTML='<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:14px">Aucune demande</td></tr>';return;}
   list.forEach(c=>{
-    const statusBadge={pending:'badge-pending',approved:'badge-approved',refused:'badge-refused'}[c.status]||'badge-pending';
-    const statusLabel={pending:'En attente',approved:'Approuvé',refused:'Refusé'}[c.status]||'—';
+    const sl={pending:'badge-pending',approved:'badge-approved',refused:'badge-refused'}[c.status];
+    const st={pending:'En attente',approved:'Approuvé',refused:'Refusé'}[c.status];
     tbody.innerHTML+=`<tr>
       <td><strong>${c.userName}</strong></td>
       <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
       <td>${c.debut}</td><td>${c.fin}</td><td>${c.jours}j</td>
-      <td style="color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis">${c.motif||'—'}</td>
-      <td><span class="badge ${statusBadge}">${statusLabel}</span></td>
-      <td>
-        ${c.status==='pending'?`
-          <button class="btn-sm btn-approve" onclick="decisionConge('${c.id}','approved')">✅</button>
-          <button class="btn-sm btn-refuse" style="margin-left:4px" onclick="decisionConge('${c.id}','refused')">❌</button>`
-          :'—'}
-      </td>
+      <td style="color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis">${c.motif||'—'}</td>
+      <td><span class="badge ${sl}">${st}</span></td>
+      <td>${c.status==='pending'?`<button class="btn-sm btn-approve" onclick="decisionConge('${c.id}','approved')">✅</button> <button class="btn-sm btn-refuse" onclick="decisionConge('${c.id}','refused')">❌</button>`:'—'}</td>
     </tr>`;
   });
 }
@@ -397,74 +524,125 @@ function decisionConge(id,decision){
   const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
   const idx=conges.findIndex(c=>c.id===id);
-  if(idx===-1)return;
+  if(idx<0)return;
   const c=conges[idx];
   c.status=decision;c.decidedAt=new Date().toISOString();
-  // Mise à jour solde si approuvé et congé payé
   if(decision==='approved'&&c.type==='paye'){
     const ui=users.findIndex(u=>u.id===c.userId);
-    if(ui>-1){
-      users[ui].congesRestants=Math.max(0,(users[ui].congesRestants||0)-c.jours);
-      users[ui].congesPris=(users[ui].congesPris||0)+c.jours;
-      localStorage.setItem('rh_users',JSON.stringify(users));
-    }
+    if(ui>-1){users[ui].congesRestants=Math.max(0,(users[ui].congesRestants||0)-c.jours);users[ui].congesPris=(users[ui].congesPris||0)+c.jours;localStorage.setItem('rh_users',JSON.stringify(users));}
   }
   localStorage.setItem('rh_conges',JSON.stringify(conges));
   loadDash();loadCongesAdmin(cgFilter);
 }
 
-// POINTAGES ADMIN
+// POINTAGES
+function initPtgFilters(){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const s1=document.getElementById('ptg-agent-filter');
+  const s2=document.getElementById('retard-agent-filter');
+  s1.innerHTML='<option value="">Tous les agents</option>';
+  s2.innerHTML='<option value="">Tous les agents</option>';
+  users.forEach(u=>{
+    s1.innerHTML+=`<option value="${u.id}">${u.name}</option>`;
+    s2.innerHTML+=`<option value="${u.id}">${u.name}</option>`;
+  });
+}
+
 function loadPtgAdmin(){
   const date=document.getElementById('ptg-date-filter').value||new Date().toISOString().slice(0,10);
+  const agentFilter=document.getElementById('ptg-agent-filter').value;
   const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  let filtered=ptgs.filter(p=>p.date===date);
+  if(agentFilter)filtered=filtered.filter(p=>p.userId===agentFilter);
+  filtered.sort((a,b)=>a.ts-b.ts);
   const tbody=document.getElementById('ptg-admin-table');
-  const filtered=ptgs.filter(p=>p.date===date).sort((a,b)=>a.ts-b.ts);
   tbody.innerHTML='';
-  if(!filtered.length){tbody.innerHTML='<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:16px">Aucun pointage ce jour</td></tr>';return;}
+  if(!filtered.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage</td></tr>';return;}
   filtered.forEach(p=>{
     const user=users.find(u=>u.id===p.userId);
+    const cfg=punchCfg[p.type]||{label:p.type,color:'#888'};
+    const dep=p.depassement>0?`<span style="color:#E08080;font-weight:700">⚠️ +${p.depassement}min</span>`:'—';
     tbody.innerHTML+=`<tr>
       <td><strong>${user?user.name:p.userId}</strong></td>
-      <td>${punchLabels[p.type]||p.type}</td>
-      <td style="font-family:'Sora',sans-serif">${p.time}</td>
+      <td><span style="color:${cfg.color};font-weight:600">${cfg.label}</span></td>
+      <td style="font-family:'Outfit',sans-serif">${p.time}</td>
+      <td style="color:var(--muted)">${p.dureeMin!=null?p.dureeMin+'min':'—'}</td>
+      <td>${dep}</td>
     </tr>`;
   });
 }
 
-// PERFORMANCES ADMIN
+function loadRetardsAdmin(){
+  const agentFilter=document.getElementById('retard-agent-filter').value;
+  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  // Regrouper par (userId, date)
+  const map={};
+  ptgs.forEach(p=>{
+    if(agentFilter&&p.userId!==agentFilter)return;
+    const k=p.userId+'|'+p.date;
+    if(!map[k])map[k]=[];
+    map[k].push(p);
+  });
+  const tbody=document.getElementById('retards-admin-table');
+  tbody.innerHTML='';
+  const keys=Object.keys(map).sort().reverse().slice(0,60);
+  if(!keys.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:14px">Aucun historique</td></tr>';return;}
+  keys.forEach(k=>{
+    const [uid,date]=k.split('|');
+    const user=users.find(u=>u.id===uid);
+    const dayPtgs=map[k].sort((a,b)=>a.ts-b.ts);
+    const arr=dayPtgs.find(p=>p.type==='arrivee');
+    const prods=dayPtgs.filter(p=>p.type==='production');
+    const pause1=dayPtgs.find(p=>p.type==='pause1');
+    const pause2=dayPtgs.find(p=>p.type==='pause2');
+    const dej=dayPtgs.find(p=>p.type==='dejeuner');
+    let retArr=arr?arr.retardArrivee||0:null;
+    let retP1=null,retP2=null,retDej=null;
+    if(pause1){const rp=prods.find(p=>p.ts>pause1.ts);if(rp){const d=Math.round((rp.ts-pause1.ts)/60000);retP1=d>15?d-15:0;}}
+    if(pause2){const rp=prods.find(p=>p.ts>pause2.ts);if(rp){const d=Math.round((rp.ts-pause2.ts)/60000);retP2=d>15?d-15:0;}}
+    if(dej){const rp=prods.find(p=>p.ts>dej.ts);if(rp){const pauseMin=user&&user.heurePause&&user.heurePauseFin?Math.round((new Date(date+'T'+user.heurePauseFin+':00').getTime()-new Date(date+'T'+user.heurePause+':00').getTime())/60000):60;const d=Math.round((rp.ts-dej.ts)/60000);retDej=d>pauseMin?d-pauseMin:0;}}
+    const badgeR=v=>v===null?'<span class="badge" style="background:rgba(138,136,128,0.15);color:var(--muted)">—</span>':(v>0?`<span class="badge badge-refused">+${v}min</span>`:'<span class="badge badge-approved">✓</span>');
+    tbody.innerHTML+=`<tr>
+      <td><strong>${user?user.name:uid}</strong></td>
+      <td>${date}</td>
+      <td>${badgeR(retArr)}</td>
+      <td>${badgeR(retDej)}</td>
+      <td>${badgeR(retP1)}</td>
+      <td>${badgeR(retP2)}</td>
+    </tr>`;
+  });
+}
+
+// PERFORMANCES
 function loadPerfsAdmin(){
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
   const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  // Select employé
   const sel=document.getElementById('perf-emp');
   sel.innerHTML='';
   users.forEach(u=>sel.innerHTML+=`<option value="${u.id}">${u.name} — ${u.poste}</option>`);
-
-  // Mois par défaut
   const now=new Date();
-  document.getElementById('perf-mois').value=
-    now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
-
-  // Historique
+  document.getElementById('perf-mois').value=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
   const tbody=document.getElementById('perf-admin-table');
   tbody.innerHTML='';
-  if(!perfs.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Aucune évaluation</td></tr>';return;}
+  if(!perfs.length){tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:14px">Aucune évaluation</td></tr>';return;}
   [...perfs].reverse().forEach(p=>{
     const user=users.find(u=>u.id===p.userId);
-    const c=p.score>=85?'#1D9E75':p.score>=70?'#FAC775':'#E24B4A';
+    const c=p.score>=85?'var(--green)':p.score>=70?'var(--amber)':'var(--red)';
     tbody.innerHTML+=`<tr>
-      <td>${user?user.name:p.userId}</td>
-      <td>${p.mois||'—'}</td>
+      <td>${user?user.name:p.userId}</td><td>${p.mois||'—'}</td>
+      <td style="font-size:11px;color:var(--muted)">${p.titre||'—'}</td>
       <td><strong style="color:${c}">${p.score}%</strong></td>
-      <td style="color:var(--muted)">${p.commentaire||'—'}</td>
-      <td>${p.signed?'<span style="color:#1D9E75">✅ Signé</span>':'<span style="color:#FAC775">En attente</span>'}</td>
+      <td style="color:var(--muted);font-size:11px;max-width:120px">${p.commentaire||'—'}</td>
+      <td>${p.signed?'<span style="color:var(--green)">✅ Signé</span>':'<span style="color:var(--amber)">En attente</span>'}</td>
+      <td><button class="btn-sm btn-delete" onclick="deletePerf('${p.id}')">🗑 Supprimer</button></td>
     </tr>`;
   });
 }
 
 function updateScore(v){
-  const c=v>=85?'#1D9E75':v>=70?'#FAC775':'#E24B4A';
+  const c=v>=85?'var(--green)':v>=70?'var(--amber)':'var(--red)';
   document.getElementById('score-display').textContent=v+'%';
   document.getElementById('score-display').style.color=c;
 }
@@ -475,58 +653,141 @@ function enregistrerPerf(){
   const titre=document.getElementById('perf-titre').value||'Évaluation de performance';
   const score=parseInt(document.getElementById('perf-score').value);
   const commentaire=document.getElementById('perf-comment').value;
-  if(!userId||!mois){showAdminAlert('perf-alert','⚠️ Veuillez remplir tous les champs.');return;}
+  if(!userId||!mois){showAdminAlert('perf-alert','Veuillez remplir tous les champs.','orange');return;}
   const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  perfs.push({
-    id:'PERF'+Date.now(),userId,mois,titre,score,commentaire,
-    signed:false,createdAt:new Date().toISOString()
-  });
+  perfs.push({id:'PERF'+Date.now(),userId,mois,titre,score,commentaire,signed:false,createdAt:new Date().toISOString()});
   localStorage.setItem('rh_performances',JSON.stringify(perfs));
-  showAdminAlert('perf-alert','✅ Évaluation enregistrée ! L\'employé peut maintenant la signer.','green');
+  showAdminAlert('perf-alert','Évaluation enregistrée ! L\'employé peut maintenant la signer.','green');
   loadPerfsAdmin();
 }
 
-// AJOUTER EMPLOYE
+function deletePerf(id){
+  if(!confirm('Supprimer cette évaluation ?'))return;
+  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
+  localStorage.setItem('rh_performances',JSON.stringify(perfs.filter(p=>p.id!==id)));
+  loadPerfsAdmin();
+}
+
+// SALAIRES
+function loadSalairesTab(){
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const sel=document.getElementById('sal-emp');
+  const sel2=document.getElementById('sal-filter-emp');
+  sel.innerHTML='';
+  sel2.innerHTML='<option value="">Tous les agents</option>';
+  users.forEach(u=>{
+    sel.innerHTML+=`<option value="${u.id}">${u.name} — ${u.poste}</option>`;
+    sel2.innerHTML+=`<option value="${u.id}">${u.name}</option>`;
+  });
+  const now=new Date();
+  document.getElementById('sal-mois').value=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
+  document.getElementById('sal-date').value=now.toISOString().slice(0,10);
+  // Auto-calc net
+  ['sal-brut','sal-cotisations','sal-primes'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calcNet);
+  });
+  loadSalairesAdmin();
+}
+
+function calcNet(){
+  const brut=parseFloat(document.getElementById('sal-brut').value)||0;
+  const cot=parseFloat(document.getElementById('sal-cotisations').value)||0;
+  const primes=parseFloat(document.getElementById('sal-primes').value)||0;
+  document.getElementById('sal-montant').value=Math.round(brut-cot+primes);
+}
+
+function envoyerSalaire(){
+  const userId=document.getElementById('sal-emp').value;
+  const mois=document.getElementById('sal-mois').value;
+  const brut=parseFloat(document.getElementById('sal-brut').value)||0;
+  const cotisations=parseFloat(document.getElementById('sal-cotisations').value)||0;
+  const primes=parseFloat(document.getElementById('sal-primes').value)||0;
+  const montant=parseFloat(document.getElementById('sal-montant').value)||0;
+  const datePaiement=document.getElementById('sal-date').value;
+  const message=document.getElementById('sal-message').value;
+  if(!userId||!mois||!montant){showAdminAlert('sal-alert','Veuillez remplir tous les champs obligatoires.','orange');return;}
+  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const user=users.find(u=>u.id===userId);
+  salaires.push({id:'SAL'+Date.now(),userId,userName:user?user.name:userId,mois,brut,cotisations,primes,montant,datePaiement,message,read:false,createdAt:new Date().toISOString()});
+  localStorage.setItem('rh_salaires',JSON.stringify(salaires));
+  showAdminAlert('sal-alert',`Notification envoyée à ${user?user.name:userId} !`,'green');
+  loadSalairesAdmin();
+}
+
+function loadSalairesAdmin(){
+  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
+  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
+  const filter=document.getElementById('sal-filter-emp')?.value||'';
+  let list=filter?salaires.filter(s=>s.userId===filter):salaires;
+  const tbody=document.getElementById('sal-admin-table');
+  tbody.innerHTML='';
+  if(!list.length){tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:14px">Aucun salaire envoyé</td></tr>';return;}
+  [...list].reverse().forEach(s=>{
+    const user=users.find(u=>u.id===s.userId);
+    tbody.innerHTML+=`<tr>
+      <td><strong>${user?user.name:s.userId}</strong></td>
+      <td>${s.mois}</td>
+      <td><strong style="color:var(--gold)">${Number(s.montant).toLocaleString('fr-FR')}</strong></td>
+      <td>${s.brut?Number(s.brut).toLocaleString('fr-FR'):'—'}</td>
+      <td style="color:var(--green)">${s.primes?Number(s.primes).toLocaleString('fr-FR'):'—'}</td>
+      <td>${s.read?'<span style="color:var(--green)">✅ Lu</span>':'<span style="color:var(--amber)">Non lu</span>'}</td>
+      <td><button class="btn-sm btn-delete" onclick="deleteSalaire('${s.id}')">🗑</button></td>
+    </tr>`;
+  });
+}
+
+function deleteSalaire(id){
+  if(!confirm('Supprimer ce bulletin ?'))return;
+  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
+  localStorage.setItem('rh_salaires',JSON.stringify(salaires.filter(s=>s.id!==id)));
+  loadSalairesAdmin();
+}
+
+// AJOUTER
 function calcAddConges(){
   const m=parseInt(document.getElementById('add-anciennete').value)||12;
   document.getElementById('add-conges-preview').value=Math.floor(m*2.5)+' jours acquis';
 }
-document.addEventListener('input',e=>{if(e.target.id==='add-anciennete')calcAddConges();});
 
 function ajouterEmploye(){
   const name=document.getElementById('add-name').value.trim();
   const poste=document.getElementById('add-poste').value.trim();
   const email=document.getElementById('add-email').value.trim();
   const pwd=document.getElementById('add-pwd').value;
+  const tel=document.getElementById('add-tel').value;
+  const quartier=document.getElementById('add-quartier').value;
+  const enfants=parseInt(document.getElementById('add-enfants').value)||0;
   const anc=parseInt(document.getElementById('add-anciennete').value)||12;
-  if(!name||!poste||!email||!pwd){showAdminAlert('add-alert','⚠️ Veuillez remplir tous les champs.');return;}
-  if(pwd.length<6){showAdminAlert('add-alert','⚠️ Le mot de passe doit faire au moins 6 caractères.');return;}
+  const heureArrivee=document.getElementById('add-arrivee').value||'08:00';
+  const heurePause=document.getElementById('add-pause').value||'12:00';
+  const heurePauseFin=document.getElementById('add-pause-fin').value||'13:00';
+  const heureDepart=document.getElementById('add-depart').value||'17:30';
+  const salaire=parseInt(document.getElementById('add-salaire').value)||0;
+  if(!name||!poste||!email||!pwd){showAdminAlert('add-alert','Veuillez remplir tous les champs obligatoires.','orange');return;}
+  if(pwd.length<6){showAdminAlert('add-alert','Le mot de passe doit faire au moins 6 caractères.','orange');return;}
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  if(users.find(u=>u.email===email)){showAdminAlert('add-alert','❌ Cet email existe déjà.');return;}
+  if(users.find(u=>u.email===email)){showAdminAlert('add-alert','Cet email existe déjà.','red');return;}
   const initials=name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
   const id='USR'+Date.now();
   const congesAcquis=Math.floor(anc*2.5);
-  users.push({id,name,email,password:pwd,role:'employee',poste,avatar:initials,
-    moisTravailles:anc,congesRestants:congesAcquis,congesPris:0});
+  users.push({id,name,email,password:pwd,role:'employee',poste,avatar:initials,telephone:tel,quartier,enfants,salaire,moisTravailles:anc,congesRestants:congesAcquis,congesPris:0,heureArrivee,heurePause,heurePauseFin,heureDepart});
   localStorage.setItem('rh_users',JSON.stringify(users));
-  showAdminAlert('add-alert','✅ Compte créé pour '+name+'. Il peut maintenant se connecter.','green');
-  document.getElementById('add-name').value='';
-  document.getElementById('add-email').value='';
-  document.getElementById('add-pwd').value='';
-  document.getElementById('add-poste').value='';
+  showAdminAlert('add-alert','Compte créé pour '+name+' ! Il peut maintenant se connecter.','green');
+  ['add-name','add-email','add-pwd','add-poste','add-tel','add-quartier'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('add-enfants').value='0';
+  document.getElementById('add-salaire').value='0';
 }
 
 function showAdminAlert(id,msg,color){
   const el=document.getElementById(id);
-  const cols={green:'rgba(29,158,117,0.12)',orange:'rgba(250,199,117,0.12)',red:'rgba(226,75,74,0.12)'};
-  const txtCols={green:'#1D9E75',orange:'#FAC775',red:'#E24B4A'};
-  el.style.background=cols[color]||cols.orange;
-  el.style.color=txtCols[color]||txtCols.orange;
+  el.className='alert alert-'+(color==='green'?'green':color==='red'?'red':'orange');
   el.textContent=msg;el.style.display='block';
   setTimeout(()=>el.style.display='none',5000);
 }
 
 loadDash();
+calcAddConges();
 </script>
 </body>
 </html>
