@@ -3,189 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RH Portail — Connexion</title>
+<title>DK Angelux — RH Portail</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:'DM Sans',sans-serif;
-    min-height:100vh;
-    background: linear-gradient(135deg,#0a1628 0%,#0d2240 40%,#0f3460 100%);
-    display:flex;align-items:center;justify-content:center;
-    position:relative;overflow:hidden;
-  }
-  body::before{
-    content:'';position:absolute;width:600px;height:600px;
-    border-radius:50%;background:rgba(29,158,117,0.08);
-    top:-200px;right:-200px;
-  }
-  body::after{
-    content:'';position:absolute;width:400px;height:400px;
-    border-radius:50%;background:rgba(55,138,221,0.07);
-    bottom:-150px;left:-150px;
-  }
-  .card{
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:24px;padding:48px 40px;
-    width:100%;max-width:420px;
-    position:relative;z-index:2;
-  }
-  .logo{
-    display:flex;align-items:center;gap:12px;
-    justify-content:center;margin-bottom:32px;
-  }
-  .logo-icon{
-    width:52px;height:52px;border-radius:14px;
-    background:linear-gradient(135deg,#1D9E75,#0F6E56);
-    display:flex;align-items:center;justify-content:center;
-    font-size:24px;
-  }
-  .logo-text{
-    font-family:'Sora',sans-serif;
-  }
-  .logo-text h1{
-    font-size:22px;font-weight:700;color:#fff;line-height:1;
-  }
-  .logo-text span{
-    font-size:12px;color:rgba(255,255,255,0.5);font-weight:300;
-    letter-spacing:2px;text-transform:uppercase;
-  }
-  .subtitle{
-    text-align:center;color:rgba(255,255,255,0.55);
-    font-size:14px;margin-bottom:32px;line-height:1.6;
-  }
-  .form-group{margin-bottom:18px;}
-  label{
-    display:block;font-size:12px;font-weight:500;
-    color:rgba(255,255,255,0.6);margin-bottom:8px;
-    letter-spacing:0.5px;text-transform:uppercase;
-  }
-  input[type=email],input[type=password]{
-    width:100%;background:rgba(255,255,255,0.07);
-    border:1px solid rgba(255,255,255,0.15);
-    border-radius:12px;padding:14px 16px;
-    color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;
-    transition:all 0.3s;outline:none;
-  }
-  input:focus{
-    border-color:rgba(29,158,117,0.7);
-    background:rgba(29,158,117,0.07);
-    box-shadow:0 0 0 3px rgba(29,158,117,0.15);
-  }
-  input::placeholder{color:rgba(255,255,255,0.3);}
-  .btn{
-    width:100%;padding:15px;border:none;
-    border-radius:12px;cursor:pointer;
-    font-family:'Sora',sans-serif;font-size:15px;font-weight:600;
-    transition:all 0.3s;margin-top:8px;
-  }
-  .btn-primary{
-    background:linear-gradient(135deg,#1D9E75,#0F6E56);
-    color:#fff;letter-spacing:0.5px;
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(29,158,117,0.4);}
-  .btn-primary:active{transform:translateY(0);}
-  .error{
-    background:rgba(216,90,48,0.15);border:1px solid rgba(216,90,48,0.4);
-    border-radius:10px;padding:12px 16px;
-    color:#F0997B;font-size:13px;margin-bottom:16px;display:none;
-  }
-  .divider{
-    display:flex;align-items:center;gap:12px;
-    margin:20px 0;
-  }
-  .divider::before,.divider::after{
-    content:'';flex:1;height:1px;
-    background:rgba(255,255,255,0.1);
-  }
-  .divider span{font-size:12px;color:rgba(255,255,255,0.35);}
-  .admin-link{
-    text-align:center;margin-top:16px;
-  }
-  .admin-link a{
-    color:rgba(55,138,221,0.8);font-size:13px;
-    text-decoration:none;transition:color 0.2s;
-  }
-  .admin-link a:hover{color:#378ADD;}
-  .footer-note{
-    text-align:center;margin-top:24px;
-    color:rgba(255,255,255,0.25);font-size:11px;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.15);
+  --dark:#0B0E14;--dark2:#13171F;--dark3:#1A1F2B;
+  --text:#F0EDE6;--muted:#8A8880;--border:rgba(201,168,76,0.2);
+  --red:#C94C4C;--green:#4CAF7E;
+}
+body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color:var(--text);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);background-size:60px 60px;}
+.bg-orb{position:absolute;border-radius:50%;}
+.orb1{width:500px;height:500px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%);}
+.orb2{width:400px;height:400px;bottom:-200px;left:-100px;background:radial-gradient(circle,rgba(76,175,126,0.06) 0%,transparent 70%);}
+.login-wrap{position:relative;z-index:2;width:100%;max-width:440px;padding:20px;}
+.brand-top{text-align:center;margin-bottom:36px;}
+.brand-emblem{width:72px;height:72px;margin:0 auto 16px;background:linear-gradient(135deg,#1A1F2B,#0B0E14);border:1.5px solid var(--gold);border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;}
+.brand-emblem::after{content:'';position:absolute;inset:4px;border:1px solid rgba(201,168,76,0.3);border-radius:10px;}
+.brand-emblem svg{width:36px;height:36px;}
+.brand-name{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.brand-sub{font-size:12px;color:var(--muted);letter-spacing:4px;text-transform:uppercase;margin-top:4px;}
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:36px;box-shadow:0 24px 64px rgba(0,0,0,0.5);}
+.card-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px;}
+.card-desc{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.form-group input{width:100%;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:all 0.25s;}
+.form-group input:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
+.form-group input::placeholder{color:rgba(138,136,128,0.5);}
+.btn-login{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--gold),#A8872E);color:#0B0E14;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;cursor:pointer;transition:all 0.3s;margin-top:4px;}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.35);}
+.err{background:rgba(201,76,76,0.12);border:1px solid rgba(201,76,76,0.3);border-radius:8px;padding:11px 14px;font-size:13px;color:#E08080;margin-bottom:16px;display:none;}
+.divider{display:flex;align-items:center;gap:12px;margin:22px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.07);}
+.divider span{font-size:11px;color:var(--muted);}
+.admin-btn{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--gold);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;}
+.admin-btn:hover{background:var(--gold-dim);}
+.footer{text-align:center;margin-top:28px;font-size:11px;color:rgba(138,136,128,0.5);letter-spacing:1px;}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="logo">
-    <div class="logo-icon">👔</div>
-    <div class="logo-text">
-      <h1>RH Portail</h1>
-      <span>Espace Employé</span>
+<div class="bg-grid"></div>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="login-wrap">
+  <div class="brand-top">
+    <div class="brand-emblem">
+      <svg viewBox="0 0 36 36" fill="none"><polygon points="18,4 30,10 30,26 18,32 6,26 6,10" stroke="#C9A84C" stroke-width="1.5" fill="rgba(201,168,76,0.1)"/><text x="18" y="22" text-anchor="middle" font-family="Outfit" font-size="10" font-weight="800" fill="#C9A84C">DK</text></svg>
     </div>
+    <div class="brand-name">DK Angelux</div>
+    <div class="brand-sub">Portail RH</div>
   </div>
-  <p class="subtitle">Connectez-vous avec votre adresse email<br>professionnelle et votre mot de passe.</p>
-  <div class="error" id="errMsg">Email ou mot de passe incorrect.</div>
-  <div class="form-group">
-    <label>Adresse email</label>
-    <input type="email" id="email" placeholder="votre@email.com">
+  <div class="card">
+    <div class="card-title">Connexion</div>
+    <div class="card-desc">Accédez à votre espace employé avec vos identifiants professionnels.</div>
+    <div class="err" id="errMsg">Email ou mot de passe incorrect.</div>
+    <div class="form-group">
+      <label>Adresse email</label>
+      <input type="email" id="email" placeholder="votre@dkangelux.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" id="password" placeholder="••••••••">
+    </div>
+    <button class="btn-login" onclick="login()">Se connecter</button>
+    <div class="divider"><span>ACCÈS ADMINISTRATEUR</span></div>
+    <button class="admin-btn" onclick="goAdmin()">🛡 Espace Administrateur RH</button>
   </div>
-  <div class="form-group">
-    <label>Mot de passe</label>
-    <input type="password" id="password" placeholder="••••••••">
-  </div>
-  <button class="btn btn-primary" onclick="login()">Se connecter →</button>
-  <div class="divider"><span>ou</span></div>
-  <div class="admin-link">
-    <a href="admin.html">🛡️ Accès Administrateur RH</a>
-  </div>
-  <p class="footer-note">© 2025 RH Portail — Accès réservé au personnel</p>
+  <div class="footer">© 2025 DK Angelux — Accès réservé au personnel</div>
 </div>
-
 <script>
-// --- Initialisation des données par défaut ---
 function initData(){
   if(!localStorage.getItem('rh_users')){
-    const defaultUsers=[
-      {id:'USR001',name:'Marie Dupont',email:'marie@entreprise.com',password:'marie123',role:'employee',poste:'Comptable',avatar:'MD',congesRestants:30,congesPris:0},
-      {id:'USR002',name:'Jean Martin',email:'jean@entreprise.com',password:'jean123',role:'employee',poste:'Commercial',avatar:'JM',congesRestants:30,congesPris:0},
-      {id:'USR003',name:'Sophie Léa',email:'sophie@entreprise.com',password:'sophie123',role:'employee',poste:'RH Assistant',avatar:'SL',congesRestants:30,congesPris:0}
+    const u=[
+      {id:'USR001',name:'Marie Dupont',email:'marie@dkangelux.com',password:'marie123',role:'employee',poste:'Comptable',avatar:'MD',congesRestants:30,congesPris:0,moisTravailles:12,telephone:'',quartier:'',enfants:0,salaire:0,heureArrivee:'08:00',heurePause:'12:00',heurePauseFin:'13:00',heureDepart:'17:30'},
+      {id:'USR002',name:'Jean Martin',email:'jean@dkangelux.com',password:'jean123',role:'employee',poste:'Commercial',avatar:'JM',congesRestants:30,congesPris:0,moisTravailles:12,telephone:'',quartier:'',enfants:0,salaire:0,heureArrivee:'08:00',heurePause:'12:00',heurePauseFin:'13:00',heureDepart:'17:30'},
+      {id:'USR003',name:'Sophie Léa',email:'sophie@dkangelux.com',password:'sophie123',role:'employee',poste:'RH Assistant',avatar:'SL',congesRestants:30,congesPris:0,moisTravailles:12,telephone:'',quartier:'',enfants:0,salaire:0,heureArrivee:'08:00',heurePause:'12:00',heurePauseFin:'13:00',heureDepart:'17:30'}
     ];
-    localStorage.setItem('rh_users',JSON.stringify(defaultUsers));
+    localStorage.setItem('rh_users',JSON.stringify(u));
   }
-  if(!localStorage.getItem('rh_admin')){
-    const admin={email:'admin@entreprise.com',password:'admin2025',name:'Directeur RH'};
-    localStorage.setItem('rh_admin',JSON.stringify(admin));
-  }
-  if(!localStorage.getItem('rh_pointages')) localStorage.setItem('rh_pointages',JSON.stringify([]));
-  if(!localStorage.getItem('rh_conges')) localStorage.setItem('rh_conges',JSON.stringify([]));
-  if(!localStorage.getItem('rh_performances')) localStorage.setItem('rh_performances',JSON.stringify([]));
+  if(!localStorage.getItem('rh_admin')){localStorage.setItem('rh_admin',JSON.stringify({email:'admin@dkangelux.com',password:'admin2025',name:'Directeur RH'}));}
+  ['rh_pointages','rh_conges','rh_performances','rh_salaires'].forEach(k=>{if(!localStorage.getItem(k))localStorage.setItem(k,'[]');});
 }
-
 function login(){
   const email=document.getElementById('email').value.trim();
   const pwd=document.getElementById('password').value;
   const errDiv=document.getElementById('errMsg');
   errDiv.style.display='none';
-
-  // Vérifier admin
   const admin=JSON.parse(localStorage.getItem('rh_admin')||'{}');
-  if(email===admin.email && pwd===admin.password){
-    sessionStorage.setItem('rh_current','ADMIN');
-    window.location.href='admin.html';return;
-  }
-
-  // Vérifier employés
+  if(email===admin.email&&pwd===admin.password){sessionStorage.setItem('rh_current','ADMIN');window.location.href='admin.html';return;}
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const user=users.find(u=>u.email===email && u.password===pwd);
-  if(user){
-    sessionStorage.setItem('rh_current',user.id);
-    window.location.href='employee.html';return;
-  }
-
+  const user=users.find(u=>u.email===email&&u.password===pwd);
+  if(user){sessionStorage.setItem('rh_current',user.id);window.location.href='employee.html';return;}
   errDiv.style.display='block';
 }
-
+function goAdmin(){window.location.href='admin.html';}
 document.addEventListener('keydown',e=>{if(e.key==='Enter')login();});
 initData();
 </script>
