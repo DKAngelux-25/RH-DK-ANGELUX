@@ -3,386 +3,295 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RH Portail — Mon Espace</title>
+<title>DK Angelux — Mon Espace RH</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
-  *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --bg:#0a1628;--bg2:#0d2240;--card:rgba(255,255,255,0.05);
-    --border:rgba(255,255,255,0.12);--text:#fff;--muted:rgba(255,255,255,0.55);
-    --green:#1D9E75;--blue:#378ADD;--orange:#D85A30;--purple:#7F77DD;
-    --red:#E24B4A;
-  }
-  body{
-    font-family:'DM Sans',sans-serif;min-height:100vh;
-    background:linear-gradient(135deg,#0a1628 0%,#0d2240 100%);
-    color:#fff;
-  }
-  /* NAV */
-  nav{
-    background:rgba(255,255,255,0.04);
-    border-bottom:1px solid var(--border);
-    padding:0 32px;display:flex;align-items:center;
-    justify-content:space-between;height:64px;
-    position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
-  }
-  .nav-brand{display:flex;align-items:center;gap:10px;}
-  .nav-logo{
-    width:36px;height:36px;border-radius:10px;
-    background:linear-gradient(135deg,#1D9E75,#0F6E56);
-    display:flex;align-items:center;justify-content:center;font-size:18px;
-  }
-  .nav-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:18px;}
-  .nav-user{display:flex;align-items:center;gap:12px;}
-  .avatar{
-    width:38px;height:38px;border-radius:50%;
-    background:linear-gradient(135deg,var(--purple),#534AB7);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700;font-size:13px;letter-spacing:1px;
-  }
-  .nav-user .name{font-size:14px;font-weight:500;}
-  .nav-user .poste{font-size:12px;color:var(--muted);}
-  .logout{
-    background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
-    border-radius:8px;padding:6px 14px;color:var(--muted);
-    font-size:13px;cursor:pointer;transition:all 0.2s;
-  }
-  .logout:hover{background:rgba(216,90,48,0.2);border-color:var(--orange);color:var(--orange);}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.12);
+  --dark:#0B0E14;--dark2:#13171F;--dark3:#1A1F2B;--dark4:#1E2430;
+  --text:#F0EDE6;--muted:#8A8880;--border:rgba(255,255,255,0.08);
+  --green:#4CAF7E;--blue:#4A8FD4;--red:#C94C4C;--amber:#D4934A;--purple:#8B7FD4;
+  --green-dim:rgba(76,175,126,0.12);--blue-dim:rgba(74,143,212,0.12);
+  --red-dim:rgba(201,76,76,0.12);--amber-dim:rgba(212,147,74,0.12);
+}
+body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color:var(--text);}
+nav{background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.15);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-logo{width:34px;height:34px;border:1.5px solid var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:10px;font-weight:800;color:var(--gold);letter-spacing:0.5px;}
+.nav-brand-text{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--text);}
+.nav-brand-text span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3A3060,#1A1F2B);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--gold);}
+.nav-name{font-size:13px;font-weight:600;}
+.nav-poste{font-size:11px;color:var(--muted);}
+.btn-logout{background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:6px 14px;color:var(--muted);font-size:12px;cursor:pointer;transition:all 0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.tabs{display:flex;gap:2px;padding:0 28px;background:var(--dark2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab{padding:13px 18px;background:transparent;border:none;color:var(--muted);font-family:'Lato',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:700;}
+.tab:hover:not(.active){color:var(--text);}
+.content{max-width:940px;margin:0 auto;padding:24px 20px;}
+.section{display:none;}
+.section.active{display:block;}
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+.card-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;margin-bottom:18px;color:var(--text);}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.stat{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat-val{font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;}
+.stat-lbl{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:0.8px;}
 
-  /* TABS */
-  .tabs{
-    display:flex;gap:4px;padding:16px 32px 0;
-    border-bottom:1px solid var(--border);overflow-x:auto;
-  }
-  .tab{
-    padding:10px 20px;border-radius:10px 10px 0 0;
-    background:transparent;border:none;color:var(--muted);
-    font-family:'DM Sans',sans-serif;font-size:14px;
-    cursor:pointer;transition:all 0.2s;white-space:nowrap;
-  }
-  .tab.active{background:rgba(29,158,117,0.15);color:var(--green);font-weight:500;}
-  .tab:hover:not(.active){color:#fff;background:rgba(255,255,255,0.05);}
+/* STATUTS */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px;}
+.status-btn{padding:18px 8px;border:1.5px solid var(--border);border-radius:12px;background:var(--dark3);color:var(--muted);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.status-btn .ico{font-size:22px;}
+.status-btn:hover{border-color:var(--gold);color:var(--text);}
+.status-btn.active-prod{border-color:var(--green);background:var(--green-dim);color:var(--green);}
+.status-btn.active-pause{border-color:var(--blue);background:var(--blue-dim);color:var(--blue);}
+.status-btn.active-pause2{border-color:var(--purple);background:rgba(139,127,212,0.12);color:var(--purple);}
+.status-btn.active-dej{border-color:var(--amber);background:var(--amber-dim);color:var(--amber);}
+.status-btn.active-reu{border-color:var(--gold);background:var(--gold-dim);color:var(--gold);}
+.status-btn.active-dep{border-color:var(--red);background:var(--red-dim);color:var(--red);}
+.status-btn.done{opacity:0.5;cursor:not-allowed;}
 
-  /* CONTENT */
-  .content{max-width:900px;margin:0 auto;padding:28px 24px;}
-  .section{display:none;}
-  .section.active{display:block;}
+.current-status{display:flex;align-items:center;gap:10px;background:var(--dark3);border-radius:10px;padding:12px 16px;margin-bottom:14px;}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.status-label{font-size:13px;font-weight:600;}
+.status-since{font-size:11px;color:var(--muted);margin-left:auto;}
 
-  /* CARDS */
-  .card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:16px;padding:24px;margin-bottom:16px;
-    backdrop-filter:blur(8px);
-  }
-  .card h3{
-    font-family:'Sora',sans-serif;font-size:16px;font-weight:600;
-    margin-bottom:16px;color:#fff;
-  }
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px;}
-  .stat{
-    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-    border-radius:12px;padding:16px;text-align:center;
-  }
-  .stat-val{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;}
-  .stat-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.clock{font-family:'Outfit',sans-serif;font-size:42px;font-weight:300;text-align:center;letter-spacing:3px;color:var(--gold);}
+.date-disp{text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px;}
 
-  /* POINTAGE */
-  .punch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
-  @media(min-width:600px){.punch-grid{grid-template-columns:repeat(4,1fr);}}
-  .punch-btn{
-    padding:16px 8px;border:2px solid var(--border);
-    border-radius:14px;background:rgba(255,255,255,0.04);
-    color:#fff;font-family:'Sora',sans-serif;font-size:13px;
-    font-weight:600;cursor:pointer;transition:all 0.3s;text-align:center;
-  }
-  .punch-btn .icon{font-size:22px;display:block;margin-bottom:6px;}
-  .punch-btn:hover{transform:translateY(-2px);}
-  .punch-btn.arrivee:hover,.punch-btn.arrivee.done{border-color:var(--green);background:rgba(29,158,117,0.15);color:var(--green);}
-  .punch-btn.pause1:hover,.punch-btn.pause1.done{border-color:var(--blue);background:rgba(55,138,221,0.15);color:var(--blue);}
-  .punch-btn.pause2:hover,.punch-btn.pause2.done{border-color:var(--purple);background:rgba(127,119,221,0.15);color:var(--purple);}
-  .punch-btn.dejeuner:hover,.punch-btn.dejeuner.done{border-color:#FAC775;background:rgba(250,199,117,0.15);color:#FAC775;}
-  .punch-btn.reunion:hover,.punch-btn.reunion.done{border-color:var(--orange);background:rgba(216,90,48,0.15);color:var(--orange);}
-  .punch-btn.depart:hover,.punch-btn.depart.done{border-color:var(--red);background:rgba(226,75,74,0.15);color:var(--red);}
+.timeline{margin-top:12px;}
+.tl-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.tl-label{font-size:12px;font-weight:600;flex:1;}
+.tl-time{font-size:11px;color:var(--muted);font-family:'Outfit',sans-serif;}
+.tl-extra{font-size:10px;margin-left:8px;}
 
-  /* TIMELINE */
-  .timeline{margin-top:16px;}
-  .timeline-item{
-    display:flex;align-items:center;gap:12px;
-    padding:10px 14px;background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,255,255,0.06);border-radius:10px;
-    margin-bottom:8px;
-  }
-  .t-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-  .t-label{font-size:13px;font-weight:500;flex:1;}
-  .t-time{font-size:12px;color:var(--muted);font-family:'Sora',sans-serif;}
+/* RETARDS */
+.delay-card{background:var(--red-dim);border:1px solid rgba(201,76,76,0.25);border-radius:10px;padding:12px 16px;margin-bottom:10px;}
+.delay-card.ok{background:var(--green-dim);border-color:rgba(76,175,126,0.25);}
+.delay-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 0;}
+.delay-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;}
+.badge-late{background:rgba(201,76,76,0.25);color:#E08080;}
+.badge-ok{background:rgba(76,175,126,0.25);color:#7ED4A8;}
+.badge-na{background:rgba(138,136,128,0.2);color:var(--muted);}
 
-  /* CONGES */
-  .conge-bar{
-    background:rgba(255,255,255,0.08);border-radius:99px;
-    height:10px;overflow:hidden;margin:8px 0;
-  }
-  .conge-fill{
-    height:100%;border-radius:99px;
-    background:linear-gradient(90deg,var(--green),#0F6E56);
-    transition:width 0.6s ease;
-  }
-  .conge-info{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);}
+/* CONGES */
+.conge-bar{background:rgba(255,255,255,0.06);border-radius:99px;height:8px;overflow:hidden;margin:8px 0;}
+.conge-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),#2E8B57);transition:width 0.6s;}
+.conge-info{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);}
 
-  /* FORM */
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-  .form-group{margin-bottom:12px;}
-  .form-group label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-  .form-group input,.form-group select,.form-group textarea{
-    width:100%;background:rgba(255,255,255,0.07);
-    border:1px solid var(--border);border-radius:10px;
-    padding:12px 14px;color:#fff;font-family:'DM Sans',sans-serif;
-    font-size:14px;outline:none;transition:all 0.2s;
-  }
-  .form-group input:focus,.form-group select:focus{
-    border-color:rgba(29,158,117,0.6);background:rgba(29,158,117,0.07);
-  }
-  .form-group select option{background:#0d2240;}
-  .btn-submit{
-    background:linear-gradient(135deg,var(--green),#0F6E56);
-    border:none;border-radius:10px;padding:12px 24px;
-    color:#fff;font-family:'Sora',sans-serif;font-weight:600;
-    font-size:14px;cursor:pointer;transition:all 0.3s;
-  }
-  .btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(29,158,117,0.4);}
+/* FORMS */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-group{margin-bottom:12px;}
+.form-group label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:11px 14px;color:var(--text);font-family:'Lato',sans-serif;font-size:13px;outline:none;transition:all 0.2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.form-group select option{background:var(--dark3);}
+.btn-submit{background:linear-gradient(135deg,var(--gold),#A8872E);border:none;border-radius:9px;padding:12px 24px;color:#0B0E14;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.25s;letter-spacing:0.5px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(201,168,76,0.3);}
 
-  /* BADGES */
-  .badge{
-    display:inline-block;padding:4px 10px;border-radius:99px;
-    font-size:11px;font-weight:600;letter-spacing:0.5px;
-  }
-  .badge-pending{background:rgba(250,199,117,0.2);color:#FAC775;}
-  .badge-approved{background:rgba(29,158,117,0.2);color:#1D9E75;}
-  .badge-refused{background:rgba(226,75,74,0.2);color:var(--red);}
+/* BADGES */
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;}
+.badge-pending{background:rgba(212,147,74,0.2);color:#E0A96A;}
+.badge-approved{background:var(--green-dim);color:var(--green);}
+.badge-refused{background:var(--red-dim);color:#E08080;}
 
-  /* PERFORMANCE */
-  .perf-circle{
-    width:140px;height:140px;position:relative;
-    margin:0 auto 20px;
-  }
-  .perf-circle svg{transform:rotate(-90deg);}
-  .perf-text{
-    position:absolute;top:50%;left:50%;
-    transform:translate(-50%,-50%);text-align:center;
-  }
-  .perf-num{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;line-height:1;}
-  .sign-zone{
-    border:2px dashed rgba(255,255,255,0.2);border-radius:14px;
-    padding:24px;text-align:center;margin-top:16px;
-  }
-  .sign-btn{
-    background:linear-gradient(135deg,var(--purple),#534AB7);
-    border:none;border-radius:10px;padding:12px 28px;
-    color:#fff;font-family:'Sora',sans-serif;font-weight:600;
-    font-size:14px;cursor:pointer;transition:all 0.3s;margin-top:12px;
-  }
-  .sign-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(127,119,221,0.5);}
-  .signed-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.4);
-    border-radius:10px;padding:10px 20px;color:var(--green);
-    font-weight:600;font-size:14px;
-  }
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{color:var(--muted);font-weight:700;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:0.8px;}
+td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.03);}
+tr:hover td{background:rgba(255,255,255,0.015);}
 
-  /* TABLE */
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{color:var(--muted);font-weight:500;text-align:left;padding:8px 12px;
-     border-bottom:1px solid rgba(255,255,255,0.08);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;}
-  td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);}
-  tr:hover td{background:rgba(255,255,255,0.02);}
+/* PERF */
+.perf-circle{width:130px;height:130px;position:relative;margin:0 auto 16px;}
+.perf-circle svg{transform:rotate(-90deg);}
+.perf-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.perf-num{font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;}
+.sign-zone{border:1.5px dashed rgba(255,255,255,0.12);border-radius:12px;padding:20px;text-align:center;margin-top:14px;}
+.sign-btn{background:linear-gradient(135deg,var(--purple),#534AB7);border:none;border-radius:9px;padding:11px 26px;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.25s;margin-top:10px;}
+.sign-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(139,127,212,0.4);}
 
-  .alert{
-    background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.3);
-    border-radius:10px;padding:12px 16px;font-size:13px;color:var(--green);
-    margin-bottom:12px;display:none;
-  }
-  .clock{
-    font-family:'Sora',sans-serif;font-size:38px;font-weight:700;
-    text-align:center;letter-spacing:2px;margin-bottom:4px;
-  }
-  .date-disp{text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px;}
+/* ALERT */
+.alert{border-radius:8px;padding:11px 14px;font-size:12px;margin-bottom:12px;display:none;}
+.alert-green{background:var(--green-dim);border:1px solid rgba(76,175,126,0.3);color:var(--green);}
+.alert-orange{background:var(--amber-dim);border:1px solid rgba(212,147,74,0.3);color:#E0A96A;}
+.alert-red{background:var(--red-dim);border:1px solid rgba(201,76,76,0.3);color:#E08080;}
+
+/* SALAIRE */
+.sal-card{background:linear-gradient(135deg,var(--dark3),var(--dark4));border:1px solid var(--gold);border-radius:12px;padding:20px;margin-bottom:10px;}
+.sal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.sal-mois{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;}
+.sal-amount{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--gold);}
+.sal-new{background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-brand">
-    <div class="nav-logo">👔</div>
-    <span>RH Portail</span>
+    <div class="nav-logo">DK</div>
+    <div><div class="nav-brand-text">DK <span>Angelux</span></div></div>
   </div>
-  <div class="nav-user">
-    <div>
-      <div class="name" id="navName">—</div>
-      <div class="poste" id="navPoste">—</div>
+  <div class="nav-right">
+    <div style="text-align:right">
+      <div class="nav-name" id="navName">—</div>
+      <div class="nav-poste" id="navPoste">—</div>
     </div>
-    <div class="avatar" id="navAvatar">--</div>
-    <button class="logout" onclick="logout()">Déconnexion</button>
+    <div class="nav-avatar" id="navAvatar">--</div>
+    <button class="btn-logout" onclick="logout()">Déconnexion</button>
   </div>
 </nav>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('pointage')">⏱ Pointage</button>
-  <button class="tab" onclick="showTab('conges')">🌴 Congés</button>
-  <button class="tab" onclick="showTab('performance')">📊 Performance</button>
-  <button class="tab" onclick="showTab('historique')">📋 Historique</button>
+  <button class="tab active" onclick="showTab('pointage',this)">⏱ Pointage</button>
+  <button class="tab" onclick="showTab('retards',this)">⚠️ Mes Retards</button>
+  <button class="tab" onclick="showTab('conges',this)">🌴 Congés</button>
+  <button class="tab" onclick="showTab('performance',this)">📊 Performance</button>
+  <button class="tab" onclick="showTab('salaire',this)">💰 Salaire</button>
+  <button class="tab" onclick="showTab('historique',this)">📋 Historique</button>
 </div>
 
 <div class="content">
 
-<!-- ===== POINTAGE ===== -->
+<!-- POINTAGE -->
 <div class="section active" id="sec-pointage">
   <div class="card">
     <div class="clock" id="liveClock">--:--:--</div>
     <div class="date-disp" id="liveDate">--</div>
-    <h3>Enregistrer une activité</h3>
-    <div class="alert" id="punchAlert"></div>
-    <div class="punch-grid">
-      <button class="punch-btn arrivee" onclick="punch('arrivee')">
-        <span class="icon">🏁</span>Arrivée
+    <div class="current-status" id="currentStatusBar" style="display:none">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-label" id="statusLabel">—</span>
+      <span class="status-since" id="statusSince">—</span>
+    </div>
+    <div class="alert alert-orange" id="punchAlert"></div>
+    <div class="card-title">Enregistrer mon statut</div>
+    <div class="status-grid">
+      <button class="status-btn" id="btn-arrivee" onclick="punch('arrivee')">
+        <span class="ico">🏁</span><span>Arrivée<br><small style="font-size:10px;opacity:0.7">+ Production</small></span>
       </button>
-      <button class="punch-btn pause1" onclick="punch('pause1')">
-        <span class="icon">☕</span>Pause 15 min (1)
+      <button class="status-btn" id="btn-production" onclick="punch('production')">
+        <span class="ico">⚙️</span><span>Production</span>
       </button>
-      <button class="punch-btn pause2" onclick="punch('pause2')">
-        <span class="icon">🍃</span>Pause 15 min (2)
+      <button class="status-btn" id="btn-pause1" onclick="punch('pause1')">
+        <span class="ico">☕</span><span>Pause 15 min (1)</span>
       </button>
-      <button class="punch-btn dejeuner" onclick="punch('dejeuner')">
-        <span class="icon">🍽️</span>Pause déjeuner
+      <button class="status-btn" id="btn-pause2" onclick="punch('pause2')">
+        <span class="ico">🍃</span><span>Pause 15 min (2)</span>
       </button>
-      <button class="punch-btn reunion" onclick="punch('reunion')">
-        <span class="icon">📞</span>Réunion
+      <button class="status-btn" id="btn-dejeuner" onclick="punch('dejeuner')">
+        <span class="ico">🍽️</span><span>Déjeuner</span>
       </button>
-      <button class="punch-btn depart" onclick="punch('depart')">
-        <span class="icon">🚪</span>Départ
+      <button class="status-btn" id="btn-reunion" onclick="punch('reunion')">
+        <span class="ico">📞</span><span>Réunion</span>
+      </button>
+      <button class="status-btn" id="btn-depart" onclick="punch('depart')">
+        <span class="ico">🚪</span><span>Départ</span>
       </button>
     </div>
     <div class="timeline" id="todayTimeline"></div>
   </div>
 </div>
 
-<!-- ===== CONGES ===== -->
+<!-- RETARDS -->
+<div class="section" id="sec-retards">
+  <div class="card">
+    <div class="card-title">Mes retards cumulés</div>
+    <div id="retards-content"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Détail par journée (30 derniers jours)</div>
+    <table>
+      <thead><tr><th>Date</th><th>Arrivée prévue</th><th>Arrivée réelle</th><th>Retard</th><th>Déjeuner prévu</th><th>Retard déj.</th><th>Pause 1</th><th>Pause 2</th></tr></thead>
+      <tbody id="retards-table"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CONGES -->
 <div class="section" id="sec-conges">
-  <div class="stats-grid">
-    <div class="stat">
-      <div class="stat-val" id="cg-restants" style="color:#1D9E75">--</div>
-      <div class="stat-label">Jours restants</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="cg-pris" style="color:#378ADD">--</div>
-      <div class="stat-label">Jours pris</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="cg-anciennete" style="color:#7F77DD">--</div>
-      <div class="stat-label">Mois travaillés</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" style="color:#FAC775">2.5</div>
-      <div class="stat-label">Jours / mois</div>
-    </div>
+  <div class="grid4">
+    <div class="stat"><div class="stat-val" id="cg-restants" style="color:var(--green)">--</div><div class="stat-lbl">Jours restants</div></div>
+    <div class="stat"><div class="stat-val" id="cg-pris" style="color:var(--blue)">--</div><div class="stat-lbl">Jours pris</div></div>
+    <div class="stat"><div class="stat-val" id="cg-anciennete" style="color:var(--purple)">--</div><div class="stat-lbl">Mois travaillés</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--amber)">2.5</div><div class="stat-lbl">Jours / mois</div></div>
   </div>
-
   <div class="card">
-    <h3>Mon solde de congés</h3>
+    <div class="card-title">Mon solde</div>
     <div class="conge-bar"><div class="conge-fill" id="cg-bar"></div></div>
-    <div class="conge-info">
-      <span id="cg-pris-label">0 jours pris</span>
-      <span id="cg-total-label">sur 0 jours acquis</span>
-    </div>
+    <div class="conge-info"><span id="cg-pris-label">0 jours pris</span><span id="cg-total-label">sur 0 jours acquis</span></div>
   </div>
-
   <div class="card">
-    <h3>Demander un congé</h3>
+    <div class="card-title">Demander un congé</div>
     <div class="alert" id="congeAlert"></div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Type de congé</label>
-        <select id="cg-type">
-          <option value="paye">Congé payé</option>
-          <option value="maladie">Congé maladie</option>
-          <option value="sans_solde">Sans solde</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Statut souhaité</label>
-        <select id="cg-statut">
-          <option value="">— Sélectionner —</option>
-          <option value="depart_1sem">Départ 1 semaine</option>
-          <option value="depart_2sem">Départ 2 semaines</option>
-          <option value="depart_1mois">Départ 1 mois</option>
-          <option value="autre">Autre durée</option>
-        </select>
-      </div>
+      <div class="form-group"><label>Type</label><select id="cg-type"><option value="paye">Congé payé</option><option value="maladie">Maladie</option><option value="sans_solde">Sans solde</option></select></div>
+      <div class="form-group"><label>Durée souhaitée</label><select id="cg-statut"><option value="">— Sélectionner —</option><option value="depart_1sem">1 semaine</option><option value="depart_2sem">2 semaines</option><option value="depart_1mois">1 mois</option><option value="autre">Autre</option></select></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Date de début</label>
-        <input type="date" id="cg-debut">
-      </div>
-      <div class="form-group">
-        <label>Date de retour</label>
-        <input type="date" id="cg-fin">
-      </div>
+      <div class="form-group"><label>Date de début</label><input type="date" id="cg-debut" oninput="previewConge()"></div>
+      <div class="form-group"><label>Date de retour</label><input type="date" id="cg-fin" oninput="previewConge()"></div>
     </div>
-    <div class="form-group">
-      <label>Motif / commentaire</label>
-      <textarea id="cg-motif" rows="2" placeholder="Précisez le motif de votre absence..."></textarea>
-    </div>
-    <div id="cg-preview" style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;margin-bottom:12px;font-size:13px;color:var(--muted);">
-      Sélectionnez des dates pour voir le décompte.
-    </div>
+    <div class="form-group"><label>Motif</label><textarea id="cg-motif" rows="2" placeholder="Précisez le motif..."></textarea></div>
+    <div id="cg-preview" style="background:var(--dark3);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--muted);">Sélectionnez des dates pour voir le décompte.</div>
     <button class="btn-submit" onclick="soumettreConge()">Envoyer la demande →</button>
   </div>
-
   <div class="card">
-    <h3>Mes demandes de congé</h3>
-    <table>
-      <thead><tr><th>Type</th><th>Début</th><th>Fin</th><th>Jours</th><th>Statut</th></tr></thead>
-      <tbody id="cg-table"></tbody>
-    </table>
+    <div class="card-title">Mes demandes</div>
+    <table><thead><tr><th>Type</th><th>Début</th><th>Fin</th><th>Jours</th><th>Statut</th></tr></thead><tbody id="cg-table"></tbody></table>
   </div>
 </div>
 
-<!-- ===== PERFORMANCE ===== -->
+<!-- PERFORMANCE -->
 <div class="section" id="sec-performance">
   <div class="card" id="perf-card">
-    <h3>Ma performance du mois</h3>
-    <div id="perf-content">
-      <p style="color:var(--muted);font-size:14px;">Aucune évaluation disponible pour le moment.</p>
-    </div>
+    <div class="card-title">Ma performance du mois</div>
+    <div id="perf-content"><p style="color:var(--muted);font-size:13px;">Aucune évaluation disponible.</p></div>
   </div>
-
   <div class="card">
-    <h3>Historique des performances</h3>
-    <table>
-      <thead><tr><th>Mois</th><th>Score</th><th>Commentaire</th><th>Signé</th></tr></thead>
-      <tbody id="perf-history"></tbody>
-    </table>
+    <div class="card-title">Historique des évaluations</div>
+    <table><thead><tr><th>Mois</th><th>Titre</th><th>Score</th><th>Commentaire</th><th>Signé</th></tr></thead><tbody id="perf-history"></tbody></table>
   </div>
 </div>
 
-<!-- ===== HISTORIQUE ===== -->
+<!-- SALAIRE -->
+<div class="section" id="sec-salaire">
+  <div class="card">
+    <div class="card-title">Mes bulletins de salaire</div>
+    <div class="alert alert-green" id="sal-alert"></div>
+    <div id="sal-list"><p style="color:var(--muted);font-size:13px;">Aucun bulletin disponible.</p></div>
+  </div>
+</div>
+
+<!-- HISTORIQUE -->
 <div class="section" id="sec-historique">
   <div class="card">
-    <h3>Mes pointages récents</h3>
-    <table>
-      <thead><tr><th>Date</th><th>Type</th><th>Heure</th></tr></thead>
-      <tbody id="hist-table"></tbody>
-    </table>
+    <div class="card-title">Mes pointages récents</div>
+    <table><thead><tr><th>Date</th><th>Statut</th><th>Heure</th><th>Durée</th></tr></thead><tbody id="hist-table"></tbody></table>
   </div>
 </div>
 
-</div><!-- /content -->
+</div>
 
 <script>
-// Auth check
 const uid=sessionStorage.getItem('rh_current');
 if(!uid||uid==='ADMIN'){window.location.href='index.html';}
-
 let user=null;
+
+const punchCfg={
+  arrivee:{label:'Arrivée au travail',color:'#4CAF7E',cls:'active-prod'},
+  production:{label:'Production',color:'#4CAF7E',cls:'active-prod'},
+  pause1:{label:'Pause 15 min (1)',color:'#4A8FD4',cls:'active-pause'},
+  pause2:{label:'Pause 15 min (2)',color:'#8B7FD4',cls:'active-pause2'},
+  dejeuner:{label:'Pause déjeuner',color:'#D4934A',cls:'active-dej'},
+  reunion:{label:'Réunion',color:'#C9A84C',cls:'active-reu'},
+  depart:{label:'Départ',color:'#C94C4C',cls:'active-dep'}
+};
+
+// Statuts qui bloquent les autres jusqu'à reprendre production
+const statusNeedReturn=['pause1','pause2','dejeuner'];
 
 function loadUser(){
   const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
@@ -400,247 +309,518 @@ function saveUsers(){
   localStorage.setItem('rh_users',JSON.stringify(users));
 }
 
-function showTab(tab){
+function showTab(tab,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+tab).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
   if(tab==='conges')loadConges();
   if(tab==='performance')loadPerf();
   if(tab==='historique')loadHist();
   if(tab==='pointage')loadTodayTimeline();
+  if(tab==='retards')loadRetards();
+  if(tab==='salaire')loadSalaire();
 }
 
 // HORLOGE
 function updateClock(){
   const now=new Date();
-  document.getElementById('liveClock').textContent=
-    now.toLocaleTimeString('fr-FR');
-  document.getElementById('liveDate').textContent=
-    now.toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('liveClock').textContent=now.toLocaleTimeString('fr-FR');
+  document.getElementById('liveDate').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
 setInterval(updateClock,1000);updateClock();
 
-// POINTAGE
-const punchConfig={
-  arrivee:{label:'Arrivée au travail',color:'#1D9E75'},
-  pause1:{label:'Pause 15 min #1',color:'#378ADD'},
-  pause2:{label:'Pause 15 min #2',color:'#7F77DD'},
-  dejeuner:{label:'Pause déjeuner',color:'#FAC775'},
-  reunion:{label:'Réunion',color:'#D85A30'},
-  depart:{label:'Départ',color:'#E24B4A'}
-};
+// POINTAGE / STATUTS
+function getTodayPtgs(){
+  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
+  const today=new Date().toISOString().slice(0,10);
+  return ptgs.filter(p=>p.userId===uid&&p.date===today).sort((a,b)=>a.ts-b.ts);
+}
+
+function getLastStatus(todayPtgs){
+  if(!todayPtgs.length)return null;
+  return todayPtgs[todayPtgs.length-1].type;
+}
 
 function punch(type){
-  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
   const now=new Date();
   const today=now.toISOString().slice(0,10);
-  const todayPtgs=ptgs.filter(p=>p.userId===uid&&p.date===today);
-  const exists=todayPtgs.find(p=>p.type===type);
-  if(exists){
-    showAlert('punchAlert','⚠️ Vous avez déjà pointé : '+punchConfig[type].label+' à '+exists.time,'orange');
-    return;
+  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
+  const todayPtgs=ptgs.filter(p=>p.userId===uid&&p.date===today).sort((a,b)=>a.ts-b.ts);
+  const lastStatus=getLastStatus(todayPtgs);
+
+  // Vérifications
+  if(type==='arrivee'&&todayPtgs.find(p=>p.type==='arrivee')){
+    showAlert('punchAlert','Vous avez déjà pointé votre arrivée aujourd\'hui.','orange');return;
   }
-  ptgs.push({userId:uid,date:today,type,time:now.toLocaleTimeString('fr-FR'),ts:now.getTime()});
+  if(type==='depart'&&!todayPtgs.find(p=>p.type==='arrivee')){
+    showAlert('punchAlert','Vous devez d\'abord pointer votre arrivée.','orange');return;
+  }
+  if(type==='depart'&&todayPtgs.find(p=>p.type==='depart')){
+    showAlert('punchAlert','Vous avez déjà pointé votre départ.','orange');return;
+  }
+
+  // Production ne peut être cliqué que si on revient d'une pause/déj/réunion
+  if(type==='production'){
+    if(!lastStatus){showAlert('punchAlert','Veuillez d\'abord pointer votre arrivée.','orange');return;}
+    if(lastStatus==='arrivee'||lastStatus==='production'){showAlert('punchAlert','Vous êtes déjà en production.','orange');return;}
+    if(lastStatus==='depart'){showAlert('punchAlert','Vous avez déjà pointé votre départ.','orange');return;}
+  }
+
+  // Pause/déjeuner ne peut être pris avant 1h de production
+  if(type==='pause1'||type==='pause2'||type==='dejeuner'){
+    const arr=todayPtgs.find(p=>p.type==='arrivee');
+    if(!arr){showAlert('punchAlert','Vous devez d\'abord pointer votre arrivée.','orange');return;}
+    const diffMin=(now.getTime()-arr.ts)/60000;
+    if(diffMin<60){
+      showAlert('punchAlert','Vous ne pouvez pas prendre de pause dans la 1ère heure de travail.','orange');return;
+    }
+    // Pas dans la dernière heure
+    const heureDepart=user.heureDepart||'17:30';
+    const [dh,dm]=heureDepart.split(':').map(Number);
+    const finTs=new Date(today+'T'+heureDepart+':00').getTime();
+    if(finTs-now.getTime()<3600000){
+      showAlert('punchAlert','Vous ne pouvez pas prendre de pause dans la dernière heure de production.','orange');return;
+    }
+    // Vérifier si on est déjà dans cette pause
+    if(type==='pause1'&&lastStatus==='pause1'){showAlert('punchAlert','Vous êtes déjà en pause 1.','orange');return;}
+    if(type==='pause2'&&lastStatus==='pause2'){showAlert('punchAlert','Vous êtes déjà en pause 2.','orange');return;}
+    // Vérifier si pause déjà prise ce jour
+    if(type==='pause1'&&todayPtgs.filter(p=>p.type==='pause1').length>=2&&todayPtgs.find(p=>p.type==='pause1_fin')){
+      showAlert('punchAlert','Votre pause 1 a déjà été utilisée.','orange');return;
+    }
+    if(type==='pause2'&&todayPtgs.filter(p=>p.type==='pause2').length>=2&&todayPtgs.find(p=>p.type==='pause2_fin')){
+      showAlert('punchAlert','Votre pause 2 a déjà été utilisée.','orange');return;
+    }
+    if(type==='dejeuner'&&todayPtgs.find(p=>p.type==='dejeuner')&&lastStatus!=='dejeuner'){
+      showAlert('punchAlert','Vous avez déjà pris votre déjeuner.','orange');return;
+    }
+  }
+
+  // Réunion
+  if(type==='reunion'&&!todayPtgs.find(p=>p.type==='arrivee')){
+    showAlert('punchAlert','Vous devez d\'abord pointer votre arrivée.','orange');return;
+  }
+
+  // Calcul durée si c'est un retour (production après pause/dej/reunion)
+  let dureeMin=null;
+  let depassement=null;
+  if(type==='production'&&lastStatus){
+    const prevEntry=todayPtgs.filter(p=>p.type===lastStatus).pop();
+    if(prevEntry){
+      dureeMin=Math.round((now.getTime()-prevEntry.ts)/60000);
+      if(lastStatus==='pause1'||lastStatus==='pause2') depassement=dureeMin>15?dureeMin-15:0;
+      if(lastStatus==='dejeuner'){
+        const pauseDejMin=Math.round((new Date(today+'T'+(user.heurePauseFin||'13:00')+':00').getTime()-new Date(today+'T'+(user.heurePause||'12:00')+':00').getTime())/60000);
+        depassement=dureeMin>pauseDejMin?dureeMin-pauseDejMin:0;
+      }
+      if(lastStatus==='reunion') depassement=null;
+    }
+  }
+
+  const entry={
+    userId:uid,date:today,type,
+    time:now.toLocaleTimeString('fr-FR'),ts:now.getTime(),
+    dureeMin,depassement
+  };
+
+  // Si arrivée → aussi ajouter production automatique
+  ptgs.push(entry);
+  if(type==='arrivee'){
+    const prodEntry={...entry,id:'prod'+Date.now(),type:'production',time:now.toLocaleTimeString('fr-FR'),ts:now.getTime()+100,dureeMin:null,depassement:null};
+    ptgs.push(prodEntry);
+    // Calculer retard arrivée
+    const prevHeure=user.heureArrivee||'08:00';
+    const planTs=new Date(today+'T'+prevHeure+':00').getTime();
+    const retardMin=Math.round((now.getTime()-planTs)/60000);
+    entry.retardArrivee=retardMin>0?retardMin:0;
+    prodEntry.retardArrivee=0;
+  }
+
   localStorage.setItem('rh_pointages',JSON.stringify(ptgs));
-  const btn=document.querySelector('.punch-btn.'+type);
-  if(btn)btn.classList.add('done');
-  showAlert('punchAlert','✅ '+punchConfig[type].label+' enregistré à '+now.toLocaleTimeString('fr-FR'),'green');
+
+  let msg='✅ '+punchCfg[type].label+' enregistré à '+now.toLocaleTimeString('fr-FR');
+  if(depassement&&depassement>0) msg+=' — ⚠️ Dépassement : '+depassement+' min';
+  if(type==='production'&&dureeMin!==null&&(lastStatus==='pause1'||lastStatus==='pause2')){
+    if(depassement===0) msg+=' — Pause dans les temps ✓';
+  }
+  showAlert('punchAlert',msg,'green');
   loadTodayTimeline();
 }
 
 function loadTodayTimeline(){
-  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
-  const today=new Date().toISOString().slice(0,10);
-  const todayPtgs=ptgs.filter(p=>p.userId===uid&&p.date===today).sort((a,b)=>a.ts-b.ts);
+  const todayPtgs=getTodayPtgs();
   const tl=document.getElementById('todayTimeline');
   tl.innerHTML='';
   if(!todayPtgs.length){
-    tl.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Aucun pointage aujourd\'hui.</p>';
-    return;
+    tl.innerHTML='<p style="color:var(--muted);font-size:12px;text-align:center;padding:12px">Aucun pointage aujourd\'hui.</p>';
+    updateStatusBar(null,null);return;
   }
   todayPtgs.forEach(p=>{
-    const cfg=punchConfig[p.type]||{label:p.type,color:'#888'};
-    tl.innerHTML+=`<div class="timeline-item">
-      <div class="t-dot" style="background:${cfg.color}"></div>
-      <span class="t-label">${cfg.label}</span>
-      <span class="t-time">${p.time}</span>
+    const cfg=punchCfg[p.type]||{label:p.type,color:'#888'};
+    let extra='';
+    if(p.dureeMin!==null&&p.dureeMin!==undefined){
+      const c=p.depassement>0?'#E08080':'var(--green)';
+      extra=`<span class="tl-extra" style="color:${c}">${p.dureeMin}min${p.depassement>0?' (+'+p.depassement+'min)':''}</span>`;
+    }
+    if(p.retardArrivee>0) extra=`<span class="tl-extra" style="color:#E08080">Retard: +${p.retardArrivee}min</span>`;
+    tl.innerHTML+=`<div class="tl-item">
+      <div class="tl-dot" style="background:${cfg.color}"></div>
+      <span class="tl-label">${cfg.label}</span>
+      ${extra}
+      <span class="tl-time">${p.time}</span>
     </div>`;
   });
-  // Mettre à jour boutons
-  Object.keys(punchConfig).forEach(type=>{
-    const exists=todayPtgs.find(p=>p.type===type);
-    const btn=document.querySelector('.punch-btn.'+type);
-    if(btn&&exists)btn.classList.add('done');
-    else if(btn)btn.classList.remove('done');
+  const lastP=todayPtgs[todayPtgs.length-1];
+  updateStatusBar(lastP.type,lastP.time);
+  updateButtons(todayPtgs);
+}
+
+function updateStatusBar(type,time){
+  const bar=document.getElementById('currentStatusBar');
+  if(!type){bar.style.display='none';return;}
+  bar.style.display='flex';
+  const cfg=punchCfg[type]||{label:type,color:'#888'};
+  document.getElementById('statusDot').style.background=cfg.color;
+  document.getElementById('statusLabel').textContent=cfg.label;
+  document.getElementById('statusSince').textContent='depuis '+time;
+}
+
+function updateButtons(todayPtgs){
+  const lastStatus=getLastStatus(todayPtgs);
+  const hasArrivee=!!todayPtgs.find(p=>p.type==='arrivee');
+  const hasDepart=!!todayPtgs.find(p=>p.type==='depart');
+  // Compter les occurrences de chaque pause
+  const p1count=todayPtgs.filter(p=>p.type==='pause1').length;
+  const p2count=todayPtgs.filter(p=>p.type==='pause2').length;
+  const p1fin=todayPtgs.some(p=>p.type==='production'&&todayPtgs.findIndex(q=>q.type==='pause1')>-1);
+  const p2fin=todayPtgs.some(p=>p.type==='production'&&todayPtgs.findIndex(q=>q.type==='pause2')>-1);
+
+  // Réinitialiser
+  Object.keys(punchCfg).forEach(t=>{
+    const btn=document.getElementById('btn-'+t);
+    if(btn){btn.className='status-btn';btn.disabled=false;}
   });
+
+  if(!hasArrivee){
+    // Seul arrivée possible
+    ['production','pause1','pause2','dejeuner','reunion','depart'].forEach(t=>{
+      const btn=document.getElementById('btn-'+t);
+      if(btn){btn.classList.add('done');btn.disabled=true;}
+    });
+    return;
+  }
+  if(hasDepart){
+    // Tout désactivé
+    Object.keys(punchCfg).forEach(t=>{
+      const btn=document.getElementById('btn-'+t);
+      if(btn){btn.classList.add('done');btn.disabled=true;}
+    });
+    return;
+  }
+
+  // Arrivée faite, pas de départ
+  document.getElementById('btn-arrivee').classList.add('done');
+  document.getElementById('btn-arrivee').disabled=true;
+
+  // Si on est en pause/dej/reunion → seul production actif
+  if(statusNeedReturn.includes(lastStatus)||lastStatus==='reunion'){
+    ['pause1','pause2','dejeuner','reunion','depart'].forEach(t=>{
+      const btn=document.getElementById('btn-'+t);
+      if(btn){btn.classList.add('done');btn.disabled=true;}
+    });
+    document.getElementById('btn-production').className='status-btn active-prod';
+    return;
+  }
+
+  // En production
+  document.getElementById('btn-production').classList.add('done');
+  document.getElementById('btn-production').disabled=true;
+
+  // Pauses déjà utilisées ?
+  if(p1count>0&&todayPtgs.filter(p=>p.type==='production').length>p1count){
+    const btn=document.getElementById('btn-pause1');
+    if(btn){btn.classList.add('done');btn.disabled=true;}
+  }
+  if(p2count>0&&todayPtgs.filter(p=>p.type==='production').length>p2count){
+    const btn=document.getElementById('btn-pause2');
+    if(btn){btn.classList.add('done');btn.disabled=true;}
+  }
+  // Déjeuner déjà utilisé
+  if(todayPtgs.some(p=>p.type==='dejeuner')&&todayPtgs.filter(p=>p.type==='production').length>1){
+    const btn=document.getElementById('btn-dejeuner');
+    if(btn){btn.classList.add('done');btn.disabled=true;}
+  }
 }
 
-// CONGES
-function calcJours(debut,fin){
-  const d1=new Date(debut),d2=new Date(fin);
-  const diff=Math.round((d2-d1)/(1000*60*60*24));
-  return diff>0?diff:0;
-}
+// RETARDS
+function loadRetards(){
+  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
+  const myPtgs=ptgs.filter(p=>p.userId===uid);
+  
+  // Regrouper par date
+  const dates={};
+  myPtgs.forEach(p=>{
+    if(!dates[p.date])dates[p.date]=[];
+    dates[p.date].push(p);
+  });
 
-function loadConges(){
-  const moisTravailles=user.moisTravailles||12;
-  const totalAcquis=Math.floor(moisTravailles*2.5);
-  document.getElementById('cg-restants').textContent=user.congesRestants;
-  document.getElementById('cg-pris').textContent=user.congesPris||0;
-  document.getElementById('cg-anciennete').textContent=moisTravailles;
-  const pct=totalAcquis>0?((user.congesPris||0)/totalAcquis*100):0;
-  document.getElementById('cg-bar').style.width=Math.min(pct,100)+'%';
-  document.getElementById('cg-pris-label').textContent=(user.congesPris||0)+' jours pris';
-  document.getElementById('cg-total-label').textContent='sur '+totalAcquis+' jours acquis';
+  let totalRetardArrivee=0,totalRetardPause1=0,totalRetardPause2=0,totalRetardDej=0;
+  const rows=[];
 
-  // Table congés
-  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  const myCg=conges.filter(c=>c.userId===uid);
-  const tbody=document.getElementById('cg-table');
+  Object.keys(dates).sort().reverse().slice(0,30).forEach(date=>{
+    const dayPtgs=dates[date].sort((a,b)=>a.ts-b.ts);
+    const arr=dayPtgs.find(p=>p.type==='arrivee');
+    const prod_entries=dayPtgs.filter(p=>p.type==='production');
+    const pause1=dayPtgs.find(p=>p.type==='pause1');
+    const pause2=dayPtgs.find(p=>p.type==='pause2');
+    const dej=dayPtgs.find(p=>p.type==='dejeuner');
+
+    // Retard arrivée
+    let retArr=0;
+    if(arr){
+      retArr=arr.retardArrivee||0;
+      totalRetardArrivee+=retArr;
+    }
+
+    // Retard pause 1 (on cherche production après pause1)
+    let retP1=0;
+    if(pause1){
+      const retProd=prod_entries.find(p=>p.ts>pause1.ts);
+      if(retProd){const dur=Math.round((retProd.ts-pause1.ts)/60000);retP1=dur>15?dur-15:0;totalRetardPause1+=retP1;}
+    }
+
+    // Retard pause 2
+    let retP2=0;
+    if(pause2){
+      const retProd2=prod_entries.find(p=>p.ts>pause2.ts);
+      if(retProd2){const dur=Math.round((retProd2.ts-pause2.ts)/60000);retP2=dur>15?dur-15:0;totalRetardPause2+=retP2;}
+    }
+
+    // Retard déjeuner
+    let retDej=0;
+    if(dej){
+      const retProd3=prod_entries.find(p=>p.ts>dej.ts);
+      if(retProd3){
+        const pauseDejMin=user.heurePause&&user.heurePauseFin?Math.round((new Date(date+'T'+(user.heurePauseFin||'13:00')+':00').getTime()-new Date(date+'T'+(user.heurePause||'12:00')+':00').getTime())/60000):60;
+        const dur=Math.round((retProd3.ts-dej.ts)/60000);
+        retDej=dur>pauseDejMin?dur-pauseDejMin:0;totalRetardDej+=retDej;
+      }
+    }
+
+    rows.push({date,arr:arr?arr.time:'—',retArr,retP1,retP2,retDej});
+  });
+
+  // Résumé
+  const rc=document.getElementById('retards-content');
+  rc.innerHTML=`
+    <div class="grid4" style="margin-bottom:0">
+      <div class="stat"><div class="stat-val" style="color:${totalRetardArrivee>0?'var(--red)':'var(--green)'}">${totalRetardArrivee}</div><div class="stat-lbl">Min retard arrivée</div></div>
+      <div class="stat"><div class="stat-val" style="color:${totalRetardDej>0?'var(--red)':'var(--green)'}">${totalRetardDej}</div><div class="stat-lbl">Min retard déjeuner</div></div>
+      <div class="stat"><div class="stat-val" style="color:${totalRetardPause1>0?'var(--red)':'var(--green)'}">${totalRetardPause1}</div><div class="stat-lbl">Min retard pause 1</div></div>
+      <div class="stat"><div class="stat-val" style="color:${totalRetardPause2>0?'var(--red)':'var(--green)'}">${totalRetardPause2}</div><div class="stat-lbl">Min retard pause 2</div></div>
+    </div>`;
+
+  const tbody=document.getElementById('retards-table');
   tbody.innerHTML='';
-  if(!myCg.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Aucune demande</td></tr>';return;}
-  myCg.forEach(c=>{
-    const statusBadge={pending:'badge-pending',approved:'badge-approved',refused:'badge-refused'}[c.status]||'badge-pending';
-    const statusLabel={pending:'En attente',approved:'Approuvé',refused:'Refusé'}[c.status]||'En attente';
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:14px">Aucun historique</td></tr>';return;}
+  rows.forEach(r=>{
+    const heureArrivee=user.heureArrivee||'08:00';
+    const heurePause=user.heurePause||'12:00';
     tbody.innerHTML+=`<tr>
-      <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
-      <td>${c.debut}</td><td>${c.fin}</td>
-      <td>${c.jours}j</td>
-      <td><span class="badge ${statusBadge}">${statusLabel}</span></td>
+      <td>${r.date}</td>
+      <td style="color:var(--muted)">${heureArrivee}</td>
+      <td>${r.arr}</td>
+      <td><span class="badge ${r.retArr>0?'badge-refused':'badge-approved'}">${r.retArr>0?'+'+r.retArr+'min':'✓'}</span></td>
+      <td style="color:var(--muted)">${heurePause}</td>
+      <td><span class="badge ${r.retDej>0?'badge-refused':'badge-approved'}">${r.retDej>0?'+'+r.retDej+'min':r.retDej===0?'✓':'—'}</span></td>
+      <td><span class="badge ${r.retP1>0?'badge-refused':'badge-approved'}">${r.retP1>0?'+'+r.retP1+'min':r.retP1===0?'✓':'—'}</span></td>
+      <td><span class="badge ${r.retP2>0?'badge-refused':'badge-approved'}">${r.retP2>0?'+'+r.retP2+'min':r.retP2===0?'✓':'—'}</span></td>
     </tr>`;
   });
 }
 
-document.addEventListener('input',e=>{
-  if(['cg-debut','cg-fin'].includes(e.target.id)){
-    const d=document.getElementById('cg-debut').value;
-    const f=document.getElementById('cg-fin').value;
-    if(d&&f){
-      const j=calcJours(d,f);
-      const restants=user.congesRestants;
-      const color=j>restants?'#E24B4A':'#1D9E75';
-      document.getElementById('cg-preview').innerHTML=
-        `<span style="color:${color};font-weight:600">${j} jours ouvrés demandés</span> — Solde actuel : <strong>${restants} jours</strong>`;
-    }
+// CONGES
+function previewConge(){
+  const d=document.getElementById('cg-debut').value;
+  const f=document.getElementById('cg-fin').value;
+  if(d&&f){
+    const j=Math.round((new Date(f)-new Date(d))/(1000*60*60*24));
+    const c=j>(user.congesRestants||0)?'var(--red)':'var(--green)';
+    document.getElementById('cg-preview').innerHTML=`<span style="color:${c};font-weight:700">${j} jours demandés</span> — Solde : <strong>${user.congesRestants||0} jours</strong>`;
   }
-});
-
+}
+function loadConges(){
+  const tot=Math.floor((user.moisTravailles||12)*2.5);
+  document.getElementById('cg-restants').textContent=user.congesRestants||0;
+  document.getElementById('cg-pris').textContent=user.congesPris||0;
+  document.getElementById('cg-anciennete').textContent=user.moisTravailles||12;
+  const pct=tot>0?((user.congesPris||0)/tot*100):0;
+  document.getElementById('cg-bar').style.width=Math.min(pct,100)+'%';
+  document.getElementById('cg-pris-label').textContent=(user.congesPris||0)+' jours pris';
+  document.getElementById('cg-total-label').textContent='sur '+tot+' jours acquis';
+  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
+  const tbody=document.getElementById('cg-table');
+  tbody.innerHTML='';
+  const my=conges.filter(c=>c.userId===uid);
+  if(!my.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucune demande</td></tr>';return;}
+  my.forEach(c=>{
+    const sl={pending:'badge-pending',approved:'badge-approved',refused:'badge-refused'}[c.status]||'badge-pending';
+    const st={pending:'En attente',approved:'Approuvé',refused:'Refusé'}[c.status]||'En attente';
+    tbody.innerHTML+=`<tr>
+      <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
+      <td>${c.debut}</td><td>${c.fin}</td><td>${c.jours}j</td>
+      <td><span class="badge ${sl}">${st}</span></td>
+    </tr>`;
+  });
+}
 function soumettreConge(){
   const type=document.getElementById('cg-type').value;
   const debut=document.getElementById('cg-debut').value;
   const fin=document.getElementById('cg-fin').value;
   const motif=document.getElementById('cg-motif').value;
-  if(!debut||!fin){showAlert('congeAlert','⚠️ Veuillez sélectionner les dates.','orange');return;}
-  const jours=calcJours(debut,fin);
-  if(jours<=0){showAlert('congeAlert','⚠️ La date de retour doit être après la date de début.','orange');return;}
-  if(type==='paye'&&jours>user.congesRestants){
-    showAlert('congeAlert',`❌ Solde insuffisant. Vous demandez ${jours}j mais il vous reste ${user.congesRestants}j.`,'red');return;
-  }
+  if(!debut||!fin){showAlert('congeAlert','Veuillez sélectionner les dates.','orange');return;}
+  const jours=Math.round((new Date(fin)-new Date(debut))/(1000*60*60*24));
+  if(jours<=0){showAlert('congeAlert','La date de retour doit être après la date de début.','orange');return;}
+  if(type==='paye'&&jours>(user.congesRestants||0)){showAlert('congeAlert','Solde insuffisant.','red');return;}
   const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  conges.push({
-    id:'CG'+Date.now(),userId:uid,userName:user.name,
-    type,debut,fin,jours,motif,status:'pending',
-    createdAt:new Date().toISOString()
-  });
+  conges.push({id:'CG'+Date.now(),userId:uid,userName:user.name,type,debut,fin,jours,motif,status:'pending',createdAt:new Date().toISOString()});
   localStorage.setItem('rh_conges',JSON.stringify(conges));
-  showAlert('congeAlert','✅ Demande envoyée ! En attente de validation par l\'administrateur.','green');
+  showAlert('congeAlert','Demande envoyée ! En attente de validation.','green');
   loadConges();
 }
 
 // PERFORMANCE
 function loadPerf(){
   const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  const myPerfs=perfs.filter(p=>p.userId===uid);
-  const latest=myPerfs[myPerfs.length-1];
-  const perfContent=document.getElementById('perf-content');
-
+  const myP=perfs.filter(p=>p.userId===uid);
+  const latest=myP[myP.length-1];
+  const pc=document.getElementById('perf-content');
   if(latest){
     const r=latest.score;
-    const c=r>=85?'#1D9E75':r>=70?'#FAC775':'#E24B4A';
-    const isSigned=latest.signed;
-    perfContent.innerHTML=`
+    const c=r>=85?'var(--green)':r>=70?'var(--amber)':'var(--red)';
+    const circ=Math.round(2*Math.PI*52);
+    pc.innerHTML=`
       <div class="perf-circle">
-        <svg width="140" height="140" viewBox="0 0 140 140">
-          <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12"/>
-          <circle cx="70" cy="70" r="58" fill="none" stroke="${c}" stroke-width="12"
-            stroke-dasharray="${Math.round(2*Math.PI*58*r/100)} ${Math.round(2*Math.PI*58*(100-r)/100)}"
-            stroke-linecap="round"/>
-        </svg>
-        <div class="perf-text">
-          <div class="perf-num" style="color:${c}">${r}%</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.5);">Score</div>
-        </div>
+        <svg width="130" height="130" viewBox="0 0 130 130"><circle cx="65" cy="65" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+        <circle cx="65" cy="65" r="52" fill="none" stroke="${c}" stroke-width="10" stroke-dasharray="${Math.round(circ*r/100)} ${Math.round(circ*(100-r)/100)}" stroke-linecap="round"/></svg>
+        <div class="perf-text"><div class="perf-num" style="color:${c}">${r}%</div><div style="font-size:10px;color:var(--muted)">Score</div></div>
       </div>
-      <p style="text-align:center;font-size:15px;margin-bottom:6px;font-weight:500;">${latest.titre||'Performance du mois'}</p>
-      <p style="text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px;">${latest.commentaire||''}</p>
-      ${isSigned
-        ?'<div style="text-align:center"><span class="signed-badge">✅ Performance signée le '+latest.signedDate+'</span></div>'
-        :`<div class="sign-zone">
-            <p style="color:var(--muted);font-size:13px;">En signant, vous attestez avoir pris connaissance de votre évaluation de performance.</p>
-            <button class="sign-btn" onclick="signerPerf('${latest.id}')">✍️ Signer ma performance</button>
-          </div>`
-      }`;
+      <p style="text-align:center;font-size:14px;font-weight:600;margin-bottom:4px">${latest.titre||'Performance du mois'}</p>
+      <p style="text-align:center;color:var(--muted);font-size:12px;margin-bottom:16px">${latest.commentaire||''}</p>
+      ${latest.signed
+        ?`<div style="text-align:center"><span style="background:var(--green-dim);border:1px solid rgba(76,175,126,0.3);border-radius:8px;padding:8px 18px;color:var(--green);font-size:13px;font-weight:600;display:inline-block">✅ Signé le ${latest.signedDate}</span></div>`
+        :`<div class="sign-zone"><p style="color:var(--muted);font-size:12px">En signant, vous attestez avoir pris connaissance de votre évaluation.</p><button class="sign-btn" onclick="signerPerf('${latest.id}')">✍️ Signer ma performance</button></div>`}`;
   }
-
-  // Historique
   const tbody=document.getElementById('perf-history');
   tbody.innerHTML='';
-  if(!myPerfs.length){tbody.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:16px">Aucune évaluation</td></tr>';return;}
-  [...myPerfs].reverse().forEach(p=>{
-    const c=p.score>=85?'#1D9E75':p.score>=70?'#FAC775':'#E24B4A';
-    tbody.innerHTML+=`<tr>
-      <td>${p.mois||'—'}</td>
-      <td><strong style="color:${c}">${p.score}%</strong></td>
-      <td style="color:var(--muted)">${p.commentaire||'—'}</td>
-      <td>${p.signed?'<span style="color:#1D9E75">✅ Signé</span>':'<span style="color:#FAC775">En attente</span>'}</td>
-    </tr>`;
+  if(!myP.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucune évaluation</td></tr>';return;}
+  [...myP].reverse().forEach(p=>{
+    const c=p.score>=85?'var(--green)':p.score>=70?'var(--amber)':'var(--red)';
+    tbody.innerHTML+=`<tr><td>${p.mois||'—'}</td><td style="font-size:12px">${p.titre||'—'}</td><td><strong style="color:${c}">${p.score}%</strong></td><td style="color:var(--muted);font-size:11px">${p.commentaire||'—'}</td><td>${p.signed?'<span style="color:var(--green)">✅ Signé</span>':'<span style="color:var(--amber)">En attente</span>'}</td></tr>`;
   });
 }
 
-function signerPerf(perfId){
+function signerPerf(id){
   const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  const idx=perfs.findIndex(p=>p.id===perfId);
-  if(idx>-1){
-    perfs[idx].signed=true;
-    perfs[idx].signedDate=new Date().toLocaleDateString('fr-FR');
-    localStorage.setItem('rh_performances',JSON.stringify(perfs));
-    loadPerf();
-  }
+  const idx=perfs.findIndex(p=>p.id===id);
+  if(idx>-1){perfs[idx].signed=true;perfs[idx].signedDate=new Date().toLocaleDateString('fr-FR');localStorage.setItem('rh_performances',JSON.stringify(perfs));loadPerf();}
+}
+
+// SALAIRE
+function loadSalaire(){
+  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
+  const my=salaires.filter(s=>s.userId===uid);
+  const el=document.getElementById('sal-list');
+  if(!my.length){el.innerHTML='<p style="color:var(--muted);font-size:13px;">Aucun bulletin disponible.</p>';return;}
+  el.innerHTML='';
+  [...my].reverse().forEach(s=>{
+    const isNew=!s.read;
+    if(isNew){
+      const idx=salaires.findIndex(x=>x.id===s.id);
+      if(idx>-1){salaires[idx].read=true;}
+    }
+    el.innerHTML+=`<div class="sal-card">
+      <div class="sal-header">
+        <div>
+          <div class="sal-mois">${s.mois}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${s.message||'Bulletin de salaire'}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="sal-amount">${Number(s.montant).toLocaleString('fr-FR')} FCFA</div>
+          ${isNew?'<span class="sal-new">NOUVEAU</span>':''}
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)">
+        ${s.brut?`<span>Brut: <strong style="color:var(--text)">${Number(s.brut).toLocaleString('fr-FR')} FCFA</strong></span>`:''}
+        ${s.cotisations?`<span>Cotisations: <strong style="color:var(--red)">${Number(s.cotisations).toLocaleString('fr-FR')} FCFA</strong></span>`:''}
+        ${s.primes?`<span>Primes: <strong style="color:var(--green)">${Number(s.primes).toLocaleString('fr-FR')} FCFA</strong></span>`:''}
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05)">
+        <button onclick="downloadBulletin('${s.id}')" style="background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📄 Télécharger le bulletin PDF</button>
+      </div>
+    </div>`;
+  });
+  localStorage.setItem('rh_salaires',JSON.stringify(salaires));
+}
+
+function downloadBulletin(id){
+  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
+  const s=salaires.find(x=>x.id===id);
+  if(!s)return;
+  const content=`BULLETIN DE SALAIRE - DK ANGELUX
+==================================
+Employé : ${user.name}
+Poste : ${user.poste}
+Mois : ${s.mois}
+==================================
+Salaire brut      : ${Number(s.brut||s.montant).toLocaleString('fr-FR')} FCFA
+Primes            : ${Number(s.primes||0).toLocaleString('fr-FR')} FCFA
+Cotisations       : ${Number(s.cotisations||0).toLocaleString('fr-FR')} FCFA
+----------------------------------
+SALAIRE NET       : ${Number(s.montant).toLocaleString('fr-FR')} FCFA
+==================================
+${s.message||''}
+Date de paiement  : ${s.datePaiement||s.createdAt?.slice(0,10)||'—'}
+==================================
+DK Angelux — Portail RH`;
+  const blob=new Blob([content],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`Bulletin_${user.name.replace(' ','_')}_${s.mois}.txt`;
+  a.click();URL.revokeObjectURL(url);
 }
 
 // HISTORIQUE
 function loadHist(){
   const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
-  const myPtgs=ptgs.filter(p=>p.userId===uid).sort((a,b)=>b.ts-a.ts).slice(0,50);
+  const my=ptgs.filter(p=>p.userId===uid).sort((a,b)=>b.ts-a.ts).slice(0,60);
   const tbody=document.getElementById('hist-table');
   tbody.innerHTML='';
-  if(!myPtgs.length){tbody.innerHTML='<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:16px">Aucun pointage</td></tr>';return;}
-  myPtgs.forEach(p=>{
-    const cfg=punchConfig[p.type]||{label:p.type,color:'#888'};
+  if(!my.length){tbody.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage</td></tr>';return;}
+  my.forEach(p=>{
+    const cfg=punchCfg[p.type]||{label:p.type,color:'#888'};
+    const dur=p.dureeMin!=null?p.dureeMin+'min':'—';
     tbody.innerHTML+=`<tr>
       <td>${p.date}</td>
-      <td><span style="color:${cfg.color};font-weight:500">${cfg.label}</span></td>
-      <td style="font-family:'Sora',sans-serif">${p.time}</td>
+      <td><span style="color:${cfg.color};font-weight:600">${cfg.label}</span></td>
+      <td style="font-family:'Outfit',sans-serif">${p.time}</td>
+      <td style="color:${p.depassement>0?'var(--red)':'var(--muted)'}">${p.depassement>0?'⚠️ +'+p.depassement+'min':dur}</td>
     </tr>`;
   });
 }
 
-// UTILS
 function showAlert(id,msg,color){
   const el=document.getElementById(id);
-  const cols={green:'rgba(29,158,117,0.12)',orange:'rgba(250,199,117,0.12)',red:'rgba(226,75,74,0.12)'};
-  const txtCols={green:'#1D9E75',orange:'#FAC775',red:'#E24B4A'};
-  el.style.background=cols[color]||cols.green;
-  el.style.color=txtCols[color]||txtCols.green;
-  el.style.borderColor=(txtCols[color]||txtCols.green).replace(')',',0.4)').replace('rgb','rgba');
+  el.className='alert alert-'+color;
   el.textContent=msg;el.style.display='block';
-  setTimeout(()=>el.style.display='none',4000);
+  setTimeout(()=>el.style.display='none',5000);
 }
 
 function logout(){sessionStorage.clear();window.location.href='index.html';}
 
-loadUser();loadTodayTimeline();
+loadUser();
+loadTodayTimeline();
 </script>
 </body>
 </html>
