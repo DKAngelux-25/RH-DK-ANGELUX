@@ -33,8 +33,11 @@ body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color
 .form-group input{width:100%;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:all 0.25s;}
 .form-group input:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
 .form-group input::placeholder{color:rgba(138,136,128,0.5);}
-.btn-login{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--gold),#A8872E);color:#0B0E14;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;cursor:pointer;transition:all 0.3s;margin-top:4px;}
+.btn-login{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--gold),#A8872E);color:#0B0E14;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;cursor:pointer;transition:all 0.3s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.35);}
+.btn-login:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,0.3);border-top-color:#0B0E14;border-radius:50%;animation:spin 0.8s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
 .err{background:rgba(201,76,76,0.12);border:1px solid rgba(201,76,76,0.3);border-radius:8px;padding:11px 14px;font-size:13px;color:#E08080;margin-bottom:16px;display:none;}
 .divider{display:flex;align-items:center;gap:12px;margin:22px 0;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.07);}
@@ -42,9 +45,21 @@ body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color
 .admin-btn{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--gold);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;}
 .admin-btn:hover{background:var(--gold-dim);}
 .footer{text-align:center;margin-top:28px;font-size:11px;color:rgba(138,136,128,0.5);letter-spacing:1px;}
+.loading-overlay{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
+.loading-logo{font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--gold);letter-spacing:3px;}
+.loading-bar{width:200px;height:3px;background:rgba(201,168,76,0.2);border-radius:99px;overflow:hidden;}
+.loading-bar-fill{height:100%;width:0%;background:var(--gold);border-radius:99px;animation:loadBar 1.5s ease-out forwards;}
+@keyframes loadBar{to{width:100%}}
 </style>
 </head>
 <body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-logo">DK ANGELUX</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+  <div style="font-size:12px;color:var(--muted);letter-spacing:2px;">CHARGEMENT...</div>
+</div>
+
 <div class="bg-grid"></div>
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
@@ -68,40 +83,115 @@ body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color
       <label>Mot de passe</label>
       <input type="password" id="password" placeholder="••••••••">
     </div>
-    <button class="btn-login" onclick="login()">Se connecter</button>
+    <button class="btn-login" id="loginBtn" onclick="login()">
+      <span class="spinner" id="loginSpinner"></span>
+      <span id="loginText">Se connecter</span>
+    </button>
     <div class="divider"><span>ACCÈS ADMINISTRATEUR</span></div>
     <button class="admin-btn" onclick="goAdmin()">🛡 Espace Administrateur RH</button>
   </div>
   <div class="footer">© 2025 DK Angelux — Accès réservé au personnel</div>
 </div>
-<script>
-function initData(){
-  if(!localStorage.getItem('rh_users')){
-    const u=[
-      {id:'USR001',name:'Marie Dupont',email:'marie@dkangelux.com',password:'marie123',role:'employee',poste:'Comptable',avatar:'MD',congesRestants:30,congesPris:0,moisTravailles:12,telephone:'',quartier:'',enfants:0,salaire:0,heureArrivee:'08:00',heurePause:'12:00',heurePauseFin:'13:00',heureDepart:'17:30'},
-      {id:'USR002',name:'Jean Martin',email:'jean@dkangelux.com',password:'jean123',role:'employee',poste:'Commercial',avatar:'JM',congesRestants:30,congesPris:0,moisTravailles:12,telephone:'',quartier:'',enfants:0,salaire:0,heureArrivee:'08:00',heurePause:'12:00',heurePauseFin:'13:00',heureDepart:'17:30'},
-      {id:'USR003',name:'Sophie Léa',email:'sophie@dkangelux.com',password:'sophie123',role:'employee',poste:'RH Assistant',avatar:'SL',congesRestants:30,congesPris:0,moisTravailles:12,telephone:'',quartier:'',enfants:0,salaire:0,heureArrivee:'08:00',heurePause:'12:00',heurePauseFin:'13:00',heureDepart:'17:30'}
-    ];
-    localStorage.setItem('rh_users',JSON.stringify(u));
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDPxpICy5rmjkGFxIa48drLcHiWMrjjcys",
+  authDomain: "rh-dk-angelux.firebaseapp.com",
+  projectId: "rh-dk-angelux",
+  storageBucket: "rh-dk-angelux.firebasestorage.app",
+  messagingSenderId: "650294441544",
+  appId: "1:650294441544:web:32dbf9e1374072394a8a7d",
+  measurementId: "G-5B85ECTW1F"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Masquer loading après 1.5s
+setTimeout(()=>{
+  document.getElementById('loadingOverlay').style.transition='opacity 0.4s';
+  document.getElementById('loadingOverlay').style.opacity='0';
+  setTimeout(()=>document.getElementById('loadingOverlay').style.display='none',400);
+},1500);
+
+window.db = db;
+window.firestoreModules = { doc, getDoc, collection, query, where, getDocs, setDoc, addDoc, serverTimestamp };
+
+window.login = async function() {
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  const pwd = document.getElementById('password').value;
+  const errDiv = document.getElementById('errMsg');
+  const btn = document.getElementById('loginBtn');
+  const spinner = document.getElementById('loginSpinner');
+  const loginText = document.getElementById('loginText');
+  
+  errDiv.style.display = 'none';
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  loginText.textContent = 'Connexion...';
+
+  try {
+    const { doc, getDoc, collection, query, where, getDocs } = window.firestoreModules;
+
+    // Vérifier admin
+    const adminDoc = await getDoc(doc(db, 'config', 'admin'));
+    if (adminDoc.exists()) {
+      const admin = adminDoc.data();
+      if (email === admin.email && pwd === admin.password) {
+        sessionStorage.setItem('rh_current', 'ADMIN');
+        window.location.href = 'admin.html';
+        return;
+      }
+    } else {
+      // Créer admin par défaut si inexistant
+      const { setDoc } = window.firestoreModules;
+      await setDoc(doc(db, 'config', 'admin'), {
+        email: 'admin@dkangelux.com',
+        password: 'admin2025',
+        name: 'Directeur RH'
+      });
+      if (email === 'admin@dkangelux.com' && pwd === 'admin2025') {
+        sessionStorage.setItem('rh_current', 'ADMIN');
+        window.location.href = 'admin.html';
+        return;
+      }
+    }
+
+    // Vérifier employés
+    const q = query(collection(db, 'users'), where('email', '==', email));
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      const userData = snap.docs[0].data();
+      const userId = snap.docs[0].id;
+      if (userData.password === pwd) {
+        sessionStorage.setItem('rh_current', userId);
+        sessionStorage.setItem('rh_user_cache', JSON.stringify({id: userId, ...userData}));
+        window.location.href = 'employee.html';
+        return;
+      }
+    }
+
+    errDiv.textContent = 'Email ou mot de passe incorrect.';
+    errDiv.style.display = 'block';
+  } catch(e) {
+    console.error(e);
+    errDiv.textContent = 'Erreur de connexion. Vérifiez votre connexion internet.';
+    errDiv.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    loginText.textContent = 'Se connecter';
   }
-  if(!localStorage.getItem('rh_admin')){localStorage.setItem('rh_admin',JSON.stringify({email:'admin@dkangelux.com',password:'admin2025',name:'Directeur RH'}));}
-  ['rh_pointages','rh_conges','rh_performances','rh_salaires'].forEach(k=>{if(!localStorage.getItem(k))localStorage.setItem(k,'[]');});
-}
-function login(){
-  const email=document.getElementById('email').value.trim();
-  const pwd=document.getElementById('password').value;
-  const errDiv=document.getElementById('errMsg');
-  errDiv.style.display='none';
-  const admin=JSON.parse(localStorage.getItem('rh_admin')||'{}');
-  if(email===admin.email&&pwd===admin.password){sessionStorage.setItem('rh_current','ADMIN');window.location.href='admin.html';return;}
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const user=users.find(u=>u.email===email&&u.password===pwd);
-  if(user){sessionStorage.setItem('rh_current',user.id);window.location.href='employee.html';return;}
-  errDiv.style.display='block';
-}
-function goAdmin(){window.location.href='admin.html';}
-document.addEventListener('keydown',e=>{if(e.key==='Enter')login();});
-initData();
+};
+
+window.goAdmin = function() { window.location.href = 'admin.html'; };
+
+document.addEventListener('keydown', e => { if(e.key === 'Enter') window.login(); });
 </script>
 </body>
 </html>
