@@ -6,6 +6,7 @@
 <title>DK Angelux — RH Portail</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
+/* ... (Votre CSS reste identique, je ne le change pas) ... */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.15);
@@ -93,11 +94,11 @@ body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color
   <div class="footer">© 2025 DK Angelux — Accès réservé au personnel</div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase SDK corrigé -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, addDoc, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDPxpICy5rmjkGFxIa48drLcHiWMrjjcys",
@@ -110,17 +111,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Masquer loading après 1.5s
+// Masquer loading
 setTimeout(()=>{
-  document.getElementById('loadingOverlay').style.transition='opacity 0.4s';
   document.getElementById('loadingOverlay').style.opacity='0';
   setTimeout(()=>document.getElementById('loadingOverlay').style.display='none',400);
 },1500);
-
-window.db = db;
-window.firestoreModules = { doc, getDoc, collection, query, where, getDocs, setDoc, addDoc, serverTimestamp };
 
 window.login = async function() {
   const email = document.getElementById('email').value.trim().toLowerCase();
@@ -133,54 +131,33 @@ window.login = async function() {
   errDiv.style.display = 'none';
   btn.disabled = true;
   spinner.style.display = 'block';
-  loginText.textContent = 'Connexion...';
+  loginText.textContent = 'Vérification...';
 
   try {
-    const { doc, getDoc, collection, query, where, getDocs } = window.firestoreModules;
+    // CONNEXION VIA FIREBASE AUTH (Sécurisé)
+    const userCredential = await signInWithEmailAndPassword(auth, email, pwd);
+    const user = userCredential.user;
 
-    // Vérifier admin
-    const adminDoc = await getDoc(doc(db, 'config', 'admin'));
-    if (adminDoc.exists()) {
-      const admin = adminDoc.data();
-      if (email === admin.email && pwd === admin.password) {
-        sessionStorage.setItem('rh_current', 'ADMIN');
-        window.location.href = 'admin.html';
-        return;
-      }
+    // Redirection selon le rôle
+    if (user.email === 'admin@dkangelux.com') {
+      sessionStorage.setItem('rh_current', 'ADMIN');
+      window.location.href = 'admin.html';
     } else {
-      // Créer admin par défaut si inexistant
-      const { setDoc } = window.firestoreModules;
-      await setDoc(doc(db, 'config', 'admin'), {
-        email: 'admin@dkangelux.com',
-        password: 'admin2025',
-        name: 'Directeur RH'
-      });
-      if (email === 'admin@dkangelux.com' && pwd === 'admin2025') {
-        sessionStorage.setItem('rh_current', 'ADMIN');
-        window.location.href = 'admin.html';
-        return;
+      // Pour les employés, on récupère leurs données dans Firestore
+      const q = query(collection(db, 'users'), where('email', '==', email));
+      const snap = await getDocs(q);
+      
+      if (!snap.empty) {
+        const userData = snap.docs[0].data();
+        sessionStorage.setItem('rh_current', snap.docs[0].id);
+        sessionStorage.setItem('rh_user_cache', JSON.stringify({id: snap.docs[0].id, ...userData}));
       }
+      window.location.href = 'employee.html';
     }
 
-    // Vérifier employés
-    const q = query(collection(db, 'users'), where('email', '==', email));
-    const snap = await getDocs(q);
-    if (!snap.empty) {
-      const userData = snap.docs[0].data();
-      const userId = snap.docs[0].id;
-      if (userData.password === pwd) {
-        sessionStorage.setItem('rh_current', userId);
-        sessionStorage.setItem('rh_user_cache', JSON.stringify({id: userId, ...userData}));
-        window.location.href = 'employee.html';
-        return;
-      }
-    }
-
-    errDiv.textContent = 'Email ou mot de passe incorrect.';
-    errDiv.style.display = 'block';
   } catch(e) {
     console.error(e);
-    errDiv.textContent = 'Erreur de connexion. Vérifiez votre connexion internet.';
+    errDiv.textContent = 'Email ou mot de passe incorrect (Firebase).';
     errDiv.style.display = 'block';
   } finally {
     btn.disabled = false;
@@ -190,7 +167,6 @@ window.login = async function() {
 };
 
 window.goAdmin = function() { window.location.href = 'admin.html'; };
-
 document.addEventListener('keydown', e => { if(e.key === 'Enter') window.login(); });
 </script>
 </body>
