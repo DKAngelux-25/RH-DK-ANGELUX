@@ -16,6 +16,11 @@
   --red-dim:rgba(201,76,76,0.12);--amber-dim:rgba(212,147,74,0.12);
 }
 body{font-family:'Lato',sans-serif;min-height:100vh;background:var(--dark);color:var(--text);}
+.page-loader{position:fixed;inset:0;background:var(--dark);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+.page-loader .pl-logo{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--gold);letter-spacing:3px;}
+.page-loader .pl-bar{width:160px;height:2px;background:rgba(201,168,76,0.2);border-radius:99px;overflow:hidden;}
+.page-loader .pl-fill{height:100%;background:var(--gold);animation:loadFill 1s ease-out forwards;}
+@keyframes loadFill{to{width:100%}}
 nav{background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.2);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
 .nav-brand{display:flex;align-items:center;gap:10px;}
 .nav-logo{width:34px;height:34px;border:1.5px solid var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:10px;font-weight:800;color:var(--gold);}
@@ -72,26 +77,42 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 .emp-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3A3060,#1A2A40);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0;}
 .emp-name{font-weight:700;font-size:14px;}
 .emp-sub{font-size:11px;color:var(--muted);}
-.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:flex-end;}
 .filter-bar input,.filter-bar select{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'Lato',sans-serif;font-size:12px;outline:none;}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--gold);}
 .tab-inner{display:flex;gap:6px;margin-bottom:14px;}
 .tab-inner button{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;}
 .tab-inner button.active{background:var(--gold-dim);border-color:rgba(201,168,76,0.4);color:var(--gold);}
-/* Détails employé */
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;}
-.detail-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
-.detail-label{color:var(--muted);}
-.detail-val{font-weight:600;}
-/* Modal overlay fakné */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
 .overlay.open{display:flex;}
 .modal{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;}
 .modal-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;}
 .modal-close{float:right;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;margin-top:-4px;}
+.detail-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.detail-label{color:var(--muted);}
+.detail-val{font-weight:600;}
+.loading-text{text-align:center;color:var(--muted);font-size:13px;padding:20px;}
+
+/* ANNONCES ADMIN */
+.annonce-preview{border-radius:12px;padding:16px 18px;margin-top:14px;border:1px solid transparent;}
+.annonce-preview.fete{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border-color:rgba(201,168,76,0.3);}
+.annonce-preview.formation{background:linear-gradient(135deg,rgba(74,143,212,0.12),rgba(74,143,212,0.04));border-color:rgba(74,143,212,0.3);}
+.annonce-preview.urgent{background:linear-gradient(135deg,rgba(201,76,76,0.12),rgba(201,76,76,0.04));border-color:rgba(201,76,76,0.3);}
+.annonce-preview.info{background:linear-gradient(135deg,rgba(76,175,126,0.12),rgba(76,175,126,0.04));border-color:rgba(76,175,126,0.3);}
+.annonce-preview.reunion{background:linear-gradient(135deg,rgba(139,127,212,0.12),rgba(139,127,212,0.04));border-color:rgba(139,127,212,0.3);}
+.annonce-list-item{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;}
+.type-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.type-btn{padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px;}
+.type-btn.active{border-color:var(--gold);background:var(--gold-dim);color:var(--gold);}
 </style>
 </head>
 <body>
+
+<div class="page-loader" id="pageLoader">
+  <div class="pl-logo">DK ANGELUX</div>
+  <div class="pl-bar"><div class="pl-fill"></div></div>
+</div>
+
 <nav>
   <div class="nav-brand">
     <div class="nav-logo">DK</div>
@@ -106,6 +127,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('dashboard',this)">📊 Tableau de bord</button>
+  <button class="tab" onclick="showTab('annonces',this)">📢 Annonces</button>
   <button class="tab" onclick="showTab('employes',this)">👥 Employés</button>
   <button class="tab" onclick="showTab('conges',this)">🌴 Congés</button>
   <button class="tab" onclick="showTab('pointages',this)">⏱ Pointages</button>
@@ -118,11 +140,11 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 
 <!-- DASHBOARD -->
 <div class="section active" id="sec-dashboard">
-  <div class="grid4" id="dash-stats"></div>
+  <div class="grid4" id="dash-stats"><div class="loading-text">⏳ Chargement...</div></div>
   <div class="card">
     <div class="card-title">Congés en attente</div>
     <table><thead><tr><th>Employé</th><th>Type</th><th>Dates</th><th>Jours</th><th>Actions</th></tr></thead>
-    <tbody id="dash-conges"></tbody></table>
+    <tbody id="dash-conges"><tr><td colspan="5" class="loading-text">⏳</td></tr></tbody></table>
   </div>
   <div class="card">
     <div class="card-title">Performances non signées</div>
@@ -136,6 +158,40 @@ tr:hover td{background:rgba(255,255,255,0.015);}
   </div>
 </div>
 
+<!-- ANNONCES -->
+<div class="section" id="sec-annonces">
+  <div class="card">
+    <div class="card-title">📢 Publier une annonce</div>
+    <div class="alert" id="annonce-alert"></div>
+    <div class="form-group">
+      <label>Type d'annonce</label>
+      <div class="type-selector">
+        <button class="type-btn active" data-type="info" onclick="selectAnnonceType('info',this)">ℹ️ Information</button>
+        <button class="type-btn" data-type="fete" onclick="selectAnnonceType('fete',this)">🎉 Fête / Célébration</button>
+        <button class="type-btn" data-type="formation" onclick="selectAnnonceType('formation',this)">📚 Formation</button>
+        <button class="type-btn" data-type="reunion" onclick="selectAnnonceType('reunion',this)">📞 Réunion</button>
+        <button class="type-btn" data-type="urgent" onclick="selectAnnonceType('urgent',this)">🚨 Urgent</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Titre de l'annonce</label><input type="text" id="ann-titre" placeholder="Ex: Réunion d'équipe du vendredi" oninput="updatePreview()"></div>
+      <div class="form-group"><label>Date de l'événement (optionnel)</label><input type="date" id="ann-date-evenement" oninput="updatePreview()"></div>
+    </div>
+    <div class="form-group"><label>Message</label><textarea id="ann-message" rows="4" placeholder="Rédigez votre message à destination des employés..." oninput="updatePreview()"></textarea></div>
+    <div id="ann-preview-label" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-bottom:8px;">Aperçu</div>
+    <div id="ann-preview" class="annonce-preview info">
+      <div style="font-size:14px;color:var(--muted)">Remplissez le formulaire pour voir l'aperçu...</div>
+    </div>
+    <div style="margin-top:14px">
+      <button class="btn-primary" onclick="publierAnnonce()">📤 Publier l'annonce →</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Annonces publiées</div>
+    <div id="annonces-admin-list"><div class="loading-text">⏳ Chargement...</div></div>
+  </div>
+</div>
+
 <!-- EMPLOYES -->
 <div class="section" id="sec-employes">
   <div class="card">
@@ -143,7 +199,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
     <div class="filter-bar">
       <input type="text" id="emp-search" placeholder="🔍 Rechercher..." oninput="loadEmps()">
     </div>
-    <div id="emp-list"></div>
+    <div id="emp-list"><div class="loading-text">⏳ Chargement...</div></div>
   </div>
 </div>
 
@@ -173,18 +229,10 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 <!-- POINTAGES -->
 <div class="section" id="sec-pointages">
   <div class="card">
-    <div class="card-title">Pointages</div>
+    <div class="card-title">Pointages par date</div>
     <div class="filter-bar">
-      <div>
-        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Date</label>
-        <input type="date" id="ptg-date-filter" onchange="loadPtgAdmin()">
-      </div>
-      <div>
-        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Agent</label>
-        <select id="ptg-agent-filter" onchange="loadPtgAdmin()">
-          <option value="">Tous les agents</option>
-        </select>
-      </div>
+      <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Date</label><input type="date" id="ptg-date-filter" onchange="loadPtgAdmin()"></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Agent</label><select id="ptg-agent-filter" onchange="loadPtgAdmin()"><option value="">Tous les agents</option></select></div>
     </div>
     <table><thead><tr><th>Employé</th><th>Statut</th><th>Heure</th><th>Durée</th><th>Dépassement</th></tr></thead>
     <tbody id="ptg-admin-table"></tbody></table>
@@ -192,12 +240,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
   <div class="card">
     <div class="card-title">Retards par agent</div>
     <div class="filter-bar">
-      <div>
-        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Agent</label>
-        <select id="retard-agent-filter" onchange="loadRetardsAdmin()">
-          <option value="">Tous les agents</option>
-        </select>
-      </div>
+      <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Agent</label><select id="retard-agent-filter" onchange="loadRetardsAdmin()"><option value="">Tous les agents</option></select></div>
     </div>
     <table><thead><tr><th>Agent</th><th>Date</th><th>Retard arrivée</th><th>Retard déjeuner</th><th>Retard pause 1</th><th>Retard pause 2</th></tr></thead>
     <tbody id="retards-admin-table"></tbody></table>
@@ -241,23 +284,21 @@ tr:hover td{background:rgba(255,255,255,0.015);}
       <div class="form-group"><label>Mois concerné</label><input type="month" id="sal-mois"></div>
     </div>
     <div class="form-row3">
-      <div class="form-group"><label>Salaire brut (FCFA)</label><input type="number" id="sal-brut" placeholder="0"></div>
-      <div class="form-group"><label>Cotisations (FCFA)</label><input type="number" id="sal-cotisations" placeholder="0"></div>
-      <div class="form-group"><label>Primes (FCFA)</label><input type="number" id="sal-primes" placeholder="0"></div>
+      <div class="form-group"><label>Salaire brut (FCFA)</label><input type="number" id="sal-brut" placeholder="0" oninput="calcNet()"></div>
+      <div class="form-group"><label>Cotisations (FCFA)</label><input type="number" id="sal-cotisations" placeholder="0" oninput="calcNet()"></div>
+      <div class="form-group"><label>Primes (FCFA)</label><input type="number" id="sal-primes" placeholder="0" oninput="calcNet()"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Salaire net (FCFA)</label><input type="number" id="sal-montant" placeholder="Calculé auto ou saisi"></div>
+      <div class="form-group"><label>Salaire net (FCFA)</label><input type="number" id="sal-montant" placeholder="Calculé automatiquement"></div>
       <div class="form-group"><label>Date de paiement</label><input type="date" id="sal-date"></div>
     </div>
-    <div class="form-group"><label>Message pour l'employé</label><textarea id="sal-message" rows="2" placeholder="Ex: Salaire du mois de janvier 2025 — Bonne continuation"></textarea></div>
+    <div class="form-group"><label>Message pour l'employé</label><textarea id="sal-message" rows="2" placeholder="Ex: Salaire du mois de janvier 2025"></textarea></div>
     <button class="btn-primary" onclick="envoyerSalaire()">📤 Envoyer la notification →</button>
   </div>
   <div class="card">
-    <div class="card-title">Historique des salaires envoyés</div>
+    <div class="card-title">Historique des salaires</div>
     <div class="filter-bar">
-      <select id="sal-filter-emp" onchange="loadSalairesAdmin()">
-        <option value="">Tous les agents</option>
-      </select>
+      <select id="sal-filter-emp" onchange="loadSalairesAdmin()"><option value="">Tous les agents</option></select>
     </div>
     <table><thead><tr><th>Employé</th><th>Mois</th><th>Net</th><th>Brut</th><th>Primes</th><th>Lu</th><th>Supprimer</th></tr></thead>
     <tbody id="sal-admin-table"></tbody></table>
@@ -279,8 +320,8 @@ tr:hover td{background:rgba(255,255,255,0.015);}
     </div>
     <div class="form-row3">
       <div class="form-group"><label>Téléphone</label><input type="text" id="add-tel" placeholder="+228 xx xx xx xx"></div>
-      <div class="form-group"><label>Quartier de résidence</label><input type="text" id="add-quartier" placeholder="Bè, Tokoin..."></div>
-      <div class="form-group"><label>Nombre d'enfants</label><input type="number" id="add-enfants" value="0" min="0"></div>
+      <div class="form-group"><label>Quartier</label><input type="text" id="add-quartier" placeholder="Bè, Tokoin..."></div>
+      <div class="form-group"><label>Enfants</label><input type="number" id="add-enfants" value="0" min="0"></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label>Mois travaillés (ancienneté)</label><input type="number" id="add-anciennete" value="12" min="1" oninput="calcAddConges()"></div>
@@ -304,55 +345,102 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 
 </div>
 
-<!-- MODAL détail employé complet -->
-<script>
-const uid=sessionStorage.getItem('rh_current');
-if(uid!=='ADMIN'){window.location.href='index.html';}
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, setDoc,
+  collection, query, where, orderBy, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-function showTab(tab,el){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('sec-'+tab).classList.add('active');
-  el.classList.add('active');
-  if(tab==='dashboard')loadDash();
-  if(tab==='employes')loadEmps();
-  if(tab==='conges')loadCongesAdmin('all');
-  if(tab==='pointages'){initPtgFilters();const t=new Date().toISOString().slice(0,10);document.getElementById('ptg-date-filter').value=t;loadPtgAdmin();loadRetardsAdmin();}
-  if(tab==='performances')loadPerfsAdmin();
-  if(tab==='ajouter')calcAddConges();
-  if(tab==='salaires')loadSalairesTab();
+const firebaseConfig = {
+  apiKey: "AIzaSyDPxpICy5rmjkGFxIa48drLcHiWMrjjcys",
+  authDomain: "rh-dk-angelux.firebaseapp.com",
+  projectId: "rh-dk-angelux",
+  storageBucket: "rh-dk-angelux.firebasestorage.app",
+  messagingSenderId: "650294441544",
+  appId: "1:650294441544:web:32dbf9e1374072394a8a7d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const uid = sessionStorage.getItem('rh_current');
+if (uid !== 'ADMIN') window.location.href = 'index.html';
+
+const punchCfg = { arrivee:{label:'Arrivée',color:'#4CAF7E'}, production:{label:'Production',color:'#4CAF7E'}, pause1:{label:'Pause 15min (1)',color:'#4A8FD4'}, pause2:{label:'Pause 15min (2)',color:'#8B7FD4'}, dejeuner:{label:'Déjeuner',color:'#D4934A'}, reunion:{label:'Réunion',color:'#C9A84C'}, depart:{label:'Départ',color:'#C94C4C'} };
+
+let allUsers = [];
+let cgFilter = 'all';
+let selectedAnnonceType = 'info';
+
+async function loadAllUsers() {
+  const snap = await getDocs(collection(db, 'users'));
+  allUsers = [];
+  snap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
+  return allUsers;
 }
 
-function logout(){sessionStorage.clear();window.location.href='index.html';}
+// INIT
+async function init() {
+  try {
+    await loadAllUsers();
+    document.getElementById('pageLoader').style.display = 'none';
+    loadDash();
+  } catch(e) {
+    document.getElementById('pageLoader').innerHTML = '<div style="color:#E08080;font-size:14px">Erreur Firebase: ' + e.message + '</div>';
+  }
+}
 
-const punchCfg={arrivee:{label:'Arrivée',color:'#4CAF7E'},production:{label:'Production',color:'#4CAF7E'},pause1:{label:'Pause 15min (1)',color:'#4A8FD4'},pause2:{label:'Pause 15min (2)',color:'#8B7FD4'},dejeuner:{label:'Déjeuner',color:'#D4934A'},reunion:{label:'Réunion',color:'#C9A84C'},depart:{label:'Départ',color:'#C94C4C'}};
+window.showTab = function(tab, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + tab).classList.add('active');
+  el.classList.add('active');
+  if (tab === 'dashboard') loadDash();
+  if (tab === 'annonces') { loadAnnoncesAdmin(); }
+  if (tab === 'employes') loadEmps();
+  if (tab === 'conges') loadCongesAdmin();
+  if (tab === 'pointages') { initPtgFilters(); const t = new Date().toISOString().slice(0,10); document.getElementById('ptg-date-filter').value = t; loadPtgAdmin(); loadRetardsAdmin(); }
+  if (tab === 'performances') loadPerfsAdmin();
+  if (tab === 'ajouter') calcAddConges();
+  if (tab === 'salaires') loadSalairesTab();
+};
 
-// DASHBOARD
-function loadDash(){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
-  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  const today=new Date().toISOString().slice(0,10);
-  const pending=conges.filter(c=>c.status==='pending');
-  const todayPtgs=ptgs.filter(p=>p.date===today);
-  const unsigned=perfs.filter(p=>!p.signed);
-  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
-  const unreadSal=salaires.filter(s=>!s.read).length;
+window.logout = function() { sessionStorage.clear(); window.location.href = 'index.html'; };
 
-  document.getElementById('dash-stats').innerHTML=`
-    <div class="stat"><div class="stat-val" style="color:var(--blue)">${users.length}</div><div class="stat-lbl">Employés</div></div>
+// --- DASHBOARD ---
+async function loadDash() {
+  const today = new Date().toISOString().slice(0, 10);
+  const [congesSnap, ptgsSnap, perfsSnap, salairesSnap] = await Promise.all([
+    getDocs(collection(db, 'conges')),
+    getDocs(query(collection(db, 'pointages'), where('date', '==', today))),
+    getDocs(collection(db, 'performances')),
+    getDocs(collection(db, 'salaires'))
+  ]);
+
+  const conges = []; congesSnap.forEach(d => conges.push({ id: d.id, ...d.data() }));
+  const ptgs = []; ptgsSnap.forEach(d => ptgs.push(d.data()));
+  const perfs = []; perfsSnap.forEach(d => perfs.push({ id: d.id, ...d.data() }));
+  const salaires = []; salairesSnap.forEach(d => salaires.push(d.data()));
+
+  const pending = conges.filter(c => c.status === 'pending');
+  const unsigned = perfs.filter(p => !p.signed);
+  const unreadSal = salaires.filter(s => !s.read).length;
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat"><div class="stat-val" style="color:var(--blue)">${allUsers.length}</div><div class="stat-lbl">Employés</div></div>
     <div class="stat"><div class="stat-val" style="color:var(--amber)">${pending.length}</div><div class="stat-lbl">Congés en attente</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--green)">${todayPtgs.length}</div><div class="stat-lbl">Pointages aujourd'hui</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--green)">${ptgs.length}</div><div class="stat-lbl">Pointages aujourd'hui</div></div>
     <div class="stat"><div class="stat-val" style="color:var(--purple)">${unsigned.length}</div><div class="stat-lbl">Perfs non signées</div></div>
     <div class="stat"><div class="stat-val" style="color:var(--gold)">${unreadSal}</div><div class="stat-lbl">Bulletins non lus</div></div>`;
 
   // Congés pending
-  const tb1=document.getElementById('dash-conges');
-  tb1.innerHTML='';
-  if(!pending.length)tb1.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucune demande en attente</td></tr>';
-  else pending.forEach(c=>{
-    tb1.innerHTML+=`<tr>
+  const tb1 = document.getElementById('dash-conges');
+  tb1.innerHTML = '';
+  if (!pending.length) tb1.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucune demande en attente</td></tr>';
+  else pending.forEach(c => {
+    tb1.innerHTML += `<tr>
       <td><strong>${c.userName}</strong></td>
       <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
       <td>${c.debut} → ${c.fin}</td><td>${c.jours}j</td>
@@ -361,53 +449,132 @@ function loadDash(){
     </tr>`;
   });
 
-  // Perfs non signées
-  const tb2=document.getElementById('dash-perfs');
-  tb2.innerHTML='';
-  if(!unsigned.length)tb2.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Toutes signées ✓</td></tr>';
-  else unsigned.forEach(p=>{
-    const user=users.find(u=>u.id===p.userId);
-    const c=p.score>=85?'var(--green)':p.score>=70?'var(--amber)':'var(--red)';
-    tb2.innerHTML+=`<tr><td>${user?user.name:p.userId}</td><td>${p.mois||'—'}</td><td><strong style="color:${c}">${p.score}%</strong></td><td><span class="badge badge-pending">En attente</span></td></tr>`;
+  // Perfs
+  const tb2 = document.getElementById('dash-perfs');
+  tb2.innerHTML = '';
+  if (!unsigned.length) tb2.innerHTML = '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Toutes signées ✓</td></tr>';
+  else unsigned.forEach(p => {
+    const u = allUsers.find(x => x.id === p.userId);
+    const c = p.score >= 85 ? 'var(--green)' : p.score >= 70 ? 'var(--amber)' : 'var(--red)';
+    tb2.innerHTML += `<tr><td>${u ? u.name : p.userId}</td><td>${p.mois||'—'}</td><td><strong style="color:${c}">${p.score}%</strong></td><td><span class="badge badge-pending">En attente</span></td></tr>`;
   });
 
   // Retards du jour
-  const tb3=document.getElementById('dash-retards');
-  tb3.innerHTML='';
-  const todayArrivees=ptgs.filter(p=>p.date===today&&p.type==='arrivee');
-  if(!todayArrivees.length)tb3.innerHTML='<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage aujourd\'hui</td></tr>';
-  else todayArrivees.forEach(p=>{
-    const user=users.find(u=>u.id===p.userId);
-    const ret=p.retardArrivee||0;
-    const c=ret>0?'#E08080':'var(--green)';
-    tb3.innerHTML+=`<tr>
-      <td>${user?user.name:p.userId}</td>
-      <td style="color:var(--muted)">${user?user.heureArrivee:'08:00'}</td>
+  const tb3 = document.getElementById('dash-retards');
+  tb3.innerHTML = '';
+  const arrivees = ptgs.filter(p => p.type === 'arrivee');
+  if (!arrivees.length) tb3.innerHTML = '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage aujourd\'hui</td></tr>';
+  else arrivees.forEach(p => {
+    const u = allUsers.find(x => x.id === p.userId);
+    const ret = p.retardArrivee || 0;
+    const c = ret > 0 ? '#E08080' : 'var(--green)';
+    tb3.innerHTML += `<tr>
+      <td>${u ? u.name : p.userId}</td>
+      <td style="color:var(--muted)">${u ? u.heureArrivee : '08:00'}</td>
       <td>${p.time}</td>
-      <td><span style="color:${c};font-weight:700">${ret>0?'+'+ret+' min':'À l\'heure ✓'}</span></td>
+      <td><span style="color:${c};font-weight:700">${ret > 0 ? '+' + ret + ' min' : 'À l\'heure ✓'}</span></td>
     </tr>`;
   });
 }
 
-// EMPLOYES
-function loadEmps(){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  const search=(document.getElementById('emp-search')||{}).value?.toLowerCase()||'';
-  const el=document.getElementById('emp-list');
-  el.innerHTML='';
-  const filtered=users.filter(u=>u.name.toLowerCase().includes(search)||u.poste?.toLowerCase().includes(search)||u.email?.toLowerCase().includes(search));
-  filtered.forEach(u=>{
-    const pris=conges.filter(c=>c.userId===u.id&&c.status==='approved').reduce((s,c)=>s+c.jours,0);
-    el.innerHTML+=`<div class="emp-card">
-      <div class="emp-avatar">${u.avatar}</div>
-      <div class="emp-info" style="flex:1">
+// --- ANNONCES ---
+window.selectAnnonceType = function(type, el) {
+  selectedAnnonceType = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  updatePreview();
+};
+
+window.updatePreview = function() {
+  const titre = document.getElementById('ann-titre').value;
+  const message = document.getElementById('ann-message').value;
+  const dateEv = document.getElementById('ann-date-evenement').value;
+  const typeLabels = { fete: '🎉 Fête', formation: '📚 Formation', urgent: '🚨 Urgent', info: 'ℹ️ Information', reunion: '📞 Réunion' };
+  const prev = document.getElementById('ann-preview');
+  prev.className = 'annonce-preview ' + selectedAnnonceType;
+  prev.innerHTML = `
+    <div style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;margin-bottom:8px;background:rgba(255,255,255,0.1);text-transform:uppercase;letter-spacing:0.5px">${typeLabels[selectedAnnonceType]||'ℹ️ Info'}</div>
+    <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px">${titre||'<span style="color:var(--muted)">Titre de l\'annonce...</span>'}</div>
+    <div style="font-size:13px;line-height:1.6;margin-bottom:8px">${message ? message.replace(/\n/g,'<br>') : '<span style="color:var(--muted)">Message...</span>'}</div>
+    <div style="font-size:11px;color:var(--muted)">${dateEv ? '📌 Événement : ' + dateEv : ''}</div>`;
+};
+
+window.publierAnnonce = async function() {
+  const titre = document.getElementById('ann-titre').value.trim();
+  const message = document.getElementById('ann-message').value.trim();
+  const dateEvenement = document.getElementById('ann-date-evenement').value;
+  if (!titre || !message) { showAdminAlert('annonce-alert', 'Titre et message sont obligatoires.', 'orange'); return; }
+  try {
+    await addDoc(collection(db, 'annonces'), {
+      type: selectedAnnonceType, titre, message, dateEvenement: dateEvenement || null,
+      auteur: 'Directeur RH', createdAt: serverTimestamp()
+    });
+    showAdminAlert('annonce-alert', '✅ Annonce publiée ! Tous les employés peuvent la voir.', 'green');
+    document.getElementById('ann-titre').value = '';
+    document.getElementById('ann-message').value = '';
+    document.getElementById('ann-date-evenement').value = '';
+    updatePreview();
+    loadAnnoncesAdmin();
+  } catch(e) { showAdminAlert('annonce-alert', 'Erreur de publication.', 'red'); }
+};
+
+async function loadAnnoncesAdmin() {
+  const el = document.getElementById('annonces-admin-list');
+  el.innerHTML = '<div class="loading-text">⏳ Chargement...</div>';
+  try {
+    const q = query(collection(db, 'annonces'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) { el.innerHTML = '<div class="loading-text">Aucune annonce publiée.</div>'; return; }
+    el.innerHTML = '';
+    const typeLabels = { fete: '🎉 Fête', formation: '📚 Formation', urgent: '🚨 Urgent', info: 'ℹ️ Info', reunion: '📞 Réunion' };
+    snap.forEach(d => {
+      const a = d.data();
+      const date = a.createdAt?.toDate ? a.createdAt.toDate().toLocaleDateString('fr-FR') : '—';
+      el.innerHTML += `<div class="annonce-list-item">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-size:11px;font-weight:700;background:rgba(255,255,255,0.07);padding:2px 8px;border-radius:20px">${typeLabels[a.type]||'Info'}</span>
+              <span style="font-size:11px;color:var(--muted)">${date}</span>
+              ${a.dateEvenement ? `<span style="font-size:11px;color:var(--amber)">📌 ${a.dateEvenement}</span>` : ''}
+            </div>
+            <div style="font-weight:700;margin-bottom:4px">${a.titre}</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5">${a.message.replace(/\n/g,'<br>').substring(0, 120)}${a.message.length > 120 ? '...' : ''}</div>
+          </div>
+          <button class="btn-sm btn-delete" style="margin-left:12px;flex-shrink:0" onclick="deleteAnnonce('${d.id}')">🗑</button>
+        </div>
+      </div>`;
+    });
+  } catch(e) { el.innerHTML = '<div class="loading-text" style="color:#E08080">Erreur de chargement.</div>'; }
+}
+
+window.deleteAnnonce = async function(id) {
+  if (!confirm('Supprimer cette annonce ?')) return;
+  await deleteDoc(doc(db, 'annonces', id));
+  loadAnnoncesAdmin();
+};
+
+// --- EMPLOYES ---
+window.loadEmps = async function() {
+  await loadAllUsers();
+  const search = (document.getElementById('emp-search') || {}).value?.toLowerCase() || '';
+  const el = document.getElementById('emp-list');
+  const congesSnap = await getDocs(collection(db, 'conges'));
+  const conges = []; congesSnap.forEach(d => conges.push(d.data()));
+  el.innerHTML = '';
+  const filtered = allUsers.filter(u => u.name?.toLowerCase().includes(search) || u.poste?.toLowerCase().includes(search) || u.email?.toLowerCase().includes(search));
+  if (!filtered.length) { el.innerHTML = '<div class="loading-text">Aucun employé trouvé.</div>'; return; }
+  filtered.forEach(u => {
+    const pris = conges.filter(c => c.userId === u.id && c.status === 'approved').reduce((s, c) => s + c.jours, 0);
+    el.innerHTML += `<div class="emp-card">
+      <div class="emp-avatar">${u.avatar || u.name?.slice(0,2).toUpperCase()}</div>
+      <div style="flex:1">
         <div class="emp-name">${u.name}</div>
         <div class="emp-sub">${u.poste} · ${u.email}</div>
-        <div class="emp-sub" style="margin-top:2px">${u.telephone?'📞 '+u.telephone+' · ':''} ${u.quartier?'📍 '+u.quartier:''}</div>
+        <div class="emp-sub" style="margin-top:2px">${u.telephone ? '📞 ' + u.telephone + ' · ' : ''}${u.quartier ? '📍 ' + u.quartier : ''}</div>
       </div>
       <div style="text-align:center;margin-right:14px">
-        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--green)">${u.congesRestants||0}</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--green)">${u.congesRestants || 0}</div>
         <div style="font-size:10px;color:var(--muted)">j. restants</div>
       </div>
       <div style="text-align:center;margin-right:14px">
@@ -417,26 +584,22 @@ function loadEmps(){
       <button class="btn-sm" style="border:1px solid var(--border);color:var(--text);background:var(--dark4)" onclick="viewEmp('${u.id}')">Détails</button>
     </div>`;
   });
-}
+};
 
-function viewEmp(id){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const u=users.find(x=>x.id===id);
-  if(!u)return;
-  document.getElementById('modal-emp-name').textContent=u.name;
-  document.getElementById('modal-emp-body').innerHTML=`
+window.viewEmp = function(id) {
+  const u = allUsers.find(x => x.id === id);
+  if (!u) return;
+  document.getElementById('modal-emp-name').textContent = u.name;
+  document.getElementById('modal-emp-body').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-      <div>
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Informations personnelles</div>
+      <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Infos personnelles</div>
         ${row('Email',u.email)}${row('Téléphone',u.telephone||'—')}${row('Quartier',u.quartier||'—')}${row('Enfants',u.enfants||0)}
       </div>
-      <div>
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Contrat & ancienneté</div>
-        ${row('Poste',u.poste)}${row('Ancienneté',`${u.moisTravailles||12} mois`)}${row('Salaire base',`${Number(u.salaire||0).toLocaleString('fr-FR')} FCFA`)}${row('Congés restants',`${u.congesRestants||0} j`)}
+      <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Contrat</div>
+        ${row('Poste',u.poste)}${row('Ancienneté',(u.moisTravailles||12)+' mois')}${row('Salaire base',Number(u.salaire||0).toLocaleString('fr-FR')+' FCFA')}${row('Congés restants',(u.congesRestants||0)+' j')}
       </div>
     </div>
-    <div>
-      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Horaires de travail</div>
+    <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-weight:700">Horaires</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
         ${timeCard('Arrivée',u.heureArrivee||'08:00','var(--green)')}
         ${timeCard('Pause déj.',`${u.heurePause||'12:00'} – ${u.heurePauseFin||'13:00'}`,'var(--amber)')}
@@ -444,19 +607,19 @@ function viewEmp(id){
       </div>
     </div>
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px">
-      <button class="btn-sm btn-primary" style="padding:8px 16px;font-size:12px" onclick="editEmp('${id}')">✏️ Modifier</button>
+      <button class="btn-sm btn-approve" onclick="editEmp('${id}')">✏️ Modifier</button>
+      <button class="btn-sm btn-delete" onclick="deleteEmp('${id}')">🗑 Supprimer</button>
     </div>`;
   document.getElementById('modal-emp').classList.add('open');
-}
+};
 
-function row(label,val){return `<div class="detail-row"><span class="detail-label">${label}</span><span class="detail-val">${val}</span></div>`;}
-function timeCard(label,val,color){return `<div style="background:var(--dark3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:10px;color:var(--muted);margin-bottom:4px">${label}</div><div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:${color}">${val}</div></div>`;}
+function row(label, val) { return `<div class="detail-row"><span class="detail-label">${label}</span><span class="detail-val">${val}</span></div>`; }
+function timeCard(label, val, color) { return `<div style="background:var(--dark3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:10px;color:var(--muted);margin-bottom:4px">${label}</div><div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:${color}">${val}</div></div>`; }
 
-function editEmp(id){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const u=users.find(x=>x.id===id);
-  if(!u)return;
-  document.getElementById('modal-emp-body').innerHTML=`
+window.editEmp = function(id) {
+  const u = allUsers.find(x => x.id === id);
+  if (!u) return;
+  document.getElementById('modal-emp-body').innerHTML = `
     <div class="form-row"><div class="form-group"><label>Nom complet</label><input id="edit-name" value="${u.name}"></div><div class="form-group"><label>Poste</label><input id="edit-poste" value="${u.poste||''}"></div></div>
     <div class="form-row"><div class="form-group"><label>Email</label><input id="edit-email" value="${u.email||''}"></div><div class="form-group"><label>Téléphone</label><input id="edit-tel" value="${u.telephone||''}"></div></div>
     <div class="form-row"><div class="form-group"><label>Quartier</label><input id="edit-quartier" value="${u.quartier||''}"></div><div class="form-group"><label>Enfants</label><input type="number" id="edit-enfants" value="${u.enfants||0}"></div></div>
@@ -467,49 +630,59 @@ function editEmp(id){
       <button class="btn-primary" style="padding:10px 18px;font-size:12px" onclick="saveEmp('${id}')">Enregistrer</button>
       <button class="btn-sm" style="border:1px solid var(--border);color:var(--muted);background:transparent;padding:10px 14px" onclick="viewEmp('${id}')">Annuler</button>
     </div>`;
-}
+};
 
-function saveEmp(id){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const idx=users.findIndex(x=>x.id===id);
-  if(idx<0)return;
-  users[idx].name=document.getElementById('edit-name').value||users[idx].name;
-  users[idx].poste=document.getElementById('edit-poste').value||users[idx].poste;
-  users[idx].email=document.getElementById('edit-email').value||users[idx].email;
-  users[idx].telephone=document.getElementById('edit-tel').value;
-  users[idx].quartier=document.getElementById('edit-quartier').value;
-  users[idx].enfants=parseInt(document.getElementById('edit-enfants').value)||0;
-  users[idx].heureArrivee=document.getElementById('edit-arrivee').value||'08:00';
-  users[idx].heureDepart=document.getElementById('edit-depart').value||'17:30';
-  users[idx].heurePause=document.getElementById('edit-pause').value||'12:00';
-  users[idx].heurePauseFin=document.getElementById('edit-pause-fin').value||'13:00';
-  users[idx].salaire=parseInt(document.getElementById('edit-salaire').value)||0;
-  users[idx].congesRestants=parseInt(document.getElementById('edit-conges').value)||0;
-  localStorage.setItem('rh_users',JSON.stringify(users));
-  viewEmp(id);
-}
+window.saveEmp = async function(id) {
+  const updates = {
+    name: document.getElementById('edit-name').value,
+    poste: document.getElementById('edit-poste').value,
+    email: document.getElementById('edit-email').value,
+    telephone: document.getElementById('edit-tel').value,
+    quartier: document.getElementById('edit-quartier').value,
+    enfants: parseInt(document.getElementById('edit-enfants').value) || 0,
+    heureArrivee: document.getElementById('edit-arrivee').value || '08:00',
+    heureDepart: document.getElementById('edit-depart').value || '17:30',
+    heurePause: document.getElementById('edit-pause').value || '12:00',
+    heurePauseFin: document.getElementById('edit-pause-fin').value || '13:00',
+    salaire: parseInt(document.getElementById('edit-salaire').value) || 0,
+    congesRestants: parseInt(document.getElementById('edit-conges').value) || 0
+  };
+  try {
+    await updateDoc(doc(db, 'users', id), updates);
+    await loadAllUsers();
+    viewEmp(id);
+  } catch(e) { alert('Erreur de sauvegarde.'); }
+};
 
-function closeModal(id){document.getElementById(id).classList.remove('open');}
+window.deleteEmp = async function(id) {
+  if (!confirm('Supprimer cet employé ? Cette action est irréversible.')) return;
+  await deleteDoc(doc(db, 'users', id));
+  closeModal('modal-emp');
+  await loadAllUsers();
+  loadEmps();
+};
 
-// CONGES
-let cgFilter='all';
-function filterConges(f,el){
-  cgFilter=f;
-  document.querySelectorAll('.tab-inner button').forEach(b=>b.classList.remove('active'));
+window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+
+// --- CONGES ---
+window.filterConges = function(f, el) {
+  cgFilter = f;
+  document.querySelectorAll('.tab-inner button').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  loadCongesAdmin(f);
-}
-function loadCongesAdmin(filter){
-  cgFilter=filter||cgFilter;
-  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  const tbody=document.getElementById('cg-admin-table');
-  tbody.innerHTML='';
-  let list=cgFilter==='all'?conges:conges.filter(c=>c.status===cgFilter);
-  if(!list.length){tbody.innerHTML='<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:14px">Aucune demande</td></tr>';return;}
-  list.forEach(c=>{
-    const sl={pending:'badge-pending',approved:'badge-approved',refused:'badge-refused'}[c.status];
-    const st={pending:'En attente',approved:'Approuvé',refused:'Refusé'}[c.status];
-    tbody.innerHTML+=`<tr>
+  loadCongesAdmin();
+};
+
+async function loadCongesAdmin() {
+  const snap = await getDocs(collection(db, 'conges'));
+  const list = []; snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+  const filtered = cgFilter === 'all' ? list : list.filter(c => c.status === cgFilter);
+  const tbody = document.getElementById('cg-admin-table');
+  tbody.innerHTML = '';
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:14px">Aucune demande</td></tr>'; return; }
+  filtered.forEach(c => {
+    const sl = { pending: 'badge-pending', approved: 'badge-approved', refused: 'badge-refused' }[c.status];
+    const st = { pending: 'En attente', approved: 'Approuvé', refused: 'Refusé' }[c.status];
+    tbody.innerHTML += `<tr>
       <td><strong>${c.userName}</strong></td>
       <td>${{paye:'Payé',maladie:'Maladie',sans_solde:'Sans solde'}[c.type]||c.type}</td>
       <td>${c.debut}</td><td>${c.fin}</td><td>${c.jours}j</td>
@@ -520,273 +693,270 @@ function loadCongesAdmin(filter){
   });
 }
 
-function decisionConge(id,decision){
-  const conges=JSON.parse(localStorage.getItem('rh_conges')||'[]');
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const idx=conges.findIndex(c=>c.id===id);
-  if(idx<0)return;
-  const c=conges[idx];
-  c.status=decision;c.decidedAt=new Date().toISOString();
-  if(decision==='approved'&&c.type==='paye'){
-    const ui=users.findIndex(u=>u.id===c.userId);
-    if(ui>-1){users[ui].congesRestants=Math.max(0,(users[ui].congesRestants||0)-c.jours);users[ui].congesPris=(users[ui].congesPris||0)+c.jours;localStorage.setItem('rh_users',JSON.stringify(users));}
+window.decisionConge = async function(id, decision) {
+  const cgSnap = await getDocs(collection(db, 'conges'));
+  let conge = null; let cgDocId = id;
+  cgSnap.forEach(d => { if (d.id === id) { conge = { id: d.id, ...d.data() }; } });
+  if (!conge) return;
+  await updateDoc(doc(db, 'conges', id), { status: decision, decidedAt: new Date().toISOString() });
+  if (decision === 'approved' && conge.type === 'paye') {
+    const userDoc = await getDoc(doc(db, 'users', conge.userId));
+    if (userDoc.exists()) {
+      const u = userDoc.data();
+      await updateDoc(doc(db, 'users', conge.userId), {
+        congesRestants: Math.max(0, (u.congesRestants || 0) - conge.jours),
+        congesPris: (u.congesPris || 0) + conge.jours
+      });
+      await loadAllUsers();
+    }
   }
-  localStorage.setItem('rh_conges',JSON.stringify(conges));
-  loadDash();loadCongesAdmin(cgFilter);
-}
+  loadDash(); loadCongesAdmin();
+};
 
-// POINTAGES
-function initPtgFilters(){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const s1=document.getElementById('ptg-agent-filter');
-  const s2=document.getElementById('retard-agent-filter');
-  s1.innerHTML='<option value="">Tous les agents</option>';
-  s2.innerHTML='<option value="">Tous les agents</option>';
-  users.forEach(u=>{
-    s1.innerHTML+=`<option value="${u.id}">${u.name}</option>`;
-    s2.innerHTML+=`<option value="${u.id}">${u.name}</option>`;
+// --- POINTAGES ---
+window.initPtgFilters = function() {
+  const s1 = document.getElementById('ptg-agent-filter');
+  const s2 = document.getElementById('retard-agent-filter');
+  s1.innerHTML = '<option value="">Tous les agents</option>';
+  s2.innerHTML = '<option value="">Tous les agents</option>';
+  allUsers.forEach(u => {
+    s1.innerHTML += `<option value="${u.id}">${u.name}</option>`;
+    s2.innerHTML += `<option value="${u.id}">${u.name}</option>`;
   });
-}
+};
 
-function loadPtgAdmin(){
-  const date=document.getElementById('ptg-date-filter').value||new Date().toISOString().slice(0,10);
-  const agentFilter=document.getElementById('ptg-agent-filter').value;
-  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  let filtered=ptgs.filter(p=>p.date===date);
-  if(agentFilter)filtered=filtered.filter(p=>p.userId===agentFilter);
-  filtered.sort((a,b)=>a.ts-b.ts);
-  const tbody=document.getElementById('ptg-admin-table');
-  tbody.innerHTML='';
-  if(!filtered.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage</td></tr>';return;}
-  filtered.forEach(p=>{
-    const user=users.find(u=>u.id===p.userId);
-    const cfg=punchCfg[p.type]||{label:p.type,color:'#888'};
-    const dep=p.depassement>0?`<span style="color:#E08080;font-weight:700">⚠️ +${p.depassement}min</span>`:'—';
-    tbody.innerHTML+=`<tr>
-      <td><strong>${user?user.name:p.userId}</strong></td>
+window.loadPtgAdmin = async function() {
+  const date = document.getElementById('ptg-date-filter').value || new Date().toISOString().slice(0, 10);
+  const agentFilter = document.getElementById('ptg-agent-filter').value;
+  const q = query(collection(db, 'pointages'), where('date', '==', date));
+  const snap = await getDocs(q);
+  let list = []; snap.forEach(d => list.push(d.data()));
+  if (agentFilter) list = list.filter(p => p.userId === agentFilter);
+  list.sort((a, b) => a.ts - b.ts);
+  const tbody = document.getElementById('ptg-admin-table');
+  tbody.innerHTML = '';
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:14px">Aucun pointage</td></tr>'; return; }
+  list.forEach(p => {
+    const u = allUsers.find(x => x.id === p.userId);
+    const cfg = punchCfg[p.type] || { label: p.type, color: '#888' };
+    tbody.innerHTML += `<tr>
+      <td><strong>${u ? u.name : p.userId}</strong></td>
       <td><span style="color:${cfg.color};font-weight:600">${cfg.label}</span></td>
       <td style="font-family:'Outfit',sans-serif">${p.time}</td>
-      <td style="color:var(--muted)">${p.dureeMin!=null?p.dureeMin+'min':'—'}</td>
-      <td>${dep}</td>
+      <td style="color:var(--muted)">${p.dureeMin != null ? p.dureeMin + 'min' : '—'}</td>
+      <td>${p.depassement > 0 ? `<span style="color:#E08080;font-weight:700">⚠️ +${p.depassement}min</span>` : '—'}</td>
     </tr>`;
   });
-}
+};
 
-function loadRetardsAdmin(){
-  const agentFilter=document.getElementById('retard-agent-filter').value;
-  const ptgs=JSON.parse(localStorage.getItem('rh_pointages')||'[]');
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  // Regrouper par (userId, date)
-  const map={};
-  ptgs.forEach(p=>{
-    if(agentFilter&&p.userId!==agentFilter)return;
-    const k=p.userId+'|'+p.date;
-    if(!map[k])map[k]=[];
+window.loadRetardsAdmin = async function() {
+  const agentFilter = document.getElementById('retard-agent-filter').value;
+  const snap = await getDocs(collection(db, 'pointages'));
+  const map = {};
+  snap.forEach(d => {
+    const p = d.data();
+    if (agentFilter && p.userId !== agentFilter) return;
+    const k = p.userId + '|' + p.date;
+    if (!map[k]) map[k] = [];
     map[k].push(p);
   });
-  const tbody=document.getElementById('retards-admin-table');
-  tbody.innerHTML='';
-  const keys=Object.keys(map).sort().reverse().slice(0,60);
-  if(!keys.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:14px">Aucun historique</td></tr>';return;}
-  keys.forEach(k=>{
-    const [uid,date]=k.split('|');
-    const user=users.find(u=>u.id===uid);
-    const dayPtgs=map[k].sort((a,b)=>a.ts-b.ts);
-    const arr=dayPtgs.find(p=>p.type==='arrivee');
-    const prods=dayPtgs.filter(p=>p.type==='production');
-    const pause1=dayPtgs.find(p=>p.type==='pause1');
-    const pause2=dayPtgs.find(p=>p.type==='pause2');
-    const dej=dayPtgs.find(p=>p.type==='dejeuner');
-    let retArr=arr?arr.retardArrivee||0:null;
-    let retP1=null,retP2=null,retDej=null;
-    if(pause1){const rp=prods.find(p=>p.ts>pause1.ts);if(rp){const d=Math.round((rp.ts-pause1.ts)/60000);retP1=d>15?d-15:0;}}
-    if(pause2){const rp=prods.find(p=>p.ts>pause2.ts);if(rp){const d=Math.round((rp.ts-pause2.ts)/60000);retP2=d>15?d-15:0;}}
-    if(dej){const rp=prods.find(p=>p.ts>dej.ts);if(rp){const pauseMin=user&&user.heurePause&&user.heurePauseFin?Math.round((new Date(date+'T'+user.heurePauseFin+':00').getTime()-new Date(date+'T'+user.heurePause+':00').getTime())/60000):60;const d=Math.round((rp.ts-dej.ts)/60000);retDej=d>pauseMin?d-pauseMin:0;}}
-    const badgeR=v=>v===null?'<span class="badge" style="background:rgba(138,136,128,0.15);color:var(--muted)">—</span>':(v>0?`<span class="badge badge-refused">+${v}min</span>`:'<span class="badge badge-approved">✓</span>');
-    tbody.innerHTML+=`<tr>
-      <td><strong>${user?user.name:uid}</strong></td>
-      <td>${date}</td>
-      <td>${badgeR(retArr)}</td>
-      <td>${badgeR(retDej)}</td>
-      <td>${badgeR(retP1)}</td>
-      <td>${badgeR(retP2)}</td>
-    </tr>`;
+  const tbody = document.getElementById('retards-admin-table');
+  tbody.innerHTML = '';
+  const keys = Object.keys(map).sort().reverse().slice(0, 60);
+  if (!keys.length) { tbody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:14px">Aucun historique</td></tr>'; return; }
+  keys.forEach(k => {
+    const [uid2, date] = k.split('|');
+    const u = allUsers.find(x => x.id === uid2);
+    const dayPtgs = map[k].sort((a, b) => a.ts - b.ts);
+    const arr = dayPtgs.find(p => p.type === 'arrivee');
+    const prods = dayPtgs.filter(p => p.type === 'production');
+    const pause1 = dayPtgs.find(p => p.type === 'pause1');
+    const pause2 = dayPtgs.find(p => p.type === 'pause2');
+    const dej = dayPtgs.find(p => p.type === 'dejeuner');
+    let retArr = arr ? (arr.retardArrivee || 0) : null;
+    let retP1 = null, retP2 = null, retDej = null;
+    if (pause1) { const rp = prods.find(p => p.ts > pause1.ts); if(rp){const d=Math.round((rp.ts-pause1.ts)/60000);retP1=d>15?d-15:0;} }
+    if (pause2) { const rp = prods.find(p => p.ts > pause2.ts); if(rp){const d=Math.round((rp.ts-pause2.ts)/60000);retP2=d>15?d-15:0;} }
+    if (dej) {
+      const rp = prods.find(p => p.ts > dej.ts);
+      if (rp) {
+        const pauseMin = u?.heurePause && u?.heurePauseFin ? Math.round((new Date(date+'T'+u.heurePauseFin+':00').getTime()-new Date(date+'T'+u.heurePause+':00').getTime())/60000) : 60;
+        const d = Math.round((rp.ts-dej.ts)/60000);
+        retDej = d > pauseMin ? d - pauseMin : 0;
+      }
+    }
+    const badgeR = v => v === null ? '<span class="badge" style="background:rgba(138,136,128,0.15);color:var(--muted)">—</span>' : (v > 0 ? `<span class="badge badge-refused">+${v}min</span>` : '<span class="badge badge-approved">✓</span>');
+    tbody.innerHTML += `<tr><td><strong>${u?u.name:uid2}</strong></td><td>${date}</td><td>${badgeR(retArr)}</td><td>${badgeR(retDej)}</td><td>${badgeR(retP1)}</td><td>${badgeR(retP2)}</td></tr>`;
   });
-}
+};
 
-// PERFORMANCES
-function loadPerfsAdmin(){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  const sel=document.getElementById('perf-emp');
-  sel.innerHTML='';
-  users.forEach(u=>sel.innerHTML+=`<option value="${u.id}">${u.name} — ${u.poste}</option>`);
-  const now=new Date();
-  document.getElementById('perf-mois').value=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
-  const tbody=document.getElementById('perf-admin-table');
-  tbody.innerHTML='';
-  if(!perfs.length){tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:14px">Aucune évaluation</td></tr>';return;}
-  [...perfs].reverse().forEach(p=>{
-    const user=users.find(u=>u.id===p.userId);
-    const c=p.score>=85?'var(--green)':p.score>=70?'var(--amber)':'var(--red)';
-    tbody.innerHTML+=`<tr>
-      <td>${user?user.name:p.userId}</td><td>${p.mois||'—'}</td>
+// --- PERFORMANCES ---
+async function loadPerfsAdmin() {
+  document.getElementById('perf-emp').innerHTML = allUsers.map(u => `<option value="${u.id}">${u.name} — ${u.poste}</option>`).join('');
+  const now = new Date();
+  document.getElementById('perf-mois').value = now.getFullYear() + '-' + (now.getMonth()+1).toString().padStart(2,'0');
+
+  const snap = await getDocs(collection(db, 'performances'));
+  const list = []; snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+  list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+  const tbody = document.getElementById('perf-admin-table');
+  tbody.innerHTML = '';
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:14px">Aucune évaluation</td></tr>'; return; }
+  list.forEach(p => {
+    const u = allUsers.find(x => x.id === p.userId);
+    const c = p.score >= 85 ? 'var(--green)' : p.score >= 70 ? 'var(--amber)' : 'var(--red)';
+    tbody.innerHTML += `<tr>
+      <td>${u?u.name:p.userId}</td><td>${p.mois||'—'}</td>
       <td style="font-size:11px;color:var(--muted)">${p.titre||'—'}</td>
       <td><strong style="color:${c}">${p.score}%</strong></td>
       <td style="color:var(--muted);font-size:11px;max-width:120px">${p.commentaire||'—'}</td>
       <td>${p.signed?'<span style="color:var(--green)">✅ Signé</span>':'<span style="color:var(--amber)">En attente</span>'}</td>
-      <td><button class="btn-sm btn-delete" onclick="deletePerf('${p.id}')">🗑 Supprimer</button></td>
+      <td><button class="btn-sm btn-delete" onclick="deletePerf('${p.id}')">🗑</button></td>
     </tr>`;
   });
 }
 
-function updateScore(v){
-  const c=v>=85?'var(--green)':v>=70?'var(--amber)':'var(--red)';
-  document.getElementById('score-display').textContent=v+'%';
-  document.getElementById('score-display').style.color=c;
-}
+window.updateScore = function(v) {
+  const c = v >= 85 ? 'var(--green)' : v >= 70 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('score-display').textContent = v + '%';
+  document.getElementById('score-display').style.color = c;
+};
 
-function enregistrerPerf(){
-  const userId=document.getElementById('perf-emp').value;
-  const mois=document.getElementById('perf-mois').value;
-  const titre=document.getElementById('perf-titre').value||'Évaluation de performance';
-  const score=parseInt(document.getElementById('perf-score').value);
-  const commentaire=document.getElementById('perf-comment').value;
-  if(!userId||!mois){showAdminAlert('perf-alert','Veuillez remplir tous les champs.','orange');return;}
-  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  perfs.push({id:'PERF'+Date.now(),userId,mois,titre,score,commentaire,signed:false,createdAt:new Date().toISOString()});
-  localStorage.setItem('rh_performances',JSON.stringify(perfs));
-  showAdminAlert('perf-alert','Évaluation enregistrée ! L\'employé peut maintenant la signer.','green');
+window.enregistrerPerf = async function() {
+  const userId = document.getElementById('perf-emp').value;
+  const mois = document.getElementById('perf-mois').value;
+  const titre = document.getElementById('perf-titre').value || 'Évaluation de performance';
+  const score = parseInt(document.getElementById('perf-score').value);
+  const commentaire = document.getElementById('perf-comment').value;
+  if (!userId || !mois) { showAdminAlert('perf-alert', 'Veuillez remplir tous les champs.', 'orange'); return; }
+  try {
+    await addDoc(collection(db, 'performances'), { userId, mois, titre, score, commentaire, signed: false, createdAt: serverTimestamp() });
+    showAdminAlert('perf-alert', 'Évaluation enregistrée !', 'green');
+    loadPerfsAdmin();
+  } catch(e) { showAdminAlert('perf-alert', 'Erreur.', 'red'); }
+};
+
+window.deletePerf = async function(id) {
+  if (!confirm('Supprimer cette évaluation ?')) return;
+  await deleteDoc(doc(db, 'performances', id));
   loadPerfsAdmin();
-}
+};
 
-function deletePerf(id){
-  if(!confirm('Supprimer cette évaluation ?'))return;
-  const perfs=JSON.parse(localStorage.getItem('rh_performances')||'[]');
-  localStorage.setItem('rh_performances',JSON.stringify(perfs.filter(p=>p.id!==id)));
-  loadPerfsAdmin();
-}
-
-// SALAIRES
-function loadSalairesTab(){
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const sel=document.getElementById('sal-emp');
-  const sel2=document.getElementById('sal-filter-emp');
-  sel.innerHTML='';
-  sel2.innerHTML='<option value="">Tous les agents</option>';
-  users.forEach(u=>{
-    sel.innerHTML+=`<option value="${u.id}">${u.name} — ${u.poste}</option>`;
-    sel2.innerHTML+=`<option value="${u.id}">${u.name}</option>`;
-  });
-  const now=new Date();
-  document.getElementById('sal-mois').value=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0');
-  document.getElementById('sal-date').value=now.toISOString().slice(0,10);
-  // Auto-calc net
-  ['sal-brut','sal-cotisations','sal-primes'].forEach(id=>{
-    document.getElementById(id).addEventListener('input',calcNet);
-  });
+// --- SALAIRES ---
+async function loadSalairesTab() {
+  const sel = document.getElementById('sal-emp');
+  const sel2 = document.getElementById('sal-filter-emp');
+  sel.innerHTML = allUsers.map(u => `<option value="${u.id}">${u.name} — ${u.poste}</option>`).join('');
+  sel2.innerHTML = '<option value="">Tous les agents</option>' + allUsers.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+  const now = new Date();
+  document.getElementById('sal-mois').value = now.getFullYear() + '-' + (now.getMonth()+1).toString().padStart(2,'0');
+  document.getElementById('sal-date').value = now.toISOString().slice(0, 10);
   loadSalairesAdmin();
 }
 
-function calcNet(){
-  const brut=parseFloat(document.getElementById('sal-brut').value)||0;
-  const cot=parseFloat(document.getElementById('sal-cotisations').value)||0;
-  const primes=parseFloat(document.getElementById('sal-primes').value)||0;
-  document.getElementById('sal-montant').value=Math.round(brut-cot+primes);
-}
+window.calcNet = function() {
+  const brut = parseFloat(document.getElementById('sal-brut').value) || 0;
+  const cot = parseFloat(document.getElementById('sal-cotisations').value) || 0;
+  const primes = parseFloat(document.getElementById('sal-primes').value) || 0;
+  document.getElementById('sal-montant').value = Math.round(brut - cot + primes);
+};
 
-function envoyerSalaire(){
-  const userId=document.getElementById('sal-emp').value;
-  const mois=document.getElementById('sal-mois').value;
-  const brut=parseFloat(document.getElementById('sal-brut').value)||0;
-  const cotisations=parseFloat(document.getElementById('sal-cotisations').value)||0;
-  const primes=parseFloat(document.getElementById('sal-primes').value)||0;
-  const montant=parseFloat(document.getElementById('sal-montant').value)||0;
-  const datePaiement=document.getElementById('sal-date').value;
-  const message=document.getElementById('sal-message').value;
-  if(!userId||!mois||!montant){showAdminAlert('sal-alert','Veuillez remplir tous les champs obligatoires.','orange');return;}
-  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const user=users.find(u=>u.id===userId);
-  salaires.push({id:'SAL'+Date.now(),userId,userName:user?user.name:userId,mois,brut,cotisations,primes,montant,datePaiement,message,read:false,createdAt:new Date().toISOString()});
-  localStorage.setItem('rh_salaires',JSON.stringify(salaires));
-  showAdminAlert('sal-alert',`Notification envoyée à ${user?user.name:userId} !`,'green');
-  loadSalairesAdmin();
-}
+window.envoyerSalaire = async function() {
+  const userId = document.getElementById('sal-emp').value;
+  const mois = document.getElementById('sal-mois').value;
+  const brut = parseFloat(document.getElementById('sal-brut').value) || 0;
+  const cotisations = parseFloat(document.getElementById('sal-cotisations').value) || 0;
+  const primes = parseFloat(document.getElementById('sal-primes').value) || 0;
+  const montant = parseFloat(document.getElementById('sal-montant').value) || 0;
+  const datePaiement = document.getElementById('sal-date').value;
+  const message = document.getElementById('sal-message').value;
+  if (!userId || !mois || !montant) { showAdminAlert('sal-alert', 'Veuillez remplir tous les champs obligatoires.', 'orange'); return; }
+  const u = allUsers.find(x => x.id === userId);
+  try {
+    await addDoc(collection(db, 'salaires'), { userId, userName: u ? u.name : userId, mois, brut, cotisations, primes, montant, datePaiement, message, read: false, createdAt: serverTimestamp() });
+    showAdminAlert('sal-alert', `✅ Notification envoyée à ${u ? u.name : userId} !`, 'green');
+    loadSalairesAdmin();
+  } catch(e) { showAdminAlert('sal-alert', 'Erreur.', 'red'); }
+};
 
-function loadSalairesAdmin(){
-  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  const filter=document.getElementById('sal-filter-emp')?.value||'';
-  let list=filter?salaires.filter(s=>s.userId===filter):salaires;
-  const tbody=document.getElementById('sal-admin-table');
-  tbody.innerHTML='';
-  if(!list.length){tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:14px">Aucun salaire envoyé</td></tr>';return;}
-  [...list].reverse().forEach(s=>{
-    const user=users.find(u=>u.id===s.userId);
-    tbody.innerHTML+=`<tr>
-      <td><strong>${user?user.name:s.userId}</strong></td>
+window.loadSalairesAdmin = async function() {
+  const filter = document.getElementById('sal-filter-emp')?.value || '';
+  const snap = await getDocs(collection(db, 'salaires'));
+  let list = []; snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+  if (filter) list = list.filter(s => s.userId === filter);
+  list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+  const tbody = document.getElementById('sal-admin-table');
+  tbody.innerHTML = '';
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:14px">Aucun salaire envoyé</td></tr>'; return; }
+  list.forEach(s => {
+    const u = allUsers.find(x => x.id === s.userId);
+    tbody.innerHTML += `<tr>
+      <td><strong>${u ? u.name : s.userId}</strong></td>
       <td>${s.mois}</td>
       <td><strong style="color:var(--gold)">${Number(s.montant).toLocaleString('fr-FR')}</strong></td>
-      <td>${s.brut?Number(s.brut).toLocaleString('fr-FR'):'—'}</td>
-      <td style="color:var(--green)">${s.primes?Number(s.primes).toLocaleString('fr-FR'):'—'}</td>
-      <td>${s.read?'<span style="color:var(--green)">✅ Lu</span>':'<span style="color:var(--amber)">Non lu</span>'}</td>
+      <td>${s.brut ? Number(s.brut).toLocaleString('fr-FR') : '—'}</td>
+      <td style="color:var(--green)">${s.primes ? Number(s.primes).toLocaleString('fr-FR') : '—'}</td>
+      <td>${s.read ? '<span style="color:var(--green)">✅ Lu</span>' : '<span style="color:var(--amber)">Non lu</span>'}</td>
       <td><button class="btn-sm btn-delete" onclick="deleteSalaire('${s.id}')">🗑</button></td>
     </tr>`;
   });
-}
+};
 
-function deleteSalaire(id){
-  if(!confirm('Supprimer ce bulletin ?'))return;
-  const salaires=JSON.parse(localStorage.getItem('rh_salaires')||'[]');
-  localStorage.setItem('rh_salaires',JSON.stringify(salaires.filter(s=>s.id!==id)));
+window.deleteSalaire = async function(id) {
+  if (!confirm('Supprimer ce bulletin ?')) return;
+  await deleteDoc(doc(db, 'salaires', id));
   loadSalairesAdmin();
+};
+
+// --- AJOUTER ---
+window.calcAddConges = function() {
+  const m = parseInt(document.getElementById('add-anciennete').value) || 12;
+  document.getElementById('add-conges-preview').value = Math.floor(m * 2.5) + ' jours acquis';
+};
+
+window.ajouterEmploye = async function() {
+  const name = document.getElementById('add-name').value.trim();
+  const poste = document.getElementById('add-poste').value.trim();
+  const email = document.getElementById('add-email').value.trim().toLowerCase();
+  const pwd = document.getElementById('add-pwd').value;
+  const tel = document.getElementById('add-tel').value;
+  const quartier = document.getElementById('add-quartier').value;
+  const enfants = parseInt(document.getElementById('add-enfants').value) || 0;
+  const anc = parseInt(document.getElementById('add-anciennete').value) || 12;
+  const heureArrivee = document.getElementById('add-arrivee').value || '08:00';
+  const heurePause = document.getElementById('add-pause').value || '12:00';
+  const heurePauseFin = document.getElementById('add-pause-fin').value || '13:00';
+  const heureDepart = document.getElementById('add-depart').value || '17:30';
+  const salaire = parseInt(document.getElementById('add-salaire').value) || 0;
+  if (!name || !poste || !email || !pwd) { showAdminAlert('add-alert', 'Veuillez remplir tous les champs obligatoires.', 'orange'); return; }
+  if (pwd.length < 6) { showAdminAlert('add-alert', 'Le mot de passe doit faire au moins 6 caractères.', 'orange'); return; }
+  if (allUsers.find(u => u.email === email)) { showAdminAlert('add-alert', 'Cet email existe déjà.', 'red'); return; }
+  const initials = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+  const congesAcquis = Math.floor(anc * 2.5);
+  try {
+    await addDoc(collection(db, 'users'), {
+      name, email, password: pwd, role: 'employee', poste, avatar: initials,
+      telephone: tel, quartier, enfants, salaire, moisTravailles: anc,
+      congesRestants: congesAcquis, congesPris: 0,
+      heureArrivee, heurePause, heurePauseFin, heureDepart,
+      createdAt: serverTimestamp()
+    });
+    await loadAllUsers();
+    showAdminAlert('add-alert', '✅ Compte créé pour ' + name + ' !', 'green');
+    ['add-name','add-email','add-pwd','add-poste','add-tel','add-quartier'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('add-enfants').value = '0';
+    document.getElementById('add-salaire').value = '0';
+  } catch(e) { showAdminAlert('add-alert', 'Erreur: ' + e.message, 'red'); }
+};
+
+function showAdminAlert(id, msg, color) {
+  const el = document.getElementById(id);
+  el.className = 'alert alert-' + (color === 'green' ? 'green' : color === 'red' ? 'red' : 'orange');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 6000);
 }
 
-// AJOUTER
-function calcAddConges(){
-  const m=parseInt(document.getElementById('add-anciennete').value)||12;
-  document.getElementById('add-conges-preview').value=Math.floor(m*2.5)+' jours acquis';
-}
-
-function ajouterEmploye(){
-  const name=document.getElementById('add-name').value.trim();
-  const poste=document.getElementById('add-poste').value.trim();
-  const email=document.getElementById('add-email').value.trim();
-  const pwd=document.getElementById('add-pwd').value;
-  const tel=document.getElementById('add-tel').value;
-  const quartier=document.getElementById('add-quartier').value;
-  const enfants=parseInt(document.getElementById('add-enfants').value)||0;
-  const anc=parseInt(document.getElementById('add-anciennete').value)||12;
-  const heureArrivee=document.getElementById('add-arrivee').value||'08:00';
-  const heurePause=document.getElementById('add-pause').value||'12:00';
-  const heurePauseFin=document.getElementById('add-pause-fin').value||'13:00';
-  const heureDepart=document.getElementById('add-depart').value||'17:30';
-  const salaire=parseInt(document.getElementById('add-salaire').value)||0;
-  if(!name||!poste||!email||!pwd){showAdminAlert('add-alert','Veuillez remplir tous les champs obligatoires.','orange');return;}
-  if(pwd.length<6){showAdminAlert('add-alert','Le mot de passe doit faire au moins 6 caractères.','orange');return;}
-  const users=JSON.parse(localStorage.getItem('rh_users')||'[]');
-  if(users.find(u=>u.email===email)){showAdminAlert('add-alert','Cet email existe déjà.','red');return;}
-  const initials=name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
-  const id='USR'+Date.now();
-  const congesAcquis=Math.floor(anc*2.5);
-  users.push({id,name,email,password:pwd,role:'employee',poste,avatar:initials,telephone:tel,quartier,enfants,salaire,moisTravailles:anc,congesRestants:congesAcquis,congesPris:0,heureArrivee,heurePause,heurePauseFin,heureDepart});
-  localStorage.setItem('rh_users',JSON.stringify(users));
-  showAdminAlert('add-alert','Compte créé pour '+name+' ! Il peut maintenant se connecter.','green');
-  ['add-name','add-email','add-pwd','add-poste','add-tel','add-quartier'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('add-enfants').value='0';
-  document.getElementById('add-salaire').value='0';
-}
-
-function showAdminAlert(id,msg,color){
-  const el=document.getElementById(id);
-  el.className='alert alert-'+(color==='green'?'green':color==='red'?'red':'orange');
-  el.textContent=msg;el.style.display='block';
-  setTimeout(()=>el.style.display='none',5000);
-}
-
-loadDash();
+init();
 calcAddConges();
 </script>
 </body>
